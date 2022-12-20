@@ -4,11 +4,11 @@ const Users = require('./users');
 const Schema = mongoose.Schema;
 
 const orderSchema = new Schema({
-    user_id:{
+    user:{
         type: mongoose.Schema.Types.ObjectId,
         ref:Users
     },
-    dish_id:{
+    dish:{
         type: mongoose.Schema.Types.ObjectId,
         ref:Dishes
     },

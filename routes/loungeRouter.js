@@ -1,10 +1,42 @@
 const express = require('express');
 const loungeRouter = express.Router();
-const bodyParser = require('body-parser');
-const { verifyAdmin } = require('../authenticate/authenticate');
+const { verifyAdmin, isAuthenticated } = require('../authenticate/authenticate');
 const Lounges = require('../models/lounges');
+const multer = require('multer');
+const bodyParser = require('body-parser');
+const crypto = require('crypto');
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './uploads/loungeImages')
+    },
+    filename: (req, file, cb) => {
+        const extname = file.originalname.split('.')[1]
+        const filename = file.originalname.split('.')[0] + crypto.randomBytes(5).toString('hex');
+        console.log(extname,filename);
+        cb(null, filename + '.' + extname)
+    }
+});
+
+const upload = multer({
+    storage:storage,
+    fileFilter : (req, file,cb) => {
+        console.log("filename", file);
+        if(!file.originalname){
+            console.log("no file is uploaded");
+            return cb(new Error("no file is uploaded"));
+        }
+        console.log(file.originalname.match(/\.(jpg|jpeg|png|gif)$/));
+        if(!(file.originalname.match(/\.(jpg|jpeg|png|gif)$/))){
+            console.log("Image file format must be .jpg . jpeg .gif .png");
+            return cb(new Error("Image file format must be .jpg . jpeg .gif .png"));
+        }
+        return cb(null, true)
+    }
+})
 
 loungeRouter.use(bodyParser.json());
+loungeRouter.use(bodyParser.urlencoded({extended:false}));
 
 loungeRouter.route('/')
 .get((req, res, next) =>{
@@ -17,13 +49,16 @@ loungeRouter.route('/')
     })
     .catch(err => next(err))
 })
-.post(verifyAdmin, (req, res, next) => {
-    Lounges.create(req.body)
+.post(isAuthenticated, verifyAdmin,upload.single('image'), (req, res, next) => {
+    console.log(req.file);
+    Lounges.create({image:req.file.filename, ...req.body})
     .then(lounges => {
         res.statusCode = 200;
         res.contentType = "application/json";
         res.json(lounges);
         next()
+    }, (err) => {
+        console.log("err msg ",err.message);
     })
     .catch(err => next(err))
 })

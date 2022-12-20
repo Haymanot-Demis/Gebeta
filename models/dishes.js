@@ -30,10 +30,10 @@ const dishSchema = new Schema({
         required:true
     },
     comment : [commentSchema],
-    availableIn : { // select from a datalist
+    availableIn : [{ // select from a datalist
         type:mongoose.Schema.Types.ObjectId,
         ref: Lounges
-    }
+    }]
 });
 
 const Dishes = mongoose.model('dish', dishSchema);

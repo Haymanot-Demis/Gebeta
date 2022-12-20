@@ -7,9 +7,19 @@ const loungeSchema = new Schema({
         required:true,
         unique:true
     },
-    location:{latitude:{type:String}, longitude:{type:String}},
+    latitude:{
+        type:String,
+        default:''
+    },
+    longitude:{
+        type:String,
+        default:''
+    },
     ownerName:String,
-    image:String
+    image:{
+        type:String,
+        default:''
+    }
 });
 
 module.exports = mongoose.model('lounge', loungeSchema);

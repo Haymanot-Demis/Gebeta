@@ -9,6 +9,7 @@ const passport = require('passport');
 const expressSession = require('express-session');
 const authenticate = require('./authenticate/authenticate');
 const cookieParser = require('cookie-parser');
+const hbs = require('express-handlebars');
 
 // Importing Routes
 const dishRouter = require('./routes/dishesRouter');
@@ -23,8 +24,11 @@ mongoose.connect(config.mongodbURL)
     console.log("Database connected Successfully");
 })
 .catch(err => console.log(err))
+
 //built in middlewares
 // app.use(cookieParser("hayme"));
+// app.set('views', path.join(__dirname,'views'))
+// app.set('view engine', 'handlebars');
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.urlencoded({extended:true}));
 app.use(bodyParser.json());
@@ -46,8 +50,7 @@ app.use('/orders', orderRouter);
 app.use('/lounges', loungeRouter);
 
 app.get('/',(req, res) => {
-    console.log(req.user);
-    res.send("Welcome");
+    res.render('login')
 });
 
 // user auth
@@ -62,8 +65,7 @@ app.use((req, res, next) => {
 })
 
 app.get('/home',(req, res) => {
-    console.log(req.isAuthenticated());
-    res.send("Welcome home");
+    res.render('login');
 });
 
 
