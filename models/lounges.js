@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Users = require('./users');
 
 const loungeSchema = new Schema({
     name:{
@@ -15,7 +16,10 @@ const loungeSchema = new Schema({
         type:String,
         default:''
     },
-    ownerName:String,
+    loungeAdmin:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: Users
+    },
     image:{
         type:String,
         default:''

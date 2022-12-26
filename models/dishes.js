@@ -1,7 +1,27 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const {commentSchema} = require('./comments');
 const Lounges = require('./lounges');
+const Users = require('./users');
+
+const commentSchema = new Schema({
+    author: {
+        type : mongoose.Schema.Types.ObjectId,
+        ref: Users
+    },
+    rating:{
+        type: Number,
+        min: 1,
+        max: 5,
+        required: true
+    },
+    comment:{
+        type:String,
+        required:true
+    }
+},{
+    timestamps:true
+});
+
 
 const dishSchema = new Schema({
     name:{
@@ -30,10 +50,10 @@ const dishSchema = new Schema({
         required:true
     },
     comment : [commentSchema],
-    availableIn : [{ // select from a datalist
+    lounge : { // select from a datalist
         type:mongoose.Schema.Types.ObjectId,
         ref: Lounges
-    }]
+    }
 });
 
 const Dishes = mongoose.model('dish', dishSchema);
