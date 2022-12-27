@@ -9,6 +9,8 @@ const Tokens = require("../models/token");
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
+const { ObjectID, ObjectId } = require("bson");
+const sendEmail = require("../controllers/sendEmail");
 
 userRouter.use(bodyParser.json());
 
@@ -111,6 +113,12 @@ userRouter
               res.json(err);
               return next(err);
             }
+            const info = sendEmail(
+              user.email,
+              "Password Change",
+              "Password Successfullly Changed"
+            );
+            console.log(JSON.parsei(info));
             res.statusCode = 200;
             res.contentType = "text/html";
             return res.send(result);
@@ -122,6 +130,7 @@ userRouter
 
 userRouter.route("/account/resetPassword").post((req, res, next) => {
   Users.findOne({ _id: req.body.user_id }).then(async (user) => {
+    console.log(user, req.body.user_id);
     const resetToken = await Tokens.findOne({ user_id: ObjectId(user._id) });
     if (!resetToken) {
       res.statusCode = 403;
@@ -132,7 +141,7 @@ userRouter.route("/account/resetPassword").post((req, res, next) => {
     const isValidToken = await bcrypt.compare(req.body.token, resetToken.token);
     if (!isValidToken) {
       res.statusCode = 403;
-      console.log("Invalid or expired ");
+      console.log("Invalid");
       const err = new Error("Invalid or expired password reset token");
       return next(err);
     }
@@ -144,14 +153,21 @@ userRouter.route("/account/resetPassword").post((req, res, next) => {
         return next(err);
       }
       await user.save();
+      const info = sendEmail(
+        user.email,
+        "Password Reset",
+        "Password Successfullly Reseted"
+      );
       res.statusCode = 200;
       res.contentType = "text/html";
+      console.log(JSON.parse(info));
       return res.send(result);
     });
   });
 });
 
 userRouter.route("/account/resetPasswordRequest").post((req, res, next) => {
+  console.log(req.body.email);
   Users.findOne({ email: req.body.email }).then(async (user) => {
     if (!user) {
       res.statusCode = 404;
@@ -159,8 +175,8 @@ userRouter.route("/account/resetPasswordRequest").post((req, res, next) => {
       return next();
     }
 
-    const res = await Tokens.deleteMany({ user_id: ObjectId(user._id) });
-    console.log(res);
+    const result = await Tokens.deleteMany({ user_id: ObjectID(user._id) });
+    console.log(result);
     const token = crypto.randomBytes(32).toString("hex");
     const hashedToken = await bcrypt.hash(token, Number(process.env.SALT));
     const userToken = await Tokens.create({
@@ -168,34 +184,36 @@ userRouter.route("/account/resetPasswordRequest").post((req, res, next) => {
       token: hashedToken,
     });
     console.log(userToken);
-    const transorter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "haymedin21@gmail.com",
-        pass: "zroqmpmvrsuartlk",
-      },
-    });
-    transorter.sendMail(
-      {
-        from: "haymedin21@gmail.com",
-        to: user.email,
-        subject: "Reset password",
-        text: token,
-      },
-      (err, info) => {
-        if (err) {
-          console.log("err msg", err.message);
-          res.statusCode = 400;
-          res.contentType = "application/json";
-          res.json(err);
-          return next(err);
-        }
-        res.statusCode = 200;
+    const info = await sendEmail(user.email, "Reset Password", token);
+    res.statusCode = 200;
+    res.contentType = "application/json";
+    console.log(info);
+    res.json(JSON.parse(info));
+    return next();
+  });
+});
+
+userRouter.route("/all").get(authenticate.verifyAdmin, (req, res, next) => {
+  Users.find(req.body).then((users) => {
+    res.statusCode = 200;
+    res.contentType = "application/json";
+    res.json(users);
+  });
+});
+
+userRouter.route("/activateUserAccount").put((req, res, next) => {
+  Users.findOne(req.body).then((user) => {
+    user.isactivated = true;
+    user.save((err, result) => {
+      if (err) {
+        res.statusCode = 400;
         res.contentType = "application/json";
-        res.json(info);
-        return next();
+        return next(err);
       }
-    );
+      res.statusCode = 200;
+      res.contentType = "application/json";
+      res.json(result);
+    });
   });
 });
 
