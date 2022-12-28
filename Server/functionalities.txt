@@ -1,0 +1,53 @@
+dishes 
+ for admin
+ add dish/es
+ update dish info
+ delete dish/es 
+
+ get dish/es by user
+ same as lounges
+
+
+orders
+user can 
+ make order
+ postpone order
+ reject order if it is before some allowable time
+ comment on order service or dish that he has used before
+
+authenticattion and authorization
+forgot password by using a token to verify that the request is really sent from the legal user
+change password 
+
+
+next task
+Data validation
+
+const transorter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "haymedin21@gmail.com",
+        pass: "zroqmpmvrsuartlk",
+      },
+    });
+    transorter.sendMail(
+      {
+        from: "haymedin21@gmail.com",
+        to: user.email,
+        subject: "Reset password",
+        text: token,
+      },
+      (err, info) => {
+        if (err) {
+          console.log("err msg", err.message);
+          res.statusCode = 400;
+          res.contentType = "application/json";
+          res.json(err);
+          return next(err);
+        }
+        res.statusCode = 200;
+        res.contentType = "application/json";
+        res.json(info);
+        return next();
+      }
+    );
