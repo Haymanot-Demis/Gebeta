@@ -50,7 +50,7 @@ dishRouter
   .get(async (req, res, next) => {
     console.log(req.body);
     let options = {};
-    if (req.user.loungeAdmin) {
+    if (req?.user?.loungeAdmin) {
       lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
       options = {
         lounge: lounge._id,

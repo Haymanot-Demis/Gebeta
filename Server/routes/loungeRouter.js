@@ -47,7 +47,7 @@ loungeRouter
   .route("/")
   .get((req, res, next) => {
     let options = {};
-    if (req.user.loungeAdmin) {
+    if (req?.user?.loungeAdmin) {
       options = {
         loungeAdmin: req.user._id,
       };

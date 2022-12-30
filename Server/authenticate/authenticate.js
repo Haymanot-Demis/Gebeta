@@ -7,7 +7,7 @@ passport.serializeUser(Users.serializeUser());
 passport.deserializeUser(Users.deserializeUser());
 
 const verifyAdmin = (req, res, next) => {
-  if (req.user.systemAdmin) {
+  if (req?.user?.systemAdmin) {
     return next();
   }
   const err = new Error("Unauthorized Access");
@@ -17,12 +17,12 @@ const verifyAdmin = (req, res, next) => {
 };
 
 const verifyLoungeAdmin = (req, res, next) => {
-  if (!req.user.isactivated) {
+  if (!req?.user?.isactivated) {
     res.statusCode = 200;
     res.send(
       "This account is not ready for use. Please wait until it is activated"
     );
-  } else if (!req.user.loungeAdmin) {
+  } else if (!req?.user?.loungeAdmin) {
     const err = new Error("Unauthorized Access");
     res.statusCode = 403;
     res.contentType = "application/json";
@@ -34,7 +34,7 @@ const verifyLoungeAdmin = (req, res, next) => {
 const isAuthenticated = (req, res, next) => {
   if (!req.isAuthenticated()) {
     var err = new Error("You are not authenticated!");
-    err.status = 403;
+    err.status = 401;
     next(err);
   } else {
     next();

@@ -12,6 +12,7 @@ const cookieParser = require("cookie-parser");
 const hbs = require("express-handlebars");
 const ejs = require("ejs");
 const { engine } = require("express-handlebars");
+const cors = require("cors");
 
 // Importing Routes
 const dishRouter = require("./routes/dishesRouter");
@@ -36,6 +37,7 @@ app.engine("handlebars", hbs.engine({ extname: ".hbs" }));
 app.set("view engine", "handlebars");
 app.set("views", path.join(__dirname, "views"));
 
+app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());

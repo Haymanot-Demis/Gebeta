@@ -15,6 +15,9 @@ const sendEmail = require("../controllers/sendEmail");
 userRouter.use(bodyParser.json());
 
 userRouter.route("/signup").post((req, res, next) => {
+  console.log(req.method);
+  console.log(req.headers);
+  console.log(req.body);
   Users.register(req.body, req.body.password, (err, user) => {
     if (err) {
       return next(err);
@@ -56,11 +59,16 @@ userRouter.route("/signup").post((req, res, next) => {
 // });
 
 userRouter.route("/signin").post((req, res, next) => {
+  console.log(req.method);
+  console.log(req.headers.authorization);
+  console.log(req.headers);
+  console.log(req.body);
   passport.authenticate("local", (err, user, info) => {
     if (err) {
       return next(err);
     }
     if (!user) {
+      console.log(user);
       res.statusCode = 401;
       res.contentType = "application/json";
       res.json({ success: false, status: "Login Failed", info });
@@ -73,6 +81,7 @@ userRouter.route("/signin").post((req, res, next) => {
       //   }
       req.logIn(user, (err) => {
         if (err) {
+          console.log(err);
           res.statusCode = 401;
           res.contentType = "application/json";
           return res.json({ success: false, status: "Login Failed", err });
@@ -193,13 +202,19 @@ userRouter.route("/account/resetPasswordRequest").post((req, res, next) => {
   });
 });
 
-userRouter.route("/all").get(authenticate.verifyAdmin, (req, res, next) => {
-  Users.find(req.body).then((users) => {
-    res.statusCode = 200;
-    res.contentType = "application/json";
-    res.json(users);
-  });
-});
+userRouter
+  .route("/all")
+  .get(
+    authenticate.isAuthenticated,
+    authenticate.verifyAdmin,
+    (req, res, next) => {
+      Users.find(req?.body).then((users) => {
+        res.statusCode = 200;
+        res.contentType = "application/json";
+        res.json(users);
+      });
+    }
+  );
 
 userRouter.route("/activateUserAccount").put((req, res, next) => {
   Users.findOne(req.body).then((user) => {
