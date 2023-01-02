@@ -9,6 +9,8 @@ const Lounges = require("../models/lounges");
 const multer = require("multer");
 const bodyParser = require("body-parser");
 const crypto = require("crypto");
+const { ObjectId } = require("mongodb");
+const Gallery = require("../models/gallery");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -52,6 +54,8 @@ loungeRouter
         loungeAdmin: req.user._id,
       };
     }
+    options = { ...options, ...req.body };
+    console.log(req.body);
     Lounges.find(options)
       .populate("loungeAdmin")
       .then((lounges) => {
@@ -100,13 +104,28 @@ loungeRouter
       .catch((err) => next(err));
   });
 
+loungeRouter.route("/gallery/:loungeId").get((req, res, next) => {
+  Gallery.find({ object: req.params.loungeId })
+    .populate("object")
+    .then((images) => {
+      res.statusCode = 200;
+      res.contentType = "application/json";
+      res.json(images);
+      next();
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
 loungeRouter
   .route("/:id")
   .get((req, res, next) => {
-    Lounges.find(req.params.id).then((lounge) => {
+    Lounges.findById(ObjectId(req.params.id)).then((lounge) => {
       res.statusCode = 200;
       res.contentType = "application/json";
       res.json(lounge);
+      next();
     });
   })
   .post(isAuthenticated, verifyLoungeAdmin, (req, res, next) => {

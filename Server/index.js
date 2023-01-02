@@ -57,7 +57,6 @@ app.use("/dishes", dishRouter);
 app.use("/lounges", loungeRouter);
 app.use("/users", userRouter);
 app.use("/orders", orderRouter);
-app.use("/lounges", loungeRouter);
 
 app.get("/", (req, res) => {
   res.render("index");

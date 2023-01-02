@@ -48,13 +48,11 @@ dishRouter.use(bodyParser.json());
 dishRouter
   .route("/")
   .get(async (req, res, next) => {
-    console.log(req.body);
-    let options = {};
+    console.log(req?.body?.options);
+    let options;
     if (req?.user?.loungeAdmin) {
       lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
-      options = {
-        lounge: lounge._id,
-      };
+      options = { ...req.body.options, lounge: lounge._id };
     }
     Dishes.find(options)
       .populate("lounge")
@@ -102,6 +100,19 @@ dishRouter
       .catch((err) => next(err));
   });
 
+dishRouter.route("/distinct").get((req, res, next) => {
+  Dishes.distinct(req?.body?.field, req.body.filter)
+    .then((data) => {
+      res.statusCode = 200;
+      res.contentType = "application/json";
+      res.json(data);
+      next();
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
 dishRouter
   .route("/:dishid")
   .get((req, res, next) => {
@@ -120,7 +131,7 @@ dishRouter
     next();
   })
   .put(isAuthenticated, verifyLoungeAdmin, async (req, res, next) => {
-    lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
+    const lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
     Dishes.findOneAndUpdate(
       { lounge: lounge._id, _id: req.params.dishid },
       {

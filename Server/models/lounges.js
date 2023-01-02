@@ -30,6 +30,15 @@ const loungeSchema = new Schema({
     min: 1,
     max: 5,
   },
+  services: [
+    {
+      type: String,
+    },
+  ],
+  about: {
+    type: String,
+    default: "",
+  },
 });
 
 module.exports = mongoose.model("lounge", loungeSchema);
