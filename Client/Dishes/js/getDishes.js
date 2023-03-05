@@ -1,22 +1,23 @@
+import { DISHES_URL } from "../../config/EndPoints.js";
 import display from "../../script/displayDishesCard.js";
 
 lounges();
 
 async function lounges() {
   try {
-    const response = await axios.get("http://localhost:3000/dishes");
+    const response = await axios.get(DISHES_URL);
     const dishes = response.data;
     dishes.sort((dish1, dish2) => dish2.orderCount - dish1.orderCount);
 
     const foods = dishes.filter((dish) => {
       return dish.type == "cooked-food";
     });
-    console.log(dishes.data);
+    console.log(dishes);
 
     const drinks = dishes.filter((dish) => {
       return dish.type == "drinks";
     });
-
+    console.log(drinks);
     display(
       foods,
       foods.length > 6 ? 6 : foods.length,

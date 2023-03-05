@@ -15,7 +15,8 @@
     <link rel="stylesheet" href="../css/Slider.css" />
     <link rel="stylesheet" href="../css/navStyle.css" />
     <link rel="stylesheet" href="../css/HomepageCss2.css" />
-    <link rel="stylesheet" href="style/services.css" />
+    <link rel="stylesheet" href="style/lounge.css" />
+    <link rel="stylesheet" href="./style/accordion.css" />
   </head>
   <body id="body">
     <header>
@@ -180,24 +181,152 @@
       </nav>
     </header>
     <main>
-      <div class="slideContainer lounge">
-        <div class="slider">
-          <div class="navigation">
-            <svg height="50" width="50" class="prev-btn">
-              <polygon
-                points="10,25 40,5 40,15 25,25 40,35 40,45 "
-                style="stroke: rgb(255, 255, 255); fill: rgb(0, 0, 0)"
-              />
-            </svg>
-            <svg height="50" width="50" class="next-btn">
-              <polygon
-                points="10,5 40,25 10,45 10,35 25,25 10,15 "
-                style="stroke: rgb(255, 255, 255); fill: rgb(0, 0, 0)"
-              />
-            </svg>
-          </div>
+      <div class="top-content">
+        <div class="slideContainer lounge">
+          <div class="slider">
+            <div class="navigation">
+              <svg height="50" width="50" class="prev-btn">
+                <polygon
+                  points="10,25 40,5 40,15 25,25 40,35 40,45 "
+                  style="stroke: rgb(255, 255, 255); fill: rgb(0, 0, 0)"
+                />
+              </svg>
+              <svg height="50" width="50" class="next-btn">
+                <polygon
+                  points="10,5 40,25 10,45 10,35 25,25 10,15 "
+                  style="stroke: rgb(255, 255, 255); fill: rgb(0, 0, 0)"
+                />
+              </svg>
+            </div>
 
-          <div class="navigation-visibility"></div>
+            <div class="navigation-visibility"></div>
+          </div>
+        </div>
+        <div class="menu" id="menu">
+          <div class="row">
+            <div class="col">
+              <h3 class="accordion-heading"><b>Food Menu in Memhran</b></h3>
+              <div class="tabs">
+                <div class="tab">
+                  <input type="button" name="level1" id="chck1" />
+                  <label class="tab-label" for="chck1">Meals</label>
+                  <div class="tab-content" id="meals">
+                    <li><a href="#" class="">Pasta</a></li>
+                    <li><a href="#">Pasta with vegtable </a></li>
+                    <li><a href="#">Tegabino</a></li>
+                    <li><a href="#">Alcha</a></li>
+                    <li><a href="#">Beyaynet</a></li>
+                    <li><a href="#">Firifr</a></li>
+                    <li><a href="#">Minichet</a></li>
+
+                    <li><a href="#" class="">Pasta</a></li>
+                    <li><a href="#">Pasta with vegtable </a></li>
+                    <li><a href="#">Tegabino</a></li>
+                    <li><a href="#">Alcha</a></li>
+                    <li><a href="#">Beyaynet</a></li>
+                    <li><a href="#">Firifr</a></li>
+                    <li><a href="#">Minichet</a></li>
+
+                    <li><a href="#" class="">Pasta</a></li>
+                    <li><a href="#">Pasta with vegtable </a></li>
+                    <li><a href="#">Tegabino</a></li>
+                    <li><a href="#">Alcha</a></li>
+                    <li><a href="#">Beyaynet</a></li>
+                    <li><a href="#">Firifr</a></li>
+                    <li><a href="#">Minichet</a></li>
+                  </div>
+                </div>
+                <div class="tab">
+                  <input type="button" name="level1" id="chck2" />
+                  <label class="tab-label" for="chck2">Drinks</label>
+                  <div class="tab-content">
+                    <div class="row">
+                      <div class="col">
+                        <div class="tabs">
+                          <div class="tab">
+                            <input type="button" name="level11" id="chck3" />
+                            <label class="tab-label" for="chck3"
+                              >Hot Drinks</label
+                            >
+                            <div class="tab-content" id="hot-drinks">
+                              <li><a href="#" class="">Tea</a></li>
+                              <li><a href="#">Coffee</a></li>
+                              <li><a href="#">Spris</a></li>
+                              <li><a href="#">Makito</a></li>
+                              <li><a href="#">Kishir</a></li>
+                              <li><a href="#">Milk</a></li>
+                            </div>
+                          </div>
+                          <div class="tab">
+                            <input type="button" name="level11" id="chck4" />
+                            <label class="tab-label" for="chck4"
+                              >Cold Drinks</label
+                            >
+                            <div class="tab-content">
+                              <div class="row">
+                                <div class="col">
+                                  <div class="tabs">
+                                    <div class="tab">
+                                      <input
+                                        type="button"
+                                        name="level111"
+                                        id="chck5"
+                                      />
+                                      <label class="tab-label" for="chck5"
+                                        >Soft Drinks</label
+                                      >
+                                      <div class="tab-content" id="soft-drinks">
+                                        <li><a href="#" class="">Tea</a></li>
+                                        <li><a href="#">Coffee</a></li>
+                                        <li><a href="#">Spris</a></li>
+                                        <li><a href="#">Makito</a></li>
+                                        <li><a href="#">Kishir</a></li>
+                                        <li><a href="#">Milk</a></li>
+                                      </div>
+                                    </div>
+                                    <div class="tab">
+                                      <input
+                                        type="button"
+                                        name="level111"
+                                        id="chck6"
+                                      />
+                                      <label class="tab-label" for="chck6"
+                                        >Juices</label
+                                      >
+                                      <div class="tab-content" id="fruits">
+                                        <li><a href="#" class="">Mango</a></li>
+                                        <li><a href="#">Apple</a></li>
+                                        <li><a href="#">Strawberry</a></li>
+                                        <li><a href="#">Avocado</a></li>
+                                      </div>
+                                    </div>
+                                    <div class="tab">
+                                      <input
+                                        type="button"
+                                        name="level111"
+                                        id="chck7"
+                                      />
+                                      <label class="tab-label" for="chck7"
+                                        >Other Cold Drinks</label
+                                      >
+                                      <div
+                                        class="tab-content"
+                                        id="other-cold-drinks"
+                                      ></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -205,8 +334,8 @@
         <button class="button">Services</button>
         <div class="services">
           <ul>
-            <a href="#">Dishes</a>
-            <a href="#">Drinks</a>
+            <a href="#Dishes">Foods</a>
+            <a href="#Drinks">Drinks</a>
             <li>Free wifi</li>
           </ul>
         </div>

@@ -4,6 +4,7 @@ export default function display(dishes, length, h2_data, grid_count) {
   alone_grid.classList.add("alone-grid");
   let h2 = document.createElement("h2");
   h2.classList.add("scrolle");
+  h2.id = h2_data.split(" ")[0];
   h2.innerText = h2_data;
   alone_grid.id = "alone-grid_" + grid_count;
   grid_count++;
