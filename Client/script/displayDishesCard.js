@@ -1,11 +1,13 @@
-export default function display(dishes, length, h1_data, grid_count) {
+export default function display(dishes, length, h2_data, grid_count) {
   let i = 0;
   let alone_grid = document.createElement("div");
   alone_grid.classList.add("alone-grid");
-  let h1 = document.createElement("h1");
-  h1.innerText = h1_data;
+  let h2 = document.createElement("h2");
+  h2.classList.add("scrolle");
+  h2.innerText = h2_data;
   alone_grid.id = "alone-grid_" + grid_count;
   grid_count++;
+  console.log("length", length);
   for (let i = 0; i < length; i++) {
     let alone_grid_item_scrolle = document.createElement("div");
     let alone_card = document.createElement("div");
@@ -46,7 +48,12 @@ export default function display(dishes, length, h1_data, grid_count) {
 
     alone_card_text.classList.add("alone-card-text");
     alone_card_text.id = "alone-card-text_" + i;
-    alone_card_text.innerText = dishes[i].description;
+    if (!dishes[i].description) {
+      alone_card_text.innerText = dishes[i].category;
+      alone_card_text.classList.add("rating");
+    } else {
+      alone_card_text.innerText = dishes[i].description;
+    }
 
     alone_card_btn.classList.add("alone-card-btn");
     alone_card_btn.id = "alone-card-btn_" + i;
@@ -63,7 +70,7 @@ export default function display(dishes, length, h1_data, grid_count) {
 
     console.log(alone_grid_item_scrolle);
     alone_grid.appendChild(alone_grid_item_scrolle);
-    document.body.querySelector("main").appendChild(h1);
-    document.body.querySelector("main").appendChild(alone_grid);
   }
+  document.body.querySelector("main").appendChild(h2);
+  document.body.querySelector("main").appendChild(alone_grid);
 }

@@ -12,6 +12,7 @@ const multer = require("multer");
 const crypto = require("crypto");
 const Lounges = require("../models/lounges");
 const { ObjectId } = require("mongodb");
+const lounges = require("../models/lounges");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -48,7 +49,7 @@ dishRouter.use(bodyParser.json());
 dishRouter
   .route("/")
   .get(async (req, res, next) => {
-    console.log(req?.body?.options);
+    // console.log(req?.body?.options);
     let options;
     if (req?.user?.loungeAdmin) {
       lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
@@ -57,9 +58,11 @@ dishRouter
     Dishes.find(options)
       .populate("lounge")
       .populate("lounge.loungeAdmin")
+      .populate("comment.author")
       .then((dishes) => {
         res.statusCode = 200;
         res.contentType("application/json");
+        console.log(dishes);
         res.json(dishes);
         next();
       })
@@ -118,9 +121,13 @@ dishRouter
   .get((req, res, next) => {
     Dishes.findById(req.params.dishid)
       .populate("lounge")
+      .populate("lounge.loungeAdmin")
+      .populate("comment.author")
+      .populate("lounge")
       .then((dishes) => {
         res.statusCode = 200;
         res.contentType("application/json");
+        console.log(dishes);
         res.json(dishes);
       })
       .catch((err) => next(err));
@@ -158,16 +165,48 @@ dishRouter
       .catch((err) => next(err));
   });
 
-// dishes of a lounge
 dishRouter.route("/lounge/:loungeId").get((req, res, next) => {
-  Dishes.find({ availableIn: { $in: [ObjectId(req.params.loungeId)] } })
-    .then((dishes) => {
-      res.statusCode = 200;
-      res.contentType("application/json");
-      res.json(dishes);
-      next();
-    })
-    .catch((err) => next(err));
+  console.log(typeof req.params.loungeId);
+  Lounges.findById(req.params.loungeId).then((lounge) => {
+    Dishes.findOne({})
+      .then((dishes) => {
+        res.statusCode = 200;
+        res.contentType("application/json");
+        console.log(dishes?.lounge);
+        res.json(dishes);
+        next();
+      })
+      .catch((err) => next(err));
+  });
 });
+
+dishRouter
+  .route("/:dishId/comments")
+  .get((req, res, next) => {
+    Dishes.findById(req.params.dishId).then((dish) => {
+      res.statusCode = 200;
+      res.contentType = "application/json";
+      res.json(dish.comment);
+    });
+  })
+  .post((req, res, next) => {
+    Dishes.findById(req.params.dishId)
+      .then(async (dish) => {
+        if (!dish) {
+          res.statusCode = 404;
+          res.contentType = "text/plain";
+          res.send("Dish with id" + req.params.dishId + " is not found");
+          return next();
+        }
+        console.log(req.body);
+        // req.body.author = req.user._id
+        dish.comment.push({ ...req.body });
+        await dish.save();
+        res.send("comment saved");
+      })
+      .catch((err) => {
+        next(err);
+      });
+  });
 
 module.exports = dishRouter;

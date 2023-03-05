@@ -1,9 +1,10 @@
-export default function display(lounges, length, h1_data, grid_count) {
+export default function display(lounges, length, h2_data, grid_count) {
   let i = 0;
   let alone_grid = document.createElement("div");
   alone_grid.classList.add("alone-grid");
-  let h1 = document.createElement("h1");
-  h1.innerText = h1_data;
+  let h2 = document.createElement("h2");
+  h2.classList.add("scrolle");
+  h2.innerText = h2_data;
   alone_grid.id = "alone-grid_" + grid_count;
   grid_count++;
   for (let i = 0; i < length; i++) {
@@ -73,7 +74,7 @@ export default function display(lounges, length, h1_data, grid_count) {
 
     console.log(alone_grid_item_scrolle);
     alone_grid.appendChild(alone_grid_item_scrolle);
-    document.body.querySelector("main").appendChild(h1);
-    document.body.querySelector("main").appendChild(alone_grid);
   }
+  document.body.querySelector("main").appendChild(h2);
+  document.body.querySelector("main").appendChild(alone_grid);
 }

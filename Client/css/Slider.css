@@ -4,12 +4,16 @@
   align-items: center;
 }
 
+.slideContainer.lounge {
+  justify-content: start;
+}
+
 .slider {
   position: relative;
   border: 3px solid rgba(0, 0, 0, 0.5);
   background: #000116;
   width: 1000px;
-  min-height: 700px;
+  max-height: 500px;
   margin: 20px;
   overflow: hidden;
   border-radius: 10px;
@@ -57,7 +61,7 @@
 }
 
 .navigation {
-  height: 700px;
+  height: 500px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -120,7 +124,7 @@
   fill: rgba(110, 255, 14, 1);
 }
 
-@media (max-width: 900px) {
+@media only screen and (max-width: 900px) {
   .slider {
     width: 100%;
   }

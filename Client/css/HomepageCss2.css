@@ -374,7 +374,7 @@ h2 {
 .scrolle {
   position: relative;
   transform: translateY(150px);
-  /* opacity: 0; */
+  opacity: 0;
   transition: all 2s ease-out;
 }
 
@@ -390,8 +390,7 @@ h2 {
   grid-template-columns: auto auto auto;
   justify-content: center;
   align-items: center;
-  margin-bottom: 3rem;
-  margin-top: 3rem;
+  margin: 3rem;
 }
 
 @media only screen and (max-width: 970px) {
@@ -466,6 +465,7 @@ h2 {
 
 .alone-card-text.rating {
   font-size: 2rem;
+  text-align: center;
 }
 
 .alone-card-btn {

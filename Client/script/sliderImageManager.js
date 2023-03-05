@@ -1,3 +1,4 @@
+import slideTransition from "./slide_transition.js";
 export default function silderImage(images) {
   const slider = document.querySelector(".slider");
   const navigation = document.querySelector("div.navigation-visibility");
@@ -47,4 +48,5 @@ export default function silderImage(images) {
     navigation.appendChild(slideIcon);
     slider.prepend(slide);
   }
+  slideTransition();
 }

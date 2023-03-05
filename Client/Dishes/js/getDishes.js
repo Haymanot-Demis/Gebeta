@@ -6,11 +6,26 @@ async function lounges() {
   try {
     const response = await axios.get("http://localhost:3000/dishes");
     const dishes = response.data;
+    dishes.sort((dish1, dish2) => dish2.orderCount - dish1.orderCount);
+
+    const foods = dishes.filter((dish) => {
+      return dish.type == "cooked-food";
+    });
+    console.log(dishes.data);
+
+    const drinks = dishes.filter((dish) => {
+      return dish.type == "drinks";
+    });
+
     display(
-      dishes,
-      dishes.length > 12 ? 12 : dishes.length,
-      "What do you want to eat?"
+      foods,
+      foods.length > 6 ? 6 : foods.length,
+      "What do you want to eat?",
+      0
     );
+
+    console.log(drinks);
+    display(drinks, drinks.length > 6 ? 6 : drinks.length, "Drinks", 0);
   } catch (error) {
     console.log(error.message);
   }

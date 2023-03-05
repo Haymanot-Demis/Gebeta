@@ -4,6 +4,7 @@ const submit = document.getElementById("submit");
 const form = document.querySelector("form");
 let username = "";
 let password = "";
+import escapeHtml from "../../script/escapeHTML.js";
 
 const usernameRgExp = /^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/;
 
@@ -87,17 +88,7 @@ function validatePassword() {
     small.classList.remove("error");
     small.classList.add("success");
     return true;
-    return true;
   }
-}
-
-function escapeHtml(text) {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
 }
 
 function setError(inputField, error) {

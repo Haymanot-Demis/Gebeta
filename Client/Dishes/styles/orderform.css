@@ -1,0 +1,67 @@
+.modal-dialog {
+  margin-top: 25px;
+}
+
+.modal {
+  background-color: rgb(22, 17, 17, 0.6);
+}
+
+.stepper-container {
+  font-weight: 600;
+  display: flex;
+  background-color: #ffffff;
+  border-radius: 45px;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
+}
+.stepper-container input[type="number"] {
+  text-align: center;
+  font-size: 20px;
+  border: none;
+  background-color: #ffffff;
+  color: #202030;
+}
+.stepper-container input::-webkit-outer-spin-button,
+.stepper-container input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+button.btn-incre,
+button.btn-decre {
+  color: #3264fe;
+  background-color: #ffffff;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+#decrement {
+  padding: 15px 5px 15px 25px;
+  border-radius: 45px 0 0 45px;
+}
+#increment {
+  padding: 15px 25px 15px 5px;
+  border-radius: 0 45px 45px 0;
+}
+
+.from-group {
+  margin: 25px;
+  background-color: #3264fe;
+}
+.from-group.location {
+  display: none;
+}
+
+.form-control {
+  font-family: system-ui, sans-serif;
+  font-size: 1.3rem;
+  font-weight: bold;
+  line-height: 1.1;
+}
+.form-control {
+  font-family: system-ui, sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1.1;
+  display: grid;
+  grid-template-columns: 1em auto;
+  gap: 0.5em;
+}

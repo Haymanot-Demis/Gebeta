@@ -33,7 +33,7 @@ const orderSchema = new Schema(
     },
     timeToCome: {
       type: Date,
-      default: Date.now() + 3610,
+      default: Date.now() + 3600,
     },
     totalPrice: {
       type: Number,

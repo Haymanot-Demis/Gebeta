@@ -55,7 +55,7 @@ loungeRouter
       };
     }
     options = { ...options, ...req.body };
-    console.log(req.body);
+    // console.log(req.body);
     Lounges.find(options)
       .populate("loungeAdmin")
       .then((lounges) => {
@@ -70,7 +70,7 @@ loungeRouter
     verifyLoungeAdmin,
     upload.single("image"),
     (req, res, next) => {
-      console.log(req?.file);
+      // console.log(req?.file);
       req.body.loungeAdmin = req.user._id;
       Lounges.create({ image: req?.file?.filename, ...req.body })
         .then(
