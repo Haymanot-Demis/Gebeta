@@ -1,8 +1,7 @@
 const url = new URL(location.href);
 const id = url.searchParams.get("id");
-import { DISHES_URL, LOUNGES_URL } from "../../config/EndPoints.js";
+import { DISHES_URL, LOUNGES_URL, ORDERS_URL } from "../../config/EndPoints.js";
 import sliderImageManager from "../../script/sliderImageManager.js";
-import display from "../../script/displayDishesCard.js";
 var response = "";
 var Dish = "";
 try {
@@ -21,9 +20,21 @@ try {
 //
 dish();
 comments();
+var countElem = document.getElementById("my-input");
+var mylocation = document.querySelector("#location");
+var time = document.querySelector("#time");
+var delivery = document.getElementsByName("delivery");
+var locationFormGroup = document.querySelector(".form-group.location");
+const price = document.getElementById("price");
+console.log(Dish.price * parseInt(countElem.value));
+var deliveryValue;
+var deliveryLocation;
 let orderBtn = document.querySelector(".detail-container .button");
+let saveBtn = document.getElementById("save-btn");
+let closeBtn = document.getElementById("close-btn");
 let incerement = document.getElementById("increment");
 let decerement = document.getElementById("decrement");
+console.log(countElem, delivery, time, mylocation);
 incerement.onclick = () => {
   stepper(incerement);
 };
@@ -31,7 +42,14 @@ decerement.onclick = () => {
   stepper(decerement);
 };
 orderBtn.onclick = orderOnline;
-
+mylocation.onkeydown = () => {
+  const small = document.getElementById("err-msg");
+  if (small) {
+    locationFormGroup.removeChild(small);
+    mylocation.style.border = "1px solid black";
+  }
+};
+saveBtn.onclick = OnSave;
 async function dish() {
   try {
     const dish_images = await axios.get(
@@ -109,7 +127,6 @@ async function dish() {
     button.appendChild(a);
     button.setAttribute("data-bs-toggle", "modal");
     button.setAttribute("data-bs-target", "#orderform");
-
     detailContainer.prepend(description);
     detailContainer.prepend(detail);
     // detailContainer.appendChild(button);
@@ -123,7 +140,6 @@ function comments() {
   const comments = Dish.comment;
   let h3 = document.createElement("h3");
   h3.innerText = "Comments on this dish";
-  console.log(comments);
   let i = 1;
   for (let comment of comments) {
     let commentInside = document.createElement("div");
@@ -153,27 +169,74 @@ function stepper(btn) {
   let val = myInput.getAttribute("value");
   let calcStep = id == "increment" ? step * 1 : step * -1;
   let newValue = parseInt(val) + calcStep;
-
   if (newValue >= min && newValue <= max) {
     myInput.setAttribute("value", newValue);
+    price.value = newValue * Dish.price + " ETB";
   }
 }
 
-function orderOnline() {
-  const count = document.getElementsByName("count");
-  const delivery = document.getElementsByName("delivery");
-  const formGroup = document.querySelector(".form-group.location");
-  const time = document.querySelector(".form-group.time");
-  var deliveryValue = "";
+async function orderOnline() {
+  // try {
+  //   let dish = await axios.get(DISHES_URL + "/options/" + "name");
+  //   console.log(dish);
+  // } catch (error) {
+  //   console.log(error);
+  // }
+  console.log(price);
+  price.value = Dish.price * parseInt(countElem.value) + " ETB";
+  deliveryValue = "";
   for (let btn of delivery) {
     btn.onclick = (elm) => {
       deliveryValue = btn.value;
-      console.log(deliveryValue);
-      if (deliveryValue.trim().toLocaleLowerCase() == "delivery") {
-        formGroup.style.display = "block";
+      if (deliveryValue?.trim().toLocaleLowerCase() == "delivery") {
+        locationFormGroup.style.display = "block";
       } else {
-        formGroup.style.display = "none";
+        locationFormGroup.style.display = "none";
       }
     };
   }
+}
+
+async function OnSave() {
+  let orderCount = countElem.value?.trim();
+  let timeToCome = time.value?.trim();
+  deliveryLocation = mylocation.value?.trim();
+  let isValid = validateOrderForm(locationFormGroup, deliveryLocation);
+  if (isValid) {
+    let data = {};
+    data.quantity = orderCount;
+    data.deliveryType = deliveryValue;
+    if (deliveryLocation) {
+      data.palceToDeliver = deliveryLocation;
+    }
+    if (timeToCome != "") {
+      data.timeToCome = timeToCome;
+    }
+    try {
+      const response = await axios.post(
+        ORDERS_URL + `/${Dish.name}/${Dish._id}`,
+        data
+      );
+      console.log(response);
+      closeBtn.click();
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    let small = document.createElement("small");
+    small.id = "err-msg";
+    small.style.color = "red";
+    small.innerText = "Please enter a valid delivery location";
+    locationFormGroup.appendChild(small);
+    mylocation.style.border = "1px solid red";
+    alert("Please enter a valid order");
+    return;
+  }
+}
+
+function validateOrderForm(location, deliveryLocation) {
+  if (location.style?.display == "block" && !deliveryLocation) {
+    return false;
+  }
+  return true;
 }

@@ -23,13 +23,13 @@ const orderSchema = new Schema(
       required: true,
       min: 1,
     },
-    takeaway: {
-      type: Boolean,
-      default: false,
+    deliveryType: {
+      type: String,
+      default: "dinein",
     },
     palceToDeliver: {
       type: String,
-      default: "Onsite",
+      default: "",
     },
     timeToCome: {
       type: Date,

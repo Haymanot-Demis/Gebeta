@@ -7,7 +7,24 @@
     "type": "cooked-food",
     "category": "Appetizers and Snacks",
     "lounge": "63a1f660a30f255c9e6fb28c",
-    "orderCount": 0
+    "orderCount": 0,
+    "comment": [
+      {
+        "author": "63add1fcc0757dac282b9391",
+        "comment": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi sit debitis dolores, id esse quibusdam sapiente ex ab quaerat quis eos adipisci",
+        "rating": 3
+      },
+      {
+        "author": "63add1fcc0757dac282b9391",
+        "comment": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi sit debitis dolores, id esse quibusdam sapiente ex ab quaerat quis eos adipisci",
+        "rating": 3
+      },
+      {
+        "author": "63add1fcc0757dac282b9391",
+        "comment": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi sit debitis dolores, id esse quibusdam sapiente ex ab quaerat quis eos adipisci",
+        "rating": 3
+      }
+    ]
   },
   {
     "name": "Asian Meatballs",

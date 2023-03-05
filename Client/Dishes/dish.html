@@ -189,16 +189,6 @@
               </li>
             </ul>
           </li>
-          <li>
-            <label for="transport-label" class="show">Transport+</label>
-            <a href="">Transport</a>
-            <input type="checkbox" id="transport-label" />
-            <ul>
-              <li>
-                <a href="transportation/transport.html#forfamily">For family</a>
-              </li>
-            </ul>
-          </li>
           <li class="Experience"><a href="#">Contact Us</a></li>
           <li class="About-us">
             <a href="About us/About us.html">About us</a>
@@ -294,35 +284,47 @@
           </div>
           <div class="modal-body">
             <form action="">
-              <label for="counte">Order Count</label>
-              <div class="stepper-container">
-                <button
-                  type="button"
-                  class="btn-incre"
-                  id="decrement"
-                  onclick="stepper(this)"
-                >
-                  -
-                </button>
-                <input
-                  type="number"
-                  min="0"
-                  max="100"
-                  step="1"
-                  value="20"
-                  id="my-input"
-                  name="count"
-                  readonly
-                />
-                <button
-                  type="button"
-                  class="btn-decre"
-                  id="increment"
-                  onclick="stepper(this)"
-                >
-                  +
-                </button>
+              <label for="counter">Order Count</label>
+              <div class="counter">
+                <div class="stepper-container">
+                  <button
+                    type="button"
+                    class="btn-incre"
+                    id="decrement"
+                    onclick="stepper(this)"
+                  >
+                    -
+                  </button>
+                  <input
+                    type="number"
+                    min="1"
+                    max="100"
+                    step="1"
+                    value="1"
+                    id="my-input"
+                    name="count"
+                    readonly
+                  />
+                  <button
+                    type="button"
+                    class="btn-decre"
+                    id="increment"
+                    onclick="stepper(this)"
+                  >
+                    +
+                  </button>
+                </div>
+                <div class="stepper-container">
+                  <input
+                    type="text"
+                    value="1"
+                    id="price"
+                    name="price"
+                    readonly
+                  />
+                </div>
               </div>
+
               <div class="form-group">
                 <h4>Check delivery means</h4>
                 <label for="delivery" class="form-control">
@@ -373,11 +375,14 @@
             <button
               type="button"
               class="btn btn-secondary"
+              id="close-btn"
               data-bs-dismiss="modal"
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-primary" id="save-btn">
+              Save
+            </button>
           </div>
         </div>
       </div>

@@ -52,7 +52,7 @@ dishRouter
     // console.log(req?.body?.options);
     let options;
     if (req?.user?.loungeAdmin) {
-      lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
+      const lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
       options = { ...req.body.options, lounge: lounge._id };
     }
     Dishes.find(options)
@@ -62,7 +62,7 @@ dishRouter
       .then((dishes) => {
         res.statusCode = 200;
         res.contentType("application/json");
-        console.log(dishes);
+        // console.log(dishes);
         res.json(dishes);
         next();
       })
@@ -73,8 +73,7 @@ dishRouter
     verifyLoungeAdmin,
     upload.single("image"),
     async (req, res, next) => {
-      console.log(req.body);
-      lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
+      const lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
       req.body.lounge = lounge._id;
       Dishes.create({ image: req?.file?.filename, ...req.body })
         .then((dishes) => {
@@ -103,6 +102,11 @@ dishRouter
       .catch((err) => next(err));
   });
 
+dishRouter.route("/option/:option").get(async (req, res, next) => {
+  console.log(req.params.option);
+  res.end();
+});
+
 dishRouter.route("/distinct").get((req, res, next) => {
   Dishes.distinct(req?.body?.field, req.body.filter)
     .then((data) => {
@@ -127,7 +131,7 @@ dishRouter
       .then((dishes) => {
         res.statusCode = 200;
         res.contentType("application/json");
-        console.log(dishes);
+        // console.log(dishes);
         res.json(dishes);
       })
       .catch((err) => next(err));
@@ -198,7 +202,6 @@ dishRouter
           res.send("Dish with id" + req.params.dishId + " is not found");
           return next();
         }
-        console.log(req.body);
         // req.body.author = req.user._id
         dish.comment.push({ ...req.body });
         await dish.save();

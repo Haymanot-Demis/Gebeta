@@ -16,10 +16,18 @@ orderRouter.use(express.urlencoded({ extended: true }));
 orderRouter
   .route("/:dishName/:id")
   .post(isAuthenticated, async (req, res, next) => {
-    const dish = await Dishes.findOne({ _id: req.params.id }, { price: 1 });
+    const dish = await Dishes.findOne(
+      { _id: req.params.id },
+      { price: 1, lounge: 1 }
+    );
     const totalPrice = req.body.quantity * dish.price;
     req.body.totalPrice = totalPrice;
-    Orders.create({ user: req.user._id, dish: req.params.id, ...req.body })
+    Orders.create({
+      user: req?.user?._id ?? "63add1fcc0757dac282b9391",
+      dish: req.params.id,
+      lounge: dish.lounge,
+      ...req.body,
+    })
       .then(async (order) => {
         dish.orderCounter += 1;
         await dish.save();
@@ -81,8 +89,9 @@ orderRouter.route("/all").get(isAuthenticated, (req, res, next) => {
 orderRouter
   .route("/")
   .get(isAuthenticated, verifyLoungeAdmin, async (req, res, next) => {
-    const lounge = await lounges.findOne({ loungeAdmin: req.user._id });
-    Orders.find({ lounge: lounge._id })
+    // const lounge = await lounges.findOne({ loungeAdmin: req.user._id }); // to know the lounge belongs to the admin
+    // Orders.find({ lounge: lounge._id })
+    Orders.find()
       .populate("user")
       .populate("dish")
       .then((orders) => {

@@ -5,15 +5,22 @@
 .modal {
   background-color: rgb(22, 17, 17, 0.6);
 }
-
+.modal-content {
+  background-color: #cde9a9;
+}
+.counter {
+  display: flex;
+  justify-content: space-between;
+}
 .stepper-container {
   font-weight: 600;
+  /* max-width: 300px; */
   display: flex;
   background-color: #ffffff;
   border-radius: 45px;
   box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
 }
-.stepper-container input[type="number"] {
+.stepper-container input {
   text-align: center;
   font-size: 20px;
   border: none;
@@ -41,24 +48,33 @@ button.btn-decre {
   padding: 15px 25px 15px 5px;
   border-radius: 0 45px 45px 0;
 }
+#decrement:hover {
+  background-color: rgb(192, 187, 181);
+}
+#increment :hover {
+  background-color: rgb(192, 187, 181);
+}
 
-.from-group {
-  margin: 25px;
+.form-group {
+  margin: 15px;
   background-color: #3264fe;
 }
-.from-group.location {
+
+.location {
   display: none;
+}
+.totalPrice {
+  display: flex;
+  align-self: flex-end;
+  float: right;
+}
+small {
+  display: block;
 }
 
 .form-control {
   font-family: system-ui, sans-serif;
-  font-size: 1.3rem;
-  font-weight: bold;
-  line-height: 1.1;
-}
-.form-control {
-  font-family: system-ui, sans-serif;
-  font-size: 2rem;
+  font-size: 1.2rem;
   font-weight: bold;
   line-height: 1.1;
   display: grid;

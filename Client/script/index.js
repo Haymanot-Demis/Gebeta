@@ -24,7 +24,12 @@ async function dishes() {
     let response = await axios.get(DISHES_URL);
     const dishes = response.data;
     dishes.sort((dish1, dish2) => dish2.orderCount - dish1.orderCount);
-    displayDishesCard(dishes, 12, "Choose Your Best Dish", grid_count);
+    displayDishesCard(
+      dishes,
+      dishes.length > 12 ? 12 : dishes.length,
+      "Choose Your Best Dish",
+      grid_count
+    );
 
     response = await axios.get(LOUNGES_URL);
     const lounges = response.data;

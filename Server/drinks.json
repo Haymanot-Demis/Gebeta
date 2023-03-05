@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Tea",
+    "image": "bg-2.jpg",
+    "description": "",
+    "price": 5,
+    "type": "drinks",
+    "category": "Hot Drink",
+    "lounge": "63a1f660a30f255c9e6fb28c",
+    "orderCount": 1
+  },
+  {
+    "name": "Coffee",
+    "image": "bg-2.jpg",
+    "description": "",
+    "price": 8,
+    "type": "drinks",
+    "category": "Stimulant",
+    "lounge": "63a1f660a30f255c9e6fb28c",
+    "orderCount": 2
+  },
+  {
+    "name": "Juice",
+    "image": "bg-2.jpg",
+    "description": "",
+    "price": 30,
+    "type": "drinks",
+    "category": "Fruits",
+    "lounge": "63a1f660a30f255c9e6fb28c",
+    "orderCount": 3
+  },
+  {
+    "name": "Soft drinks",
+    "image": "bg-2.jpg",
+    "description": "",
+    "price": 25,
+    "type": "drinks",
+    "category": "Cold drinks",
+    "lounge": "63a1f660a30f255c9e6fb28c",
+    "orderCount": 4
+  },
+  {
+    "name": "Beer",
+    "image": "bg-2.jpg",
+    "description": "",
+    "price": 25,
+    "type": "drinks",
+    "category": "Cold Drinks",
+    "lounge": "63a1f660a30f255c9e6fb28c",
+    "orderCount": 5
+  }
+]
