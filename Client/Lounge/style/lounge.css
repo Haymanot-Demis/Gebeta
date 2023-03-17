@@ -1,6 +1,11 @@
+.slider {
+  width: 100%;
+}
+
 .top-content {
-  display: flex;
+  display: grid;
   gap: 3rem;
+  grid-template-columns: 3fr 1fr;
   align-items: start;
   align-self: center;
   justify-content: center;

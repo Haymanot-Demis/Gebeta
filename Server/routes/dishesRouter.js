@@ -91,8 +91,9 @@ dishRouter
     next();
   })
   .delete(isAuthenticated, verifyLoungeAdmin, async (req, res, next) => {
-    lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
-    Dishes.deleteMany({ lounge: lounge._id })
+    // lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
+    // Dishes.deleteMany({ lounge: lounge._id })
+    Dishes.deleteMany({})
       .then((result) => {
         res.statusCode = 200;
         res.contentType("application/json");
@@ -160,7 +161,8 @@ dishRouter
       .catch((err) => next(err));
   })
   .delete(isAuthenticated, verifyLoungeAdmin, (req, res, next) => {
-    Dishes.deleteOne({ loungeAdmin: req.user._id, _id: req.params.dishid })
+    // Dishes.deleteOne({ loungeAdmin: req.user._id, _id: req.params.dishid }) later
+    Dishes.deleteOne({ _id: req.params.dishid })
       .then((dishes) => {
         res.statusCode = 200;
         res.contentType("application/json");

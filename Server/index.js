@@ -36,6 +36,16 @@ mongoose
 app.engine("handlebars", hbs.engine({ extname: ".hbs" }));
 app.set("view engine", "handlebars");
 app.set("views", path.join(__dirname, "views"));
+var whitelist = [];
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
 
 app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));

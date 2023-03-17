@@ -20,7 +20,8 @@ change password
 
 
 next task
-Data validation
+Lounge Admin CDUD operations
+After authentication part is done well there to many things to be corrected at the endpoints
 
 const transorter = nodemailer.createTransport({
       service: "gmail",

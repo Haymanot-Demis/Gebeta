@@ -34,7 +34,7 @@ export default function display(dishes, length, h2_data, grid_count) {
     alone_card_img.id = "alone-card-img_" + i;
     alone_card_img.classList.add("alone-card-img");
     alone_card_img.src =
-      "http://127.0.0.1:5500/Gebeta/Client/images/" + dishes[i].image;
+      "http://127.0.0.1:5500/Client/images/" + dishes[i].image;
     alone_card_img.alt = dishes[i].name + "image";
 
     imc.appendChild(alone_card_img);
@@ -59,7 +59,7 @@ export default function display(dishes, length, h2_data, grid_count) {
     alone_card_btn.classList.add("alone-card-btn");
     alone_card_btn.id = "alone-card-btn_" + i;
 
-    link.href = `http://127.0.0.1:5500/Gebeta/Client/Dishes/dish.html?id=${dishes[i]._id}`;
+    link.href = `http://127.0.0.1:5500/Client/Dishes/dish.html?id=${dishes[i]._id}`;
     alone_card_btn.appendChild(link);
 
     alone_card_content.appendChild(alone_card_header);

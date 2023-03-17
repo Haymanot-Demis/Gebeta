@@ -17,10 +17,10 @@
   --black2: #999;
 }
 
-body {
-  min-height: 100vh;
-  overflow-x: hidden;
-}
+/* body { */
+/* min-height: 100vh; */
+/* overflow-x: hidden; */
+/* } */
 
 .container {
   position: relative;
@@ -292,10 +292,13 @@ i {
 }
 .cardHeader h2 {
   font-weight: 600;
+  font-size: 40px;
   color: var(--blue);
 }
 .cardHeader .btn {
   position: relative;
+  margin: 10px;
+  font-size: large;
   padding: 5px 10px;
   background: var(--blue);
   text-decoration: none;
@@ -325,12 +328,12 @@ i {
 .details .recentOrders table tr td {
   padding: 10px;
 }
-.details .recentOrders table tr td:last-child {
+/* .details .recentOrders table tr td:last-child {
   text-align: end;
 }
 .details .recentOrders table tr td:nth-child(2) {
   text-align: end;
-}
+} */
 .details .recentOrders table tr td:nth-child(3) {
   text-align: center;
 }

@@ -77,52 +77,36 @@ async function menu() {
     let a = document.createElement("a");
     if (dish.type == "cooked-food") {
       meals.push(dish);
-      a.href =
-        "http://127.0.0.1:5500/Gebeta/Client/Dishes/dish.html?id=" + dish._id;
+      a.href = "http://127.0.0.1:5500/Client/Dishes/dish.html?id=" + dish._id;
       a.innerText = dish.name;
       li.appendChild(a);
       meals_elem.appendChild(li);
     } else if (dish.category == "Hot Drink") {
       hot_drinks.push(dish);
-      a.href =
-        "http://127.0.0.1:5500/Gebeta/Client/Dishes/dish.html?id=" + dish._id;
+      a.href = "http://127.0.0.1:5500/Client/Dishes/dish.html?id=" + dish._id;
       a.innerText = dish.name;
       li.appendChild(a);
       hots_elem.appendChild(li);
     } else if (dish.category == "Soft Drinks") {
       soft_drinks.push(dish);
-      a.href =
-        "http://127.0.0.1:5500/Gebeta/Client/Dishes/dish.html?id=" + dish._id;
+      a.href = "http://127.0.0.1:5500/Client/Dishes/dish.html?id=" + dish._id;
       a.innerText = dish.name;
       li.appendChild(a);
       soft_drinks.appendChild(li);
     } else if (dish.category == "Fruits") {
       fruit_products.push(dish);
-      a.href =
-        "http://127.0.0.1:5500/Gebeta/Client/Dishes/dish.html?id=" + dish._id;
+      a.href = "http://127.0.0.1:5500/Client/Dishes/dish.html?id=" + dish._id;
       a.innerText = dish.name;
       li.appendChild(a);
       fruits_elem.appendChild(li);
     } else if (dish.category == "Cold Drinks") {
       other_cold_drinks.push(dish);
-      a.href =
-        "http://127.0.0.1:5500/Gebeta/Client/Dishes/dish.html?id=" + dish.id;
+      a.href = "http://127.0.0.1:5500/Client/Dishes/dish.html?id=" + dish.id;
       a.innerText = dish.name;
       li.appendChild(a);
       others_elem.appendChild(li);
     }
   }
-  // console.log(meals);
-  // console.log(hot_drinks);
-  // console.log(soft_drinks);
-  // console.log(fruit_products);
-  // console.log(other_cold_drinks);
-
-  // console.log(meals_elem);
-  // console.log(hots_elem);
-  // console.log(soft_elem);
-  // console.log(fruits_elem);
-  // console.log(others_elem);
 
   accordion_inputs.forEach((radio_btn) => {
     radio_btn.onclick = () => {

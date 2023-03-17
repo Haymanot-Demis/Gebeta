@@ -22,7 +22,7 @@ export default function silderImage(images) {
     }
 
     let img = document.createElement("img");
-    img.src = "http://127.0.0.1:5500/Gebeta/Client/images/AASTU-2.jpg"; //images[i]?.image;
+    img.src = "http://127.0.0.1:5500/Client/images/AASTU-2.jpg"; //images[i]?.image;
     img.alt = ""; //images[i]?.object.name;
 
     let info = document.createElement("div");
