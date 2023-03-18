@@ -87,7 +87,7 @@ try {
     div.append(deleteBtn, editBtn);
     td6.append(img, div);
 
-    td7 = createCustomElement("td", { innerText: dish.lounge.name });
+    td7 = createCustomElement("td", { innerText: dish.lounge?.name });
     tr.append(td, td1, td2, td3, td4, td6, td7);
     tbody.append(tr);
     i++;
