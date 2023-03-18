@@ -17,9 +17,10 @@ try {
   console.log(error);
 }
 
-//
+// function calls
 dish();
 comments();
+
 var countElem = document.getElementById("my-input");
 var mylocation = document.querySelector("#location");
 var time = document.querySelector("#time");
@@ -105,7 +106,7 @@ async function dish() {
     const td4 = document.createElement("td");
     td4.innerText = Dish.price;
     const td5 = document.createElement("td");
-    td5.innerText = Dish.lounge.name;
+    td5.innerText = Dish?.lounge?.name;
 
     tr1.appendChild(td1);
     tr2.appendChild(td2);
