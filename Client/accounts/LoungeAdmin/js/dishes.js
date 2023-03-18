@@ -106,7 +106,7 @@ try {
   attachEventListner(deleteBtns, "click", deleteBtnAction, deleteBtns);
   attachEventListner(editBtns, "click", editBtnAction);
   let url =
-    "http://127.0.0.1:5500/Gebeta/Client/accounts/LoungeAdmin/editDish.html?id=";
+    "http://127.0.0.1:5500/Client/accounts/LoungeAdmin/editDish.html?id=";
   rowEventListner(rows, url);
 } catch (error) {
   console.log(error);

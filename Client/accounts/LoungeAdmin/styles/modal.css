@@ -3,11 +3,12 @@
   flex-direction: column;
   justify-content: center;
   gap: 0.4rem;
-  /* width: 450px; */
   padding: 1.3rem;
   min-height: 250px;
   position: absolute;
-  top: 12%;
+  transform: translate(-50%, -50%);
+  top: 54%;
+  left: 50%;
   background-color: white;
   border: 1px solid #ddd;
   border-radius: 15px;
@@ -15,8 +16,8 @@
 
 .modal .flex {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: flex-end;
+  justify-content: end;
 }
 
 .modal input {
@@ -38,7 +39,8 @@ button {
   font-weight: 600;
 }
 
-.btn {
+.save-btn,
+.btn-open {
   display: inline-block;
   padding: 0.8rem 1.4rem;
   font-weight: 700;
@@ -49,13 +51,8 @@ button {
   font-size: 1em;
 }
 
-.btn-open {
-  position: absolute;
-  bottom: 150px;
-}
-
 .btn-close {
-  transform: translate(10px, -20px);
+  transform: translate(0px, -10px);
   padding: 0.5rem 0.7rem;
   background: #eee;
   border-radius: 50%;
@@ -80,7 +77,7 @@ button {
   display: none;
 }
 
-@import url("https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap");
+/* @import url("https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap"); */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -104,48 +101,6 @@ button {
   /* max-width: 900px; */
 }
 
-.left-container {
-  background: #807182;
-  overflow: hidden;
-  padding: 40px 0 0 0;
-  position: relative;
-  text-align: center;
-  width: 300px;
-}
-.left-container h1 {
-  color: rgba(0, 0, 0, 0.8);
-  display: inline-block;
-  font-size: 24px;
-}
-.left-container h1 i {
-  background: #f7b1ab;
-  border-radius: 50%;
-  color: #807182;
-  font-size: 24px;
-  margin-right: 5px;
-  padding: 10px;
-  transform: rotate(-45deg);
-}
-.left-container .puppy {
-  bottom: -5px;
-  position: absolute;
-  text-align: center;
-}
-.left-container .puppy:before {
-  background: #807182;
-  content: "";
-  height: 100%;
-  left: 0;
-  opacity: 0.4;
-  position: absolute;
-  width: 100%;
-  z-index: 1;
-}
-.left-container img {
-  filter: sepia(100%);
-  width: 70%;
-}
-
 .inner-container {
   background: #f9c7c2;
   display: grid;
@@ -162,7 +117,8 @@ button {
   justify-content: space-between;
   margin: 10px 0;
 }
-.inner-container input {
+.inner-container input,
+.inner-container select {
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   height: 38px;
@@ -170,6 +126,7 @@ button {
   padding-left: 5px;
 }
 .inner-container input,
+.inner-container select,
 .inner-container label {
   color: rgba(0, 0, 0, 0.8);
 }
@@ -178,7 +135,9 @@ button {
 }
 .inner-container label,
 .inner-container input,
-.inner-container select,
+.inner-container select {
+  max-width: 100%;
+}
 .inner-container .dish-photo {
   width: 176px;
 }
@@ -239,6 +198,10 @@ button {
   background: #171a2b;
 }
 
+dish-spayed-neutered {
+  width: 45%;
+}
+
 .dish-name label,
 .dish-breed label,
 .dish-birthday label,
@@ -255,6 +218,7 @@ button {
   border-radius: 4px;
   display: inline-block;
   padding: 5px;
+  width: 100%;
 }
 
 .radio-container label {

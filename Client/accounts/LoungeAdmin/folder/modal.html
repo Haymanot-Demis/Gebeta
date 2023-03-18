@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer src="./js/modal.js"></script>
+    <link rel="stylesheet" href="./styles/modal.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <section class="modal hidden">
+      <div class="flex">
+        <button class="btn-close">⨉</button>
+      </div>
+      <div class="container">
+        <div class="inner-container">
+          <header>
+            <h1>Fill the dish information</h1>
+            <div class="set">
+              <div class="dish-name">
+                <label for="dish-name">Dish Name</label>
+                <input id="dish-name" placeholder="dish's name" type="text" />
+              </div>
+              <div class="dish-photo">
+                <button id="dish-upload">
+                  <input
+                    style="width: 0; height: 0"
+                    id="dishimg"
+                    name="image"
+                    type="file"
+                  />
+                  <i class="fas fa-camera-retro"></i>
+                </button>
+                <label for="dish-upload">Upload a photo</label>
+              </div>
+            </div>
+
+            <div class="set">
+              <div class="dish-spayed-neutered">
+                <label for="pet-spayed">Fasting or Non-Fasting</label>
+                <div class="radio-container">
+                  <input
+                    checked=""
+                    id="pet-spayed"
+                    name="spayed-neutered"
+                    type="radio"
+                    value="spayed"
+                  />
+                  <label for="pet-spayed">Fasting</label>
+                  <input
+                    id="pet-neutered"
+                    name="spayed-neutered"
+                    type="radio"
+                    value="neutered"
+                  />
+                  <label for="pet-neutered">Non</label>
+                </div>
+              </div>
+
+              <div class="dish-spayed-neutered">
+                <label for="pet-spayed">Type</label>
+                <div class="radio-container">
+                  <select name="type" id="type">
+                    <option value="cooked-food">cooked-food</option>
+                    <option value="soft-drink">soft-drink</option>
+                    <option value="hot-drink">hot-drink</option>
+                    <option value="fruits">fruits</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="set">
+              <div class="dish-spayed-neutered">
+                <label for="price">Price</label>
+                <div class="radio-container">
+                  <input id="price" name="price" type="number" />
+                </div>
+              </div>
+
+              <div class="dish-spayed-neutered">
+                <label for="lounge">Lounge</label>
+                <div class="radio-container">
+                  <select name="lounge" id="lounge">
+                    <option value="Memihiran">Memihiran</option>
+                    <option value="A+">A-Plus</option>
+                    <option value="Kibnesh">Kibnesh</option>
+                    <option value="Serategnoch">Serategnoch</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="dish-spayed-neutered" style="width: 100%">
+              <label for="category">Fasting or Non-Fasting</label>
+              <div class="radio-container" style="width: 100%">
+                <select name="category" id="category" style="width: 100%">
+                  <option value="Appetizers and Snacks">
+                    Appetizers and Snacks
+                  </option>
+                  <option value="Vegetables" selected>Vegetables</option>
+                  <option value="Kibnesh">Kibnesh</option>
+                  <option value="Serategnoch">Serategnoch</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="dish-weight">
+              <label for="desc">Dish Description</label>
+              <div class="dish-desc">
+                <textarea
+                  name="dish_desc"
+                  id="desc"
+                  cols="30"
+                  rows="10"
+                ></textarea>
+              </div>
+            </div>
+          </header>
+        </div>
+      </div>
+      <button class="save-btn">Save</button>
+    </section>
+
+    <div class="overlay hidden"></div>
+    <button class="btn btn-open">Open Modal</button>
+  </body>
+</html>

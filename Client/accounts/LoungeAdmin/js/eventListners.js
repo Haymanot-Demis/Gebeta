@@ -9,7 +9,7 @@ async function deleteBtnAction(btn) {
 
 async function editBtnAction(btn) {
   location.assign(
-    "http://127.0.0.1:5500/Gebeta/Client/accounts/LoungeAdmin/editDish.html?id=" +
+    "http://127.0.0.1:5500/Client/accounts/LoungeAdmin/editDish.html?id=" +
       btn.id.slice(1)
   );
 }
