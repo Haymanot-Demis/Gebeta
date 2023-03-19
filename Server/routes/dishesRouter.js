@@ -73,9 +73,14 @@ dishRouter
     verifyLoungeAdmin,
     upload.single("image"),
     async (req, res, next) => {
-      const lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
-      req.body.lounge = lounge._id;
-      Dishes.create({ image: req?.file?.filename, ...req.body })
+      console.log("http://127.0.0.1:5500/Server" + req?.file?.path);
+      // const lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
+      const lounge = await Lounges.findOne({ name: req.body.lounge });
+      req.body.lounge = lounge?._id;
+      Dishes.create({
+        image: "http://127.0.0.1:5500/Server/" + req?.file?.path,
+        ...req.body,
+      })
         .then((dishes) => {
           res.statusCode = 200;
           res.contentType("application/json");

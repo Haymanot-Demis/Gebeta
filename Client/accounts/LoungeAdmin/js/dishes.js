@@ -56,7 +56,7 @@ try {
     td6 = createCustomElement("td");
 
     let img = createCustomElement("img", {
-      src: "../../images/" + dish.image,
+      src: dish.image,
       alt: dish.name + "image",
       height: 130,
       width: 200,

@@ -1,7 +1,7 @@
 [
   {
     "name": "Artichoke Frittata",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "",
     "price": 25,
     "type": "cooked-food",
@@ -28,7 +28,7 @@
   },
   {
     "name": "Asian Meatballs",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "",
     "price": 25,
     "type": "cooked-food",
@@ -38,7 +38,7 @@
   },
   {
     "name": "Bacon Wrapped Crackers",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "",
     "price": 25,
     "type": "cooked-food",
@@ -48,7 +48,7 @@
   },
   {
     "name": "Bacon Wrapped Little Smokies",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "",
     "price": 25,
     "type": "cooked-food",
@@ -58,7 +58,7 @@
   },
   {
     "name": "Bacon Wrapped Water Chestnuts",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "",
     "price": 25,
     "type": "cooked-food",
@@ -68,7 +68,7 @@
   },
   {
     "name": "Baked Crostini",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "",
     "price": 25,
     "type": "cooked-food",
@@ -78,7 +78,7 @@
   },
   {
     "name": "Black Bean and Corn Salsa",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "",
     "price": 25,
     "type": "cooked-food",
@@ -88,7 +88,7 @@
   },
   {
     "name": "California Wrap",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "",
     "price": 25,
     "type": "cooked-food",
@@ -98,7 +98,7 @@
   },
   {
     "name": "Caramel Dipped Potato Chips",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "",
     "price": 25,
     "type": "cooked-food",
@@ -108,7 +108,7 @@
   },
   {
     "name": "Cheddar Cheese Balls",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "",
     "price": 25,
     "type": "cooked-food",
@@ -118,7 +118,7 @@
   },
   {
     "name": "Cheddar Cheese Sticks",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "",
     "price": 25,
     "type": "cooked-food",
@@ -128,7 +128,7 @@
   },
   {
     "name": "Cheese and Sausage Stuffed Mushrooms",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "",
     "price": 25,
     "type": "cooked-food",
@@ -138,7 +138,7 @@
   },
   {
     "name": "Cheese Coins",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "",
     "price": 25,
     "type": "cooked-food",
@@ -148,7 +148,7 @@
   },
   {
     "name": "Cheesy Vegetable Casserole",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "Broccoli, cauliflower and carrots are the perfect threesome for this cheesy, buttery and crumbly dish! Simply combine some cheddar cheese and butter with your veggies, top them with some buttered cracker crumbs, and pop it in the oven for a short time. This Cheesy Vegetable Casserole recipe nicely accompanies most any meat or seafood dish, or can be enjoyed as a meatless main dish. Kids will enjoy this as well!",
     "price": 25,
     "type": "cooked-food",
@@ -158,7 +158,7 @@
   },
   {
     "name": "Broccoli with Hollandaise Sauce",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "Broccoli with Hollandaise Sauce can be served as a side dish or as an elegant appetizer for parties and events, and is a delicious way to add flavor and texture to this popular vegetable. The easy Hollandaise Sauce recipe is made with lightly seasoned egg yolks and butter briefly cooked together over low heat, and is flavored with a hint of lemon, giving the perfect complimentary flavor to crisp-tender broccoli florets",
     "price": 25,
     "type": "cooked-food",
@@ -168,7 +168,7 @@
   },
   {
     "name": "Broccoli Vinaigrette",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "Broccoli Vinaigrette is a tangy and delicious way to prepare broccoli, featuring steamed (or any other cooking method) broccoli florets that are tossed with a light and vibrant sauce that takes just 3 minutes to prepare. This easy sauce is made with diced green onions, Dijon mustard, red wine vinegar, extra virgin olive oil, dry mustard and tarragon, and is quickly whipped up on your stove top, then drizzled over the broccoli.",
     "price": 25,
     "type": "cooked-food",
@@ -178,7 +178,7 @@
   },
   {
     "name": "Black Bean and Corn Salsa",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "Black Bean and Corn Salsa is a vibrant and healthy salsa recipe that tastes delicious with tortilla chips, crostini or other crunchy dipping snacks. While most salsa recipes contain tomatoes and/or tomato sauce, onion and cilantro, this festive salsa recipe combines black beans, kernel corn, tomatoes, red bell pepper, diced green chiles and fresh chopped cilantro, giving it unique and delightful flavor and texture, not to mention vibrant color!",
     "price": 25,
     "type": "cooked-food",
@@ -188,7 +188,7 @@
   },
   {
     "name": "Balsamic Grilled Vegetables",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "This Balsamic Grilled Vegetables recipe features broccoli florets, carrots, asparagus and garlic and snap peas, all of which are marinated in a seasoned balsamic vinegar and olive oil sauce, then cooked to tender-crisp. These vegetables can be cooked in a portable grill, wok, over your outdoor grill or on your stovetop, all producing delicious results. During BBQ season, this is a great way to add a vegetable side dish to your barbequed dish!",
     "price": 25,
     "type": "cooked-food",
@@ -198,7 +198,7 @@
   },
   {
     "name": "Potato Skins",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "What could be better as a tasty and fun appetizer or side dish than some crispy potato skins filled with all the right goodies?! These Potato Skins are first baked, then cut into halves. Some of the pulp is removed, then they're then deep-fried until crispy. The crispy potatoes are then seasoned and filled with crumbled bacon, diced green onion and shredded cheddar cheese, then placed under the broiler until the cheese melts. A big hit!",
     "price": 25,
     "type": "cooked-food",
@@ -208,7 +208,7 @@
   },
   {
     "name": "Potatoes Au Gratin",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "This easy Potatoes Au Gratin recipe features thinly sliced potatoes in a creamy cheddar cheese sauce, baked until hot, golden and bubbly. This potato casserole serves as a perfect side dish for meat, poultry and seafood dishes, and is a popular side dish for holidays, such as Christmas and Thanksgiving. If you own a vegetable slicer (or mandolin slicing tool), you can whip this dish up in no time!",
     "price": 25,
     "type": "cooked-food",
@@ -218,7 +218,7 @@
   },
   {
     "name": "Sliced Baked Potatoes with Herbs",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "Sliced Baked Potatoes with Herbs are delicious and an attractive way to serve baked potatoes. Potatoes are sliced, seasoned, brushed with melted butter, then sprinkled with a mixture of chopped fresh herbs and baked until tender. A combination of cheddar and Parmesan cheese is then sprinkled over the tops of the potatoes, then the potatoes are returned to the oven for a short time just until the cheeses melt. Elegant!",
     "price": 25,
     "type": "cooked-food",
@@ -228,7 +228,7 @@
   },
   {
     "name": "Smashed Red Potatoes",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "This Smashed Red Potatoes recipe features small baby red potatoes that have been baked in a hot oven until soft, then coated with some olive oil and gently smashed down. A mixture of melted butter, sautéed garlic and fresh thyme leaves is then drizzled over the tops of the potatoes, seeping into the cracks and openings. The potatoes are then seasoned with some salt and pepper and roasted until brown and crispy.",
     "price": 25,
     "type": "Cooked-Foodsd-food",
@@ -238,7 +238,7 @@
   },
   {
     "name": "Fusilli with Ricotta and Cherry Tomatoes",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "Fusilli with Ricotta and Cherry Tomatoes is a light and fresh pasta dish made with fusilli pasta (also sometimes called 'bow tie pasta'), fresh basil, cherry tomatoes, garlic and ricotta and Parmesan cheeses. This pasta recipe can be served warm (just after the fusilli has been cooked) as a main or side dish, or cold after being chilled in the fridge as a pasta salad.",
     "price": 25,
     "type": "Cooked-Foods",
@@ -248,7 +248,7 @@
   },
   {
     "name": "Chicken Peperonata",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "Chicken Peperonata is a delightful chicken recipe consisting of pasta, chicken breast and a delicious Peperonata Sauce. The Peperonata Sauce is made with a combination of sautéed red and green sweet bell peppers, skinned tomatoes, onions, garlic and fresh basil, and is pureed into a creamy consistency that beautifully drapes over the chicken and pasta, giving it vibrant color.",
     "price": 25,
     "type": "Cooked-Foods",
@@ -258,7 +258,7 @@
   },
   {
     "name": "Chicken Paprika Fettuccine",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "Chicken Paprika Fettuccine is a color-rich and delicious pasta dish featuring the flavors of fresh basil leaves and paprika. This easy pasta recipe combines thin slices of chicken breast, fettuccine noodles and thinly sliced sautéed onions (optional) in a delightful sauce made with a seasoned flour base of paprika, fresh basil and chicken broth and a generous helping of sour cream, giving it a wonderful creamy texture.",
     "price": 25,
     "type": "Cooked-Foods",
@@ -268,7 +268,7 @@
   },
   {
     "name": "aprese Pasta Salad",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "Caprese Pasta Salad is a varied version of Caprese Salad, which is typically a simple cold salad made with sliced tomatoes, sliced mozzarella cheese, and fresh basil leaves, sprinkled with olive oil and a little salt. This Caprese Pasta Salad recipe combines the tomatoes, mozzarella and fresh basil with al dente gnocchi pasta and briefly steamed tender-crisp sugar snap peas, tossed with a delicious light and tangy salad dressing.",
     "price": 25,
     "type": "Cooked-Foods",
@@ -278,7 +278,7 @@
   },
   {
     "name": "Buffalo Mac and Cheese",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "If you enjoy sitting down to a plate of hot and tangy Buffalo wings with a side of blue cheese dip, and likewise enjoy an occasional plate of creamy, hot and steamy macaroni and cheese, you now can enjoy all these flavors together in this Buffalo Mac and Cheese recipe! This pasta recipe features chunks of seasoned chicken breast, fusilli pasta, cheddar cheese, crumbled blue cheese and diced celery in a tangy creamy sauce.",
     "price": 25,
     "type": "Cooked-Foods",
@@ -288,7 +288,7 @@
   },
   {
     "name": "Beef",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "There are many cuts of beef and endless ways to prepare beef recipes. Some popular cuts of beef include beef roast, ground beef, beef stew and beef steak (but it certainly doesn't stop there). Beef can be transformed into hamburgers, chili, casseroles, meatballs, roasts, grilled dishes, sauces and more. Whether you're planning to barbecue, broil, roast, slow-cook and/or stir-fry, the Beef page is a great place to start!",
     "price": 25,
     "type": "Cooked-Foods",
@@ -298,7 +298,7 @@
   },
   {
     "name": "Chicken",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "Chicken is probably the most popular meat of all. With such a large variety of ways to prepare chicken and the fact that it is light, versatile, low in calories, healthy and delicious, its popularity is understandable! The Chicken page offers recipes for chicken prepared with sauces, with stuffing, in pasta dishes, casseroles, curries, enchiladas, taquitos, Asian dishes, lettuce wraps and salads, and the list goes on!",
     "price": 25,
     "type": "Cooked-Foods",
@@ -308,7 +308,7 @@
   },
   {
     "name": "Pork",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "Pork has tremendous flavor, and comes in so many forms, such as bacon, ribs, roasts, sausage, salami, pork chops, tenderloin, ham and more. Pork can be served for breakfast, lunch or dinner, or used as a tasty ingredient for appetizers and snacks. On the Pork page, you will find a variety of pork recipes for roasting, barbecuing, slow cooking and stir-frying, as well as recipes for casseroles, sandwiches, stews and more.",
     "price": 25,
     "type": "Cooked-Foods",
@@ -318,7 +318,7 @@
   },
   {
     "name": "Seafood",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "With so many ways to prepare, season, marinate and cook seafood (fish and shellfish), it can be incredibly delicious. Below you will find seafood recipes for shrimp, halibut, salmon, crab and tuna. Aside from being light and delicious, Seafood is high in valuable minerals and has plentiful nutritional value, playing a huge role in promoting good heart, brain and joint health. For delicious healthy seafood dishes, see Seafood!",
     "price": 25,
     "type": "Cooked-Foods",
@@ -328,7 +328,7 @@
   },
   {
     "name": "Bacon Parmesan Chicken",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "Bacon Parmesan Chicken is an extremely easy chicken recipe that produces fabulous flavor. This simple chicken dish features boneless, skinless chicken breasts that are placed in a casserole dish, slathered with with Dijon mustard, then topped with teriyaki sauce, crumbled cooked bacon and Parmesan cheese. That's it! The chicken breasts are then are baked for just 30 minutes, until the top turns brown and crispy.",
     "price": 25,
     "type": "Cooked-Foods",
@@ -338,7 +338,7 @@
   },
   {
     "name": "Caramel Cheesecake",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "What could be more delicious, more irresistible and more decadent than a slice of rich and creamy cheesecake? if you're a lover of caramel and English toffee, then clearly, the answer is this cheesecake! This Caramel Cheesecake recipe produces a tall and fluffy cheesecake that sits on top of a gingersnap cookie crumb crust. Caramel sauce is generously drizzled over the top, along with crumbled bits English toffee candy.",
     "price": 25,
     "type": "Meats",
@@ -348,7 +348,7 @@
   },
   {
     "name": "Apple Cake with Caramel Glaze",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "Is there such a thing as too delicious? This Apple Cake with Caramel Glaze will make you ponder this question, as your mouth explodes with a combination of spectacular flavors and a moist and chewy texture that can't be beat! This apple cake is flavored with cinnamon and nutmeg and is topped with a homemade caramel glaze that is ready after just 4 minutes on the stove. Spectacular topped with whipped cream or ice cream!",
     "price": 25,
     "type": "Meats",
@@ -358,7 +358,7 @@
   },
   {
     "name": "Pie",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "ies are fantastic any time of year, but are especially celebrated around the holidays. Pies come in a variety of styles, whether it be fruit pies, ice cream pies, yogurt pies, creamy pies and more. Whether you're looking for a recipe for Apple Pie, Pumpkin Pie (shown here), Cookies and Cream Pie, Key Lime Pie or haven't decided yet, the Pie page offers a variety of pie recipes (including pie crust recipes) from which to choose!",
     "price": 25,
     "type": "Meats",
@@ -368,7 +368,7 @@
   },
   {
     "name": "Candy",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "Sometimes there's nothing that will satisfy that sweettooth but a few bites of some Candy. Whether it be chocolate candy, caramels, candy bars made with cereal, crunchy English toffee, peanut or cashew brittle, caramel popcorn, chocolate covered fruit such as the Chocolate Covered Strawberries shown in this photo, sometimes we deserve to treat ourselves with a little of that divine sweetness, just because!",
     "price": 25,
     "type": "Meats",
@@ -378,7 +378,7 @@
   },
   {
     "name": "Cake",
-    "image": "bg-2.jpg",
+    "image": "http://127.0.0.1:5500/Server/uploads/loungeImages/pantry-pasta9eb0f89a2e.jpg",
     "description": "Cakes come in all sorts of shapes, sizes, textures and flavors. Although cheesecake is much like a pie in that it has a creamy texture and rests on pie crusts, it is also considered a cake. On the Cake page, you will find layer cakes, angel food cakes, bundt cakes, coffee cakes, muffins, cupcakes, pound cakes, cinnamon rolls and yes, cheesecake! Shown here is a delicious melt-in-your-mouth Angel Food Cake with Caramel Fluff.",
     "price": 25,
     "type": "Meats",
