@@ -13,7 +13,7 @@ const crypto = require("crypto");
 const Lounges = require("../models/lounges");
 const { ObjectId } = require("mongodb");
 const lounges = require("../models/lounges");
-
+console.log(__dirname);
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./uploads/loungeImages");
@@ -73,9 +73,13 @@ dishRouter
     verifyLoungeAdmin,
     upload.single("image"),
     async (req, res, next) => {
-      const lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
-      req.body.lounge = lounge._id;
-      Dishes.create({ image: req?.file?.filename, ...req.body })
+      console.log(req.body);
+      const lounge = await Lounges.findOne({ name: req.body.lounge });
+      req.body.lounge = lounge?._id;
+      Dishes.create({
+        image: __dirname + "\\..\\" + req?.file?.path,
+        ...req.body,
+      })
         .then((dishes) => {
           res.statusCode = 200;
           res.contentType("application/json");

@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard</title>
     <!-- ======= Styles ====== -->
+    <script
+      src="https://kit.fontawesome.com/934a07558b.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="styles/style.css" />
     <link rel="stylesheet" href="./styles/modal.css" />
     <link rel="stylesheet" href="./styles/upload.css" />
@@ -16,7 +21,7 @@
       crossorigin="anonymous"
     ></script>
     <script type="module" src="js/dishes.js"></script>
-    <script defer src="./js/modal.js"></script>
+    <script defer type="module" src="./js/modal.js"></script>
     <link rel="stylesheet" href="./styles/buttonStyle.css" />
   </head>
 
@@ -220,6 +225,7 @@
               <div class="dish-name">
                 <label for="dish-name">Dish Name</label>
                 <input id="dish-name" placeholder="dish's name" type="text" />
+                <small class="hidden">error</small>
               </div>
               <div class="dish-photo">
                 <div class="upload-container">
@@ -228,15 +234,18 @@
                       <input
                         type="file"
                         id="imageUpload"
+                        multiple
                         accept=".png, .jpg, .jpeg"
                       />
                       <label for="imageUpload"></label>
+                      <small class="hidden"></small>
                     </div>
                     <div class="avatar-preview">
                       <div id="imagePreview"></div>
                     </div>
                   </div>
                 </div>
+                <small class="hidden"></small>
               </div>
             </div>
 
@@ -260,6 +269,7 @@
                   />
                   <label for="nonfasting">Non</label>
                 </div>
+                <small class="hidden"></small>
               </div>
 
               <div class="dish-spayed-neutered">
@@ -272,6 +282,7 @@
                     <option value="fruits">fruits</option>
                   </select>
                 </div>
+                <small class="hidden"></small>
               </div>
             </div>
 
@@ -281,6 +292,7 @@
                 <div class="radio-container">
                   <input id="price" name="price" type="number" />
                 </div>
+                <small class="hidden"></small>
               </div>
 
               <div class="dish-spayed-neutered">
@@ -293,6 +305,7 @@
                     <option value="Serategnoch">Serategnoch</option>
                   </select>
                 </div>
+                <small class="hidden"></small>
               </div>
             </div>
 
@@ -306,6 +319,7 @@
                   <option value="Vegetables" selected>Vegetables</option>
                 </select>
               </div>
+              <small class="hidden"></small>
             </div>
 
             <div class="dish-weight">
@@ -318,6 +332,7 @@
                   rows="10"
                 ></textarea>
               </div>
+              <small class="hidden"></small>
             </div>
           </header>
         </div>
