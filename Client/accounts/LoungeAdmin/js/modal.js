@@ -9,8 +9,6 @@ const desc = modal.querySelector("textarea");
 import { validate } from "./helpers.js";
 import escapeHTML from "../../../script/escapeHTML.js";
 import { DISHES_URL } from "../../../config/EndPoints.js";
-console.log(inputs);
-console.log(selects);
 
 const openModal = function () {
   modal.classList.remove("hidden");
@@ -76,8 +74,7 @@ saveBtn.addEventListener("click", async () => {
       console.log(error);
     }
   }
-
   closeModal();
 });
 
-// overlay.addEventListener("click", closeModal);
+// overlay.addEventListener("click", closeModal)
