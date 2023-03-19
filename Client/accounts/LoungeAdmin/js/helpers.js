@@ -38,10 +38,21 @@ function makeInVisble(elem) {
   elem.querySelector("div.btn-div").style.display = "none";
 }
 
+function validate(value, regexp = "") {
+  if (!value) {
+    return "required";
+  }
+  // if (regexp.test(value)) {
+  //   return "invalid";
+  // }
+  return true;
+}
+
 export {
   makeInVisble,
   makeVisble,
   attachEventListner,
   createCustomElement,
   rowEventListner,
+  validate,
 };

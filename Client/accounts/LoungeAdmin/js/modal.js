@@ -6,7 +6,6 @@ const saveBtn = document.querySelector(".modal-btn.save-btn");
 const inputs = modal.querySelectorAll("input");
 const selects = modal.querySelectorAll("select");
 const desc = modal.querySelector("textarea");
-
 const openModal = function () {
   modal.classList.remove("hidden");
   overlay.classList.remove("hidden");
@@ -18,11 +17,9 @@ const closeModal = function () {
   modal.classList.add("hidden");
   overlay.classList.add("hidden");
 };
+
 closeModalBtn.addEventListener("click", closeModal);
 saveBtn.addEventListener("click", () => {
-  console.log(inputs);
-console.log(selects); 
-console.log(desc);
   closeModal();
 });
 

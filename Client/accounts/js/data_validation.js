@@ -35,7 +35,7 @@ submit.onclick = async (e) => {
         small.classList.add("success");
         small.innerText = "Successfully Logged In";
         console.log(small.innerHTML);
-        // window.location.href = "http://127.0.0.1:5500/Gebeta/Client/index.html";
+        // window.location.href = "http://127.0.0.1:5500/Client/index.html";
       }
     } catch (e) {
       const small = form.parentNode.querySelector("small");
