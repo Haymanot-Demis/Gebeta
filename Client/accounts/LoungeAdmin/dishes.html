@@ -1,355 +1,362 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard</title>
-    <!-- ======= Styles ====== -->
-    <script
-      src="https://kit.fontawesome.com/934a07558b.js"
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <link rel="stylesheet" href="styles/style.css" />
-    <link rel="stylesheet" href="./styles/modal.css" />
-    <link rel="stylesheet" href="./styles/upload.css" />
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Admin Dashboard</title>
+		<!-- ======= Styles ====== -->
+		<script
+			src="https://kit.fontawesome.com/934a07558b.js"
+			crossorigin="anonymous"
+		></script>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<link rel="stylesheet" href="styles/style.css" />
+		<link rel="stylesheet" href="./styles/modal.css" />
+		<link rel="stylesheet" href="./styles/upload.css" />
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <script
-      src="https://kit.fontawesome.com/934a07558b.js"
-      crossorigin="anonymous"
-    ></script>
-    <script type="module" src="js/dishes.js"></script>
-    <script defer type="module" src="./js/modal.js"></script>
-    <link rel="stylesheet" href="./styles/buttonStyle.css" />
-  </head>
+		<script
+			src="https://kit.fontawesome.com/934a07558b.js"
+			crossorigin="anonymous"
+		></script>
+		<script type="module" src="js/dishes.js"></script>
+		<script type="module" src="./js/modal.js"></script>
+		<link rel="stylesheet" href="./styles/buttonStyle.css" />
+	</head>
 
-  <body>
-    <!-- =============== Navigation ================ -->
-    <div class="container" name="container" id="outer-container">
-      <div class="navigation" id="dashboard-navigation">
-        <ul>
-          <li name="" id="logo">
-            <a href="#" href="#">
-              <span class="icon">
-                <ion-icon name="restaurant"></ion-icon>
-              </span>
-              <span class="title" style="font-size: 25px">AASTU GEBETA</span>
-            </a>
-          </li>
+	<body>
+		<!-- =============== Navigation ================ -->
+		<div class="container" name="container" id="outer-container">
+			<div class="navigation" id="dashboard-navigation">
+				<ul>
+					<li name="" id="logo">
+						<a href="#" href="#">
+							<span class="icon">
+								<ion-icon name="restaurant"></ion-icon>
+							</span>
+							<span class="title" style="font-size: 25px">AASTU GEBETA</span>
+						</a>
+					</li>
 
-          <li name="dashboard" id="dashboard-li">
-            <a href="./loungeAdmin.html">
-              <span class="icon">
-                <ion-icon name="home-outline"></ion-icon>
-              </span>
-              <span class="title">Dashboard</span>
-            </a>
-          </li>
+					<li name="dashboard" id="dashboard-li">
+						<a href="./loungeAdmin.html">
+							<span class="icon">
+								<ion-icon name="home-outline"></ion-icon>
+							</span>
+							<span class="title">Dashboard</span>
+						</a>
+					</li>
 
-          <li name="dishes" id="dishes-li">
-            <a href="#">
-              <span class="icon">
-                <ion-icon name="fast-food-outline"></ion-icon>
-              </span>
-              <span class="title">Dishes</span>
-            </a>
-          </li>
+					<li name="dishes" id="dishes-li">
+						<a href="#">
+							<span class="icon">
+								<ion-icon name="fast-food-outline"></ion-icon>
+							</span>
+							<span class="title">Dishes</span>
+						</a>
+					</li>
 
-          <li name="orders" id="orders-li">
-            <a href="./orders.html">
-              <span class="icon">
-                <i class="fa-solid fa-cart-shopping"></i>
-              </span>
-              <span class="title">Orders/Sales</span>
-            </a>
-          </li>
+					<li name="orders" id="orders-li">
+						<a href="./orders.html">
+							<span class="icon">
+								<i class="fa-solid fa-cart-shopping"></i>
+							</span>
+							<span class="title">Orders/Sales</span>
+						</a>
+					</li>
 
-          <li name="views">
-            <a href="#">
-              <span class="icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="title">Daily Views</span>
-            </a>
-          </li>
+					<li name="views">
+						<a href="#">
+							<span class="icon">
+								<i class="fa fa-eye"></i>
+							</span>
+							<span class="title">Daily Views</span>
+						</a>
+					</li>
 
-          <li name="customers" id="customers-li">
-            <a href="./customers.html">
-              <span class="icon">
-                <ion-icon name="people-outline"></ion-icon>
-              </span>
-              <span class="title">Customers</span>
-            </a>
-          </li>
+					<li name="customers" id="customers-li">
+						<a href="./customers.html">
+							<span class="icon">
+								<ion-icon name="people-outline"></ion-icon>
+							</span>
+							<span class="title">Customers</span>
+						</a>
+					</li>
 
-          <li name="comments" id="comments-li">
-            <a href="#">
-              <span class="icon">
-                <ion-icon name="chatbubble-outline"></ion-icon>
-              </span>
-              <span class="title">Comments</span>
-            </a>
-          </li>
+					<li name="comments" id="comments-li">
+						<a href="#">
+							<span class="icon">
+								<ion-icon name="chatbubble-outline"></ion-icon>
+							</span>
+							<span class="title">Comments</span>
+						</a>
+					</li>
 
-          <li name="">
-            <a href="#">
-              <span class="icon">
-                <ion-icon name="help-outline"></ion-icon>
-              </span>
-              <span class="title">Help</span>
-            </a>
-          </li>
+					<li name="">
+						<a href="#">
+							<span class="icon">
+								<ion-icon name="help-outline"></ion-icon>
+							</span>
+							<span class="title">Help</span>
+						</a>
+					</li>
 
-          <li name="">
-            <a href="#">
-              <span class="icon">
-                <ion-icon name="settings-outline"></ion-icon>
-              </span>
-              <span class="title">Settings</span>
-            </a>
-          </li>
+					<li name="">
+						<a href="#">
+							<span class="icon">
+								<ion-icon name="settings-outline"></ion-icon>
+							</span>
+							<span class="title">Settings</span>
+						</a>
+					</li>
 
-          <li name="">
-            <a href="#">
-              <span class="icon">
-                <ion-icon name="lock-closed-outline"></ion-icon>
-              </span>
-              <span class="title">Password</span>
-            </a>
-          </li>
+					<li name="">
+						<a href="#">
+							<span class="icon">
+								<ion-icon name="lock-closed-outline"></ion-icon>
+							</span>
+							<span class="title">Password</span>
+						</a>
+					</li>
 
-          <li name="">
-            <a href="#">
-              <span class="icon">
-                <ion-icon name="log-out-outline"></ion-icon>
-              </span>
-              <span class="title">Sign Out</span>
-            </a>
-          </li>
-        </ul>
-      </div>
+					<li name="">
+						<a href="#">
+							<span class="icon">
+								<ion-icon name="log-out-outline"></ion-icon>
+							</span>
+							<span class="title">Sign Out</span>
+						</a>
+					</li>
+				</ul>
+			</div>
 
-      <!-- ========================= Main ==================== -->
-      <div class="main">
-        <div class="topbar">
-          <div class="toggle">
-            <ion-icon name="menu-outline"></ion-icon>
-          </div>
+			<!-- ========================= Main ==================== -->
+			<div class="main">
+				<div class="topbar">
+					<div class="toggle">
+						<ion-icon name="menu-outline"></ion-icon>
+					</div>
 
-          <div class="search">
-            <label>
-              <input type="text" placeholder="Search here" />
-              <ion-icon name="search-outline"></ion-icon>
-            </label>
-          </div>
+					<div class="search">
+						<label>
+							<input type="text" placeholder="Search here" />
+							<ion-icon name="search-outline"></ion-icon>
+						</label>
+					</div>
 
-          <div class="user">
-            <img src="imgs/customer01.jpg" alt="" />
-          </div>
-        </div>
+					<div class="user">
+						<img src="imgs/customer01.jpg" alt="" />
+					</div>
+				</div>
 
-        <!-- ======================= Cards ================== -->
-        <div class="cardBox">
-          <div class="card">
-            <div>
-              <div class="numbers">1,504</div>
-              <div class="cardName">Daily Views</div>
-            </div>
+				<!-- ======================= Cards ================== -->
+				<div class="cardBox">
+					<div class="card">
+						<div>
+							<div class="numbers">1,504</div>
+							<div class="cardName">Daily Views</div>
+						</div>
 
-            <div class="iconBx">
-              <ion-icon name="eye-outline"></ion-icon>
-            </div>
-          </div>
+						<div class="iconBx">
+							<ion-icon name="eye-outline"></ion-icon>
+						</div>
+					</div>
 
-          <div class="card">
-            <div>
-              <div class="numbers">80</div>
-              <div class="cardName">Sales</div>
-            </div>
+					<div class="card">
+						<div>
+							<div class="numbers">80</div>
+							<div class="cardName">Sales</div>
+						</div>
 
-            <div class="iconBx">
-              <ion-icon name="cart-outline"></ion-icon>
-            </div>
-          </div>
+						<div class="iconBx">
+							<ion-icon name="cart-outline"></ion-icon>
+						</div>
+					</div>
 
-          <div class="card">
-            <div>
-              <div class="numbers">284</div>
-              <div class="cardName">Comments</div>
-            </div>
+					<div class="card">
+						<div>
+							<div class="numbers">284</div>
+							<div class="cardName">Comments</div>
+						</div>
 
-            <div class="iconBx">
-              <ion-icon name="chatbubbles-outline"></ion-icon>
-            </div>
-          </div>
+						<div class="iconBx">
+							<ion-icon name="chatbubbles-outline"></ion-icon>
+						</div>
+					</div>
 
-          <div class="card">
-            <div>
-              <div class="numbers">$7,842</div>
-              <div class="cardName">Earning</div>
-            </div>
+					<div class="card">
+						<div>
+							<div class="numbers">$7,842</div>
+							<div class="cardName">Earning</div>
+						</div>
 
-            <div class="iconBx">
-              <ion-icon name="cash-outline"></ion-icon>
-            </div>
-          </div>
-        </div>
+						<div class="iconBx">
+							<ion-icon name="cash-outline"></ion-icon>
+						</div>
+					</div>
+				</div>
 
-        <!-- ================ Order Details List ================= -->
-        <div class="details">
-          <div class="recentOrders">
-            <div class="cardHeader">
-              <h2 class="title">Dishes</h2>
-              <div>
-                <div class="overlay hidden"></div>
-                <button class="modal-btn btn-open">Add Dish</button>
-                <button class="btn-open import">Import</button>
-              </div>
-            </div>
-            <table></table>
-          </div>
-        </div>
-      </div>
-    </div>
-    <section class="modal hidden">
-      <div class="flex">
-        <button class="btn-close">⨉</button>
-      </div>
-      <div class="container">
-        <div class="inner-container">
-          <header>
-            <h1>Fill the dish information</h1>
-            <div class="set">
-              <div class="dish-name">
-                <label for="dish-name">Dish Name</label>
-                <input id="dish-name" placeholder="dish's name" type="text" />
-                <small class="hidden">error</small>
-              </div>
-              <div class="dish-photo">
-                <div class="upload-container">
-                  <div class="avatar-upload">
-                    <div class="avatar-edit">
-                      <input
-                        type="file"
-                        id="imageUpload"
-                        multiple
-                        accept=".png, .jpg, .jpeg"
-                      />
-                      <label for="imageUpload"></label>
-                      <small class="hidden"></small>
-                    </div>
-                    <div class="avatar-preview">
-                      <div id="imagePreview"></div>
-                    </div>
-                  </div>
-                </div>
-                <small class="hidden"></small>
-              </div>
-            </div>
+				<!-- ================ Order Details List ================= -->
+				<div class="details">
+					<div class="recentOrders">
+						<div class="cardHeader">
+							<h2 class="title">Dishes</h2>
+							<div>
+								<div class="overlay hidden"></div>
+								<button class="modal-btn btn-open">Add Dish</button>
+								<button class="btn-open import">Import</button>
+							</div>
+						</div>
+						<table></table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<section class="modal hidden">
+			<div class="flex">
+				<button class="flag button-9" style="background-color: #405cf5">
+					Adding
+				</button>
+				<button class="btn-close" type="reset" form="form">⨉</button>
+			</div>
+			<div class="container">
+				<form class="inner-container" name="form" id="form">
+					<header>
+						<h1>Fill the dish information</h1>
+						<div class="set">
+							<div class="dish-name">
+								<label for="dish-name">Dish Name</label>
+								<input id="dish-name" placeholder="dish's name" type="text" />
+								<small class="hidden">error</small>
+							</div>
+							<div class="dish-photo">
+								<div class="upload-container">
+									<div class="avatar-upload">
+										<div class="avatar-edit">
+											<input
+												type="file"
+												id="imageUpload"
+												multiple
+												accept=".png, .jpg, .jpeg"
+											/>
+											<label for="imageUpload"></label>
+										</div>
+										<div class="avatar-preview">
+											<div id="imagePreview">
+												<img
+													src="../../images/camera.png"
+													height="100%"
+													width="100%"
+													alt="image"
+												/>
+											</div>
+										</div>
+									</div>
+								</div>
+								<small class="hidden"></small>
+							</div>
+						</div>
 
-            <div class="set">
-              <div class="dish-spayed-neutered">
-                <label for="isfasting">Fasting or Non-Fasting</label>
-                <div class="radio-container">
-                  <input
-                    checked=""
-                    id="fasting"
-                    name="isfasting"
-                    type="radio"
-                    value="fasting"
-                  />
-                  <label for="fasting">Fasting</label>
-                  <input
-                    id="nonfasting"
-                    name="isfasting"
-                    type="radio"
-                    value="nonfasting"
-                  />
-                  <label for="nonfasting">Non</label>
-                </div>
-                <small class="hidden"></small>
-              </div>
+						<div class="set">
+							<div class="dish-spayed-neutered">
+								<label for="isfasting">Fasting or Non-Fasting</label>
+								<div class="radio-container">
+									<input
+										checked
+										id="fasting"
+										name="isfasting"
+										type="radio"
+										value="fasting"
+									/>
+									<label for="fasting">Fasting</label>
+									<input
+										id="nonfasting"
+										name="isfasting"
+										type="radio"
+										value="nonfasting"
+									/>
+									<label for="nonfasting">Non</label>
+									<small class="hidden"></small>
+								</div>
+							</div>
 
-              <div class="dish-spayed-neutered">
-                <label for="pet-spayed">Type</label>
-                <div class="radio-container">
-                  <select name="type" id="type">
-                    <option value="cooked-food">cooked-food</option>
-                    <option value="soft-drink">soft-drink</option>
-                    <option value="hot-drink">hot-drink</option>
-                    <option value="fruits">fruits</option>
-                  </select>
-                </div>
-                <small class="hidden"></small>
-              </div>
-            </div>
+							<div class="dish-spayed-neutered">
+								<label for="pet-spayed">Type</label>
+								<div class="radio-container">
+									<select name="type" id="type">
+										<option value="cooked-food">cooked-food</option>
+										<option value="soft-drink">soft-drink</option>
+										<option value="hot-drink">hot-drink</option>
+										<option value="fruits">fruits</option>
+									</select>
+								</div>
+								<small class="hidden"></small>
+							</div>
+						</div>
 
-            <div class="set">
-              <div class="dish-spayed-neutered">
-                <label for="price">Price</label>
-                <div class="radio-container">
-                  <input id="price" name="price" type="number" />
-                </div>
-                <small class="hidden"></small>
-              </div>
+						<div class="set">
+							<div class="dish-spayed-neutered">
+								<label for="price">Price</label>
+								<input id="price" name="price" type="number" />
+								<small class="hidden"></small>
+							</div>
 
-              <div class="dish-spayed-neutered">
-                <label for="lounge">Lounge</label>
-                <div class="radio-container">
-                  <select name="lounge" id="lounge">
-                    <option value="Memihiran">Memihiran</option>
-                    <option value="A+">A-Plus</option>
-                    <option value="Kibnesh">Kibnesh</option>
-                    <option value="Serategnoch">Serategnoch</option>
-                  </select>
-                </div>
-                <small class="hidden"></small>
-              </div>
-            </div>
+							<div class="dish-spayed-neutered">
+								<label for="lounge">Lounge</label>
+								<div class="radio-container">
+									<select name="lounge" id="lounge">
+										<option value="Memihiran">Memihiran</option>
+										<option value="A+">A-Plus</option>
+										<option value="Kibnesh">Kibnesh</option>
+										<option value="Serategnoch">Serategnoch</option>
+									</select>
+								</div>
+								<small class="hidden"></small>
+							</div>
+						</div>
 
-            <div class="dish-spayed-neutered" style="width: 100%">
-              <label for="category">Fasting or Non-Fasting</label>
-              <div class="radio-container" style="width: 100%">
-                <select name="category" id="category" style="width: 100%">
-                  <option value="Appetizers and Snacks">
-                    Appetizers and Snacks
-                  </option>
-                  <option value="Vegetables" selected>Vegetables</option>
-                </select>
-              </div>
-              <small class="hidden"></small>
-            </div>
+						<div class="dish-spayed-neutered" style="width: 100%">
+							<label for="category">Fasting or Non-Fasting</label>
+							<div class="radio-container" style="width: 100%">
+								<select name="category" id="category" style="width: 100%">
+									<option value="Appetizers and Snacks">
+										Appetizers and Snacks
+									</option>
+									<option value="Vegetables" selected>Vegetables</option>
+								</select>
+							</div>
+							<small class="hidden"></small>
+						</div>
 
-            <div class="dish-weight">
-              <label for="desc">Dish Description</label>
-              <div class="dish-desc">
-                <textarea
-                  name="dish_desc"
-                  id="desc"
-                  cols="30"
-                  rows="10"
-                ></textarea>
-              </div>
-              <small class="hidden"></small>
-            </div>
-          </header>
-        </div>
-      </div>
-      <button class="modal-btn save-btn">Save</button>
-    </section>
-    <!-- =========== Scripts =========  -->
-    <script src="js/main.js"></script>
+						<div class="dish-weight">
+							<label for="desc">Dish Description</label>
+							<div class="dish-desc">
+								<textarea
+									name="dish_desc"
+									id="desc"
+									cols="30"
+									rows="10"
+								></textarea>
+							</div>
+							<small class="hidden"></small>
+						</div>
+					</header>
+				</form>
+			</div>
+			<button class="modal-btn save-btn">Save</button>
+		</section>
+		<!-- =========== Scripts =========  -->
+		<script src="js/main.js"></script>
 
-    <!-- ====== ionicons ======= -->
-    <script
-      type="module"
-      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-    ></script>
-    <script
-      nomodule
-      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
-    ></script>
-  </body>
+		<!-- ====== ionicons ======= -->
+		<script
+			type="module"
+			src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+		></script>
+		<script
+			nomodule
+			src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+		></script>
+	</body>
 </html>
