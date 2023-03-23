@@ -1,0 +1,25 @@
+[
+  {
+    "name": "Memihiran",
+    "latitude": "8.886316295",
+    "longitude": "8.886316295",
+    "ownerName": "Mt. Somebody",
+    "image": "lounge.jpg"
+  },
+  {
+    "name": "Memihiran2",
+    "latitude": "8.886316295",
+    "longitude": "8.886316295",
+    "ownerName": "Mt. Somebody",
+    "image": "lounge.jpg"
+  },
+  {
+    "name": "jiuce bet",
+    "latitude": "8.886316295",
+    "longitude": "8.886316295",
+    "loungeAdmin": {
+      "$oid": "63a9e12680710382d380fdd1"
+    },
+    "image": "lounge.jpg"
+  }
+]
