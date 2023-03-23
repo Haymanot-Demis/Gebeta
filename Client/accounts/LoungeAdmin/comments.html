@@ -13,12 +13,13 @@
 			src="https://kit.fontawesome.com/934a07558b.js"
 			crossorigin="anonymous"
 		></script>
-		<script type="module" src="./js/customers.js"></script>
+		<script type="module" src="./js/comments.js"></script>
 		<link
 			rel="stylesheet"
 			href="../../../fontawesome-free-6.3.0-web/css/all.css"
 		/>
 		<link rel="stylesheet" href="./styles/buttonStyle.css" />
+		<link rel="stylesheet" href="./styles/comments.css" />
 	</head>
 
 	<body>
@@ -72,7 +73,7 @@
 					</li>
 
 					<li name="customers" id="customers-li">
-						<a href="#">
+						<a href="./customers.html">
 							<span class="icon">
 								<ion-icon name="people-outline"></ion-icon>
 							</span>
@@ -81,7 +82,7 @@
 					</li>
 
 					<li name="comments" id="comments-li">
-						<a href="./comments.html">
+						<a href="#">
 							<span class="icon">
 								<ion-icon name="chatbubble-outline"></ion-icon>
 							</span>
@@ -197,13 +198,74 @@
 				<div class="details">
 					<div class="recentOrders">
 						<div class="cardHeader">
-							<h2 class="title">Customers</h2>
-							<!-- <div>
-								<a href="#" class="btn">Add </a>
-								<a href="#" class="btn">Import</a>
-							</div> -->
+							<h2 class="title">User Comments</h2>
+							<div>
+								<a href="#" class="btn">Mark all as read </a>
+							</div>
 						</div>
-						<table></table>
+						<div id="comment-container">
+							<div class="comment-header">
+								<p class="username">Name</p>
+							</div>
+							<div class="commentInside">
+								<img src="../../images/eat.jpg" alt="person" />
+								<p class="comment-body unread">
+									Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi
+									sit debitis dolores, id esse quibusdam sapiente ex ab quaerat
+									quis eos adipisci cupiditate repellendus reprehenderit
+									possimus mollitia et tempore amet?
+								</p>
+							</div>
+							<div class="markasread">
+								<button class="button-9">Mark as Read</button>
+							</div>
+						</div>
+						<div id="commentContainer">
+							<div class="comment-header">
+								<p class="username">Name</p>
+							</div>
+							<div class="commentInside">
+								<img src="../../images/eat.jpg" alt="person" />
+								<p class="comment-body unread">
+									Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi
+									sit debitis dolores, id esse quibusdam sapiente ex ab quaerat
+									quis eos adipisci cupiditate repellendus reprehenderit
+									possimus mollitia et tempore amet?
+								</p>
+							</div>
+							<div class="markasread">
+								<button class="button-9">Mark as Read</button>
+							</div>
+						</div>
+						<div id="commentContainer">
+							<div class="comment-header">
+								<p class="username">Name</p>
+							</div>
+							<div class="commentInside">
+								<img src="../../images/eat.jpg" alt="person" />
+								<p class="comment-body unread">
+									Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi
+									sit debitis dolores, id esse quibusdam sapiente ex ab quaerat
+									quis eos adipisci cupiditate repellendus reprehenderit
+									possimus mollitia et tempore amet? Lorem ipsum dolor sit amet
+									consectetur adipisicing elit. Sequi sit debitis dolores, id
+									esse quibusdam sapiente ex ab quaerat quis eos adipisci
+									cupiditate repellendus reprehenderit possimus mollitia et
+									tempore amet? possimus mollitia et tempore amet? Lorem ipsum
+									dolor sit amet consectetur adipisicing elit. Sequi sit debitis
+									dolores, id esse quibusdam sapiente ex ab quaerat quis eos
+									adipisci cupiditate repellendus reprehenderit possimus
+									mollitia et tempore amet? possimus mollitia et tempore amet?
+									Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi
+									sit debitis dolores, id esse quibusdam sapiente ex ab quaerat
+									quis eos adipisci cupiditate repellendus reprehenderit
+									possimus mollitia et tempore amet?
+								</p>
+							</div>
+							<div class="markasread">
+								<button class="button-9">Mark as Read</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

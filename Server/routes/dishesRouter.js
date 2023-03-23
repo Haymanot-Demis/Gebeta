@@ -12,7 +12,6 @@ const multer = require("multer");
 const crypto = require("crypto");
 const Lounges = require("../models/lounges");
 const { ObjectId } = require("mongodb");
-const lounges = require("../models/lounges");
 
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
@@ -133,7 +132,6 @@ dishRouter
 			.populate("lounge")
 			.populate("lounge.loungeAdmin")
 			.populate("comment.author")
-			.populate("lounge")
 			.then((dishes) => {
 				res.statusCode = 200;
 				res.contentType("application/json");
@@ -213,11 +211,13 @@ dishRouter.route("/lounge/:loungeId").get((req, res, next) => {
 dishRouter
 	.route("/:dishId/comments")
 	.get((req, res, next) => {
-		Dishes.findById(req.params.dishId).then((dish) => {
-			res.statusCode = 200;
-			res.contentType = "application/json";
-			res.json(dish.comment);
-		});
+		Dishes.findById(req.params.dishId)
+			.populate("comment.author")
+			.then((dish) => {
+				res.statusCode = 200;
+				res.contentType = "application/json";
+				res.json(dish.comment);
+			});
 	})
 	.post((req, res, next) => {
 		Dishes.findById(req.params.dishId)
@@ -228,10 +228,36 @@ dishRouter
 					res.send("Dish with id" + req.params.dishId + " is not found");
 					return next();
 				}
-				// req.body.author = req.user._id
+				// req.body.comment.author = req.user._id
+				// req.body.lounge = lounge._id
 				dish.comment.push({ ...req.body });
 				await dish.save();
 				res.send("comment saved");
+			})
+			.catch((err) => {
+				next(err);
+			});
+	});
+
+dishRouter
+	.route("/comments/all")
+	.get(isAuthenticated, verifyLoungeAdmin, async (req, res, next) => {
+		// let lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
+		// Dishes.find({ lounge: lounge._id }, { comments: "1" })
+		Dishes.find({}, { comment: "1" })
+			.sort({ createdAt: 1 })
+			.populate("comment.author")
+			.populate("comment.lounge")
+			.then((comments) => {
+				res.statusCode = 200;
+				res.contentType = "application/json";
+				var com = [];
+				comments.forEach((comment) => {
+					com.push(...comment.comment);
+				});
+				console.log(com);
+				res.json(com);
+				next();
 			})
 			.catch((err) => {
 				next(err);

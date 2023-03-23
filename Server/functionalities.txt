@@ -21,7 +21,11 @@ change password
 
 next task
 Lounge Admin CDUD operations
+orders page => overflow table, 
+rating after the user has ordered 
 After authentication part is done well there to many things to be corrected at the endpoints
+user data should be inserted direcly from the system after auth is done 
+
 
 const transorter = nodemailer.createTransport({
       service: "gmail",

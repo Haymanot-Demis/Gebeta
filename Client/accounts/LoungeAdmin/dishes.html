@@ -11,6 +11,10 @@
 			crossorigin="anonymous"
 		></script>
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<link
+			rel="stylesheet"
+			href="../../../fontawesome-free-6.3.0-web/css/all.css"
+		/>
 		<link rel="stylesheet" href="styles/style.css" />
 		<link rel="stylesheet" href="./styles/modal.css" />
 		<link rel="stylesheet" href="./styles/upload.css" />
@@ -69,9 +73,9 @@
 					<li name="views">
 						<a href="#">
 							<span class="icon">
-								<i class="fa fa-eye"></i>
+								<i class="fa-solid fa-chart-simple"></i>
 							</span>
-							<span class="title">Daily Views</span>
+							<span class="title">Statistics</span>
 						</a>
 					</li>
 
@@ -85,7 +89,7 @@
 					</li>
 
 					<li name="comments" id="comments-li">
-						<a href="#">
+						<a href="./comments.html">
 							<span class="icon">
 								<ion-icon name="chatbubble-outline"></ion-icon>
 							</span>
@@ -305,12 +309,7 @@
 							<div class="dish-spayed-neutered">
 								<label for="lounge">Lounge</label>
 								<div class="radio-container">
-									<select name="lounge" id="lounge">
-										<option value="Memihiran">Memihiran</option>
-										<option value="A+">A-Plus</option>
-										<option value="Kibnesh">Kibnesh</option>
-										<option value="Serategnoch">Serategnoch</option>
-									</select>
+									<select name="lounge" id="lounge" class="lounge"></select>
 								</div>
 								<small class="hidden"></small>
 							</div>

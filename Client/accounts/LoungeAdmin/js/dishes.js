@@ -12,6 +12,7 @@ import {
 	tabularData,
 	table,
 	recentCustomers,
+	cardNumbers,
 } from "./common-elements.js";
 import {
 	openModal,
@@ -24,15 +25,48 @@ import {
 	selects,
 	flag,
 } from "./modal.js";
+import { DISHES_URL, ORDERS_URL } from "../../../config/EndPoints.js";
 
 var deleteBtns;
 var editBtns;
+
+try {
+	let response = await axios.get(ORDERS_URL);
+	var orders = response.data;
+	response = await axios.get(DISHES_URL + "/comments/all");
+	var comments = response.data;
+	console.log(comments);
+} catch (error) {
+	console.log(error);
+}
+console.log(cardNumbers);
+cardNumbers[2].innerText = comments.length;
+cardNumbers[1].innerText = orders.length;
+cardNumbers[3].innerText =
+	"$" +
+	orders.reduce((total, order) => {
+		return total + order.totalPrice;
+	}, 0);
 
 try {
 	var response;
 	lists[2].classList.add("hovered");
 	response = await axios.get("http://localhost:3000/dishes");
 	const dishes = response.data;
+	response = await axios.get("http://localhost:3000/lounges");
+	const lounges = response.data;
+
+	// lounge options
+	for (let i = 0; i < lounges.length; i++) {
+		let option = createCustomElement("option", {
+			value: lounges[i].name,
+			id: lounges[i]._id,
+			innerText: lounges[i].name,
+		});
+
+		selects[1].append(option);
+	}
+
 	tabularData.querySelector(".title").innerText = "Dishes";
 	tabularData.querySelector("table").innerHTML = "";
 

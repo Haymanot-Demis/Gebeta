@@ -8,6 +8,12 @@ const commentSchema = new Schema(
 		author: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: Users,
+			default: "641acad3d4d88fa9291e44e3",
+		},
+		lounge: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: Lounges,
+			default: "641768cfa16c164b38ac0358",
 		},
 		rating: {
 			type: Number,
@@ -19,6 +25,8 @@ const commentSchema = new Schema(
 		comment: {
 			type: String,
 			required: true,
+			default:
+				"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi sit debitis dolores, id esse quibusdam sapiente ex ab quaerat quis eos adipisci cupiditate repellendus reprehenderit possimus mollitia et tempore amet?",
 		},
 	},
 	{
@@ -54,11 +62,11 @@ const dishSchema = new Schema({
 		type: String,
 		required: true,
 	},
+	comment: [commentSchema],
 	description: {
 		type: String,
 		required: true,
 	},
-	comment: [commentSchema],
 	lounge: {
 		// select from a datalist
 		type: mongoose.Schema.Types.ObjectId,

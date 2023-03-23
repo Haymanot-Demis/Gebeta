@@ -3,15 +3,17 @@ var lists = dashboardContainer.querySelectorAll("li");
 var details = dashboardContainer.querySelector(".details");
 var tabularData = details.querySelector(".recentOrders");
 var table = tabularData.querySelector("table");
-var rows = table.querySelectorAll("tr");
-var recentCustomers = details.querySelector(".recentCustomers");
-
+var rows = table?.querySelectorAll("tr");
+var recentCustomers = details?.querySelector(".recentCustomers");
+var sales = document.querySelector(".numbers");
+var cardNumbers = document.querySelectorAll(".numbers");
 export {
-  dashboardContainer,
-  lists,
-  details,
-  table,
-  tabularData,
-  rows,
-  recentCustomers,
+	dashboardContainer,
+	lists,
+	details,
+	table,
+	tabularData,
+	rows,
+	recentCustomers,
+	cardNumbers,
 };

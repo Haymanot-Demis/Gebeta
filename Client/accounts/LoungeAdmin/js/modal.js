@@ -15,12 +15,10 @@ import escapeHTML from "../../../script/escapeHTML.js";
 import { DISHES_URL } from "../../../config/EndPoints.js";
 
 const openModal = function (event) {
-	// console.log(event.clientY);
-	// console.log(event.clientX);
+	console.log(window);
 	modal.classList.remove("hidden");
 	overlay.classList.remove("hidden");
-	// modal.style.top = event.clientY - 50 + "px";
-	// modal.style.left = event.clientX - 50 + "px";
+	modal.style.top = window.scrollY + "px";
 };
 
 openModalBtn.addEventListener("click", (event) => {
@@ -35,11 +33,11 @@ openModalBtn.addEventListener("click", (event) => {
 
 const closeModal = function () {
 	modal.querySelector("form").reset();
+	modal.classList.add("hidden");
+	overlay.classList.add("hidden");
 	inputs[1].parentNode.nextElementSibling
 		.querySelector("#imagePreview")
 		.querySelector("img").src = "../../images/camera.png";
-	modal.classList.add("hidden");
-	overlay.classList.add("hidden");
 };
 
 closeModalBtn.addEventListener("click", closeModal);
@@ -127,6 +125,7 @@ async function save() {
 		formdata.append("price", escapeHTML(inputs[4].value));
 		formdata.append("type", escapeHTML(selects[0].value));
 		formdata.append("lounge", escapeHTML(selects[1].value));
+		console.log("lounge", selects[1].value);
 		formdata.append("category", escapeHTML(selects[2].value));
 		formdata.append("description", escapeHTML(desc.value));
 		// closeModal();

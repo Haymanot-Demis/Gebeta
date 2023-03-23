@@ -1,0 +1,39 @@
+.commentInside,
+.comment-header {
+	display: grid;
+	grid-template-columns: auto auto;
+	gap: 30px;
+	padding: 20px;
+}
+.comment-header {
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+.commentInside > img {
+	border: 2px solid rgb(16, 204, 138);
+	border-radius: 50%;
+	width: 130px;
+	height: 130px;
+}
+
+p.username {
+	grid-column-start: 2;
+	margin-bottom: -50px;
+}
+.comment-body.unread {
+	padding-top: 10px;
+	font-weight: bold;
+	font-family: "Times New Roman", Times, serif;
+}
+.comment-body.read {
+	font-weight: normal;
+}
+.markasread {
+	float: right;
+}
+.markasread .button-9 {
+	background-color: blue;
+	height: 35px;
+	margin-top: -20px;
+	margin-right: 30px;
+}
