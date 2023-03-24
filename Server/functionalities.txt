@@ -23,8 +23,11 @@ next task
 Lounge Admin CDUD operations
 orders page => overflow table, 
 rating after the user has ordered 
+adding more image for the lounge and the dishes
 After authentication part is done well there to many things to be corrected at the endpoints
 user data should be inserted direcly from the system after auth is done 
+dish order user must be corrected
+slider images of dishes and lounges must be corrected
 
 
 const transorter = nodemailer.createTransport({

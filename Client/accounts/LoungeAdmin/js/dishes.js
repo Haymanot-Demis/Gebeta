@@ -35,11 +35,9 @@ try {
 	var orders = response.data;
 	response = await axios.get(DISHES_URL + "/comments/all");
 	var comments = response.data;
-	console.log(comments);
 } catch (error) {
 	console.log(error);
 }
-console.log(cardNumbers);
 cardNumbers[2].innerText = comments.length;
 cardNumbers[1].innerText = orders.length;
 cardNumbers[3].innerText =
@@ -133,7 +131,27 @@ try {
 		});
 		div.classList.add("btn-div");
 		div.append(deleteBtn, editBtn);
-		td6.append(img, div);
+		let imageWrapper = createCustomElement("div");
+		let galleryBtn = createCustomElement("button");
+		galleryBtn.innerText = "View Gallery";
+		// galleryBtn.style.position = "absolute";
+		galleryBtn.classList.add("button-9");
+		galleryBtn.classList.add("btn-gallery");
+		galleryBtn.classList.add("invisible");
+		galleryBtn.addEventListener("click", () => {
+			location.href = `http://127.0.0.1:5500/Client/accounts/LoungeAdmin/gallery.html?dish='yes'&id=${dish._id}`;
+		});
+		imageWrapper.classList.add("image-wrapper");
+		imageWrapper.append(galleryBtn, img);
+		imageWrapper.addEventListener("mouseenter", () => {
+			galleryBtn.classList.remove("invisible");
+			galleryBtn.classList.add("visible");
+		});
+		imageWrapper.addEventListener("mouseleave", () => {
+			galleryBtn.classList.add("invisible");
+			galleryBtn.classList.remove("visible");
+		});
+		td6.append(imageWrapper, div);
 
 		td7 = createCustomElement("td", { innerText: dish.lounge?.name });
 		tr.append(td, td1, td2, td3, td4, td6, td7);
@@ -171,7 +189,6 @@ try {
 }
 
 function edittingActions(dish, inputs, selects, desc, event) {
-	console.log(dish);
 	openModal(event);
 	flag.innerText = "Editing";
 	saveBtn.id = dish._id;
@@ -180,11 +197,9 @@ function edittingActions(dish, inputs, selects, desc, event) {
 		.querySelector("#imagePreview")
 		.querySelector("img").src = dish.image;
 
-	console.log(dish.image);
 	inputs[2].checked = dish.isfasting;
 	inputs[3].checked = !dish.isfasting;
 	inputs[4].value = dish.price;
-	console.log(inputs[4]);
 	desc.innerText = dish.description;
 	update();
 }

@@ -20,6 +20,7 @@ const loungeRouter = require("./routes/loungeRouter");
 const userRouter = require("./routes/userRouter");
 const orderRouter = require("./routes/orderRouter");
 const commentsRouter = require("./routes/commentsRouter");
+const galleryRouter = require("./routes/galleryRouter");
 
 //Connecting server to MongoDB
 mongoose
@@ -69,6 +70,7 @@ app.use("/lounges", loungeRouter);
 app.use("/users", userRouter);
 app.use("/orders", orderRouter);
 app.use("/comments", commentsRouter);
+app.use("/gallery", galleryRouter);
 
 app.get("/", (req, res) => {
 	res.render("index");

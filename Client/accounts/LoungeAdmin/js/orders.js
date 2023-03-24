@@ -21,11 +21,9 @@ try {
 	var orders = response.data;
 	response = await axios.get(DISHES_URL + "/comments/all");
 	var comments = response.data;
-	console.log(comments);
 } catch (error) {
 	console.log(error);
 }
-console.log(cardNumbers);
 cardNumbers[2].innerText = comments.length;
 cardNumbers[1].innerText = orders.length;
 cardNumbers[3].innerText =
@@ -73,9 +71,9 @@ function display(orders, i) {
 
 		td = createCustomElement("td", { innerText: i });
 		td1 = createCustomElement("td", {
-			innerText: order.user.firstname + " " + order.user.lastname,
+			innerText: order.user?.firstname + " " + order.user?.lastname,
 		});
-		td2 = createCustomElement("td", { innerText: order.dish.name });
+		td2 = createCustomElement("td", { innerText: order.dish?.name });
 		td3 = createCustomElement("td", {
 			innerText: order.quantity,
 		});

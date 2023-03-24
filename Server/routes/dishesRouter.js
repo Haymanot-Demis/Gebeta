@@ -12,6 +12,7 @@ const multer = require("multer");
 const crypto = require("crypto");
 const Lounges = require("../models/lounges");
 const { ObjectId } = require("mongodb");
+const fs = require("fs");
 
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
@@ -97,6 +98,7 @@ dishRouter
 	.delete(isAuthenticated, verifyLoungeAdmin, async (req, res, next) => {
 		// lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
 		// Dishes.deleteMany({ lounge: lounge._id })
+
 		Dishes.deleteMany({})
 			.then((result) => {
 				res.statusCode = 200;
@@ -151,19 +153,27 @@ dishRouter
 		upload.single("image"),
 		async (req, res, next) => {
 			// const lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
-			console.log("put");
-			console.log(req.body);
-			console.log(req.file);
 			const lounge = await Lounges.findOne({ name: req.body.lounge });
 			const dish = await Dishes.findOne({ _id: req.params.dishid });
-			console.log(dish);
-			console.log(lounge);
 			req.body.lounge = lounge?._id;
 			if (req?.file?.path) {
 				req.body.image = "http://127.0.0.1:5500/Server/" + req?.file?.path;
+				fs.unlink(
+					__dirname +
+						"/../uploads/loungeImages/" +
+						dish.image.split("\\").pop(),
+					(err) => {
+						if (err) {
+							console.log(err);
+							next(err);
+						}
+						console.log("deleted");
+					}
+				);
 			} else {
 				req.body.image = dish.image;
 			}
+
 			Dishes.findOneAndUpdate(
 				// { lounge: lounge?._id, _id: req.params.dishid },
 				{ _id: req.params.dishid },
@@ -182,8 +192,19 @@ dishRouter
 				.catch((err) => next(err));
 		}
 	)
-	.delete(isAuthenticated, verifyLoungeAdmin, (req, res, next) => {
+	.delete(isAuthenticated, verifyLoungeAdmin, async (req, res, next) => {
 		// Dishes.deleteOne({ loungeAdmin: req.user._id, _id: req.params.dishid }) later
+		const dish = await Dishes.findOne({ _id: req.params.dishid });
+		fs.unlink(
+			__dirname + "/../uploads/loungeImages/" + dish.image.split("\\").pop(),
+			(err) => {
+				if (err) {
+					console.log(err);
+					next(err);
+				}
+				console.log("deleted");
+			}
+		);
 		Dishes.deleteOne({ _id: req.params.dishid })
 			.then((dishes) => {
 				res.statusCode = 200;
@@ -255,7 +276,7 @@ dishRouter
 				comments.forEach((comment) => {
 					com.push(...comment.comment);
 				});
-				console.log(com);
+				// console.log(com);
 				res.json(com);
 				next();
 			})
