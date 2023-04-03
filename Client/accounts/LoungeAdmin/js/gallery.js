@@ -11,10 +11,17 @@ console.log(autoGrid);
 import { GALLERY_URL } from "../../../config/EndPoints.js";
 import { createCustomElement } from "../js/helpers.js";
 
+var EndPoint = "/dishes/";
+var id = url.searchParams.get("id");
+
+if (url.searchParams.get("from").slice(1, -1) == "mylounge") {
+	EndPoint = "/lounges/";
+	id = url.searchParams.get("id").slice(1, -1);
+}
+console.log(EndPoint, id);
+
 try {
-	const response = await axios.get(
-		GALLERY_URL + "/dishes/" + url.searchParams.get("id")
-	);
+	const response = await axios.get(GALLERY_URL + EndPoint + id);
 	let images = response.data;
 	console.log(images);
 	for (let data of images) {
@@ -54,14 +61,13 @@ try {
 }
 
 const openModal = function () {
+	// modal.style.top = "50%";
 	modal.classList.remove("hidden");
 	overlay.classList.remove("hidden");
-	console.log(saveBtn.prototype);
-	console.log(closeModalBtn.prototype);
-	console.log(openModalBtn);
 };
 
 const closeModal = function () {
+	modal.style.top = "initial";
 	modal.classList.add("hidden");
 	overlay.classList.add("hidden");
 };
@@ -77,18 +83,14 @@ saveBtn.addEventListener("click", async () => {
 	files.forEach((file) => {
 		formdata.append("images", file);
 	});
-	formdata.append("object", url.searchParams.get("id"));
+	formdata.append("object", id);
 
 	try {
-		const response = await axios.post(
-			GALLERY_URL + "/dishes/" + url.searchParams.get("id"),
-			formdata,
-			{
-				headers: {
-					"Content-Type": "multipart/form-data", // optional
-				},
-			}
-		);
+		const response = await axios.post(GALLERY_URL + EndPoint + id, formdata, {
+			headers: {
+				"Content-Type": "multipart/form-data", // optional
+			},
+		});
 	} catch (error) {
 		console.log(error);
 	}
@@ -123,13 +125,14 @@ image.addEventListener("change", () => {
 });
 
 function DeletePhoto(elem, id) {
-	axios.delete(GALLERY_URL + "/dishes/" + id).then((response) => {
+	axios.delete(GALLERY_URL + EndPoint + id).then((response) => {
 		console.log(response);
 	});
 	elem.remove();
 }
 
 function ReplacePhoto(elem, id, formData) {
+	modal.style.top = window.scrollY + "px";
 	openModal();
 	let cloned = saveBtn.cloneNode(true);
 	saveBtn.parentNode.replaceChild(cloned, saveBtn);
@@ -138,15 +141,11 @@ function ReplacePhoto(elem, id, formData) {
 		let formdata = new FormData();
 		formdata.append("images", image.files[0]);
 		try {
-			const response = await axios.put(
-				GALLERY_URL + "/dishes/" + id,
-				formdata,
-				{
-					headers: {
-						"Content-Type": "multipart/form-data", // optional
-					},
-				}
-			);
+			const response = await axios.put(GALLERY_URL + EndPoint + id, formdata, {
+				headers: {
+					"Content-Type": "multipart/form-data", // optional
+				},
+			});
 			console.log(response);
 			alert("Photo has been replaced");
 		} catch (error) {

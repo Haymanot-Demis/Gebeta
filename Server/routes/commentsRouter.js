@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 commentsRouter.use(bodyParser.json());
 
 commentsRouter
-	.route("/:dishId")
+	.route("/dishes/:dishId")
 	.get((req, res, next) => {
 		Comments.find({ dish: req.params.dishId })
 			.sort({ createdAt: 1 })
@@ -37,6 +37,27 @@ commentsRouter
 			.catch((err) => {
 				next(err);
 			});
+	})
+	.put((req, res, next) => {
+		Comments.findById(req.params.commentId).then((comment) => {
+			if (!comment) {
+				res.statusCode = 404;
+				res.contentType = "application/json";
+				res.json({
+					msg: "Comment with id " + req.params.commentId + " is not found",
+				});
+				return next(
+					new Error("Comment with id " + req.params.comment + "is not found")
+				);
+			}
+			comment.read = true;
+			comment.save().then((result) => {
+				res.statusCode = "200";
+				res.contentType = "application/json";
+				res.json(result);
+				next();
+			});
+		});
 	});
 
 commentsRouter.route("/:loungeId").get((req, res, next) => {

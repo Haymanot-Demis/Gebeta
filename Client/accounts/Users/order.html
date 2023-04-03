@@ -6,20 +6,31 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Admin Dashboard</title>
 		<!-- ======= Styles ====== -->
-		<link rel="stylesheet" href="styles/style.css" />
+		<script
+			src="https://kit.fontawesome.com/934a07558b.js"
+			crossorigin="anonymous"
+		></script>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<link
+			rel="stylesheet"
+			href="../../../fontawesome-free-6.3.0-web/css/all.css"
+		/>
+		<link rel="stylesheet" href="../LoungeAdmin/styles/style.css" />
+		<link rel="stylesheet" href="../LoungeAdmin/styles/modal.css" />
+		<link rel="stylesheet" href="../LoungeAdmin/styles/upload.css" />
+		<link rel="stylesheet" href="../LoungeAdmin/styles/dishes.css" />
+		<link rel="stylesheet" href="../LoungeAdmin/styles/buttonStyle.css" />
+		<link rel="stylesheet" href="./styles/modalform.css" />
+		<link rel="stylesheet" href="./styles/yesno modal.css" />
+
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 		<script
 			src="https://kit.fontawesome.com/934a07558b.js"
 			crossorigin="anonymous"
 		></script>
-		<script type="module" src="./js/comments.js"></script>
-		<link
-			rel="stylesheet"
-			href="../../../fontawesome-free-6.3.0-web/css/all.css"
-		/>
-		<link rel="stylesheet" href="./styles/buttonStyle.css" />
-		<link rel="stylesheet" href="./styles/comments.css" />
+		<script type="module" src="./js/orders.js"></script>
+		<script type="module" src="../LoungeAdmin/js/modal.js"></script>
 	</head>
 
 	<body>
@@ -44,22 +55,12 @@
 							<span class="title">Dashboard</span>
 						</a>
 					</li>
-
-					<li name="dishes" id="dishes-li">
-						<a href="./dishes.html">
-							<span class="icon">
-								<ion-icon name="fast-food-outline"></ion-icon>
-							</span>
-							<span class="title">Dishes</span>
-						</a>
-					</li>
-
 					<li name="orders" id="orders-li">
 						<a href="./orders.html">
 							<span class="icon">
 								<i class="fa-solid fa-cart-shopping"></i>
 							</span>
-							<span class="title">Orders/Sales</span>
+							<span class="title">Orders</span>
 						</a>
 					</li>
 
@@ -69,15 +70,6 @@
 								<i class="fa-solid fa-chart-simple"></i>
 							</span>
 							<span class="title">Statistics</span>
-						</a>
-					</li>
-
-					<li name="customers" id="customers-li">
-						<a href="./customers.html">
-							<span class="icon">
-								<ion-icon name="people-outline"></ion-icon>
-							</span>
-							<span class="title">Customers</span>
 						</a>
 					</li>
 
@@ -99,15 +91,6 @@
 						</a>
 					</li>
 					<li name="">
-						<a href="./gallery.html">
-							<span class="icon">
-								<ion-icon name="lock-closed-outline"></ion-icon>
-							</span>
-							<span class="title">My Lounge</span>
-						</a>
-					</li>
-
-					<li name="">
 						<a href="#">
 							<span class="icon">
 								<ion-icon name="settings-outline"></ion-icon>
@@ -115,6 +98,7 @@
 							<span class="title">Settings</span>
 						</a>
 					</li>
+
 					<li name="">
 						<a href="#">
 							<span class="icon">
@@ -196,81 +180,142 @@
 				<div class="details">
 					<div class="recentOrders">
 						<div class="cardHeader">
-							<h2 class="title">User Comments</h2>
+							<h2 class="title">Orders</h2>
 							<div>
-								<a href="#" class="btn">Mark all as read </a>
+								<div class="overlay hidden"></div>
 							</div>
 						</div>
-						<div id="comment-container">
-							<div class="comment-header">
-								<p class="username">Name</p>
-							</div>
-							<div class="commentInside">
-								<img src="../../images/eat.jpg" alt="person" />
-								<p class="comment-body unread">
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi
-									sit debitis dolores, id esse quibusdam sapiente ex ab quaerat
-									quis eos adipisci cupiditate repellendus reprehenderit
-									possimus mollitia et tempore amet?
-								</p>
-							</div>
-							<div class="markasread">
-								<button class="button-9">Mark as Read</button>
-							</div>
-						</div>
-						<div id="commentContainer">
-							<div class="comment-header">
-								<p class="username">Name</p>
-							</div>
-							<div class="commentInside">
-								<img src="../../images/eat.jpg" alt="person" />
-								<p class="comment-body unread">
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi
-									sit debitis dolores, id esse quibusdam sapiente ex ab quaerat
-									quis eos adipisci cupiditate repellendus reprehenderit
-									possimus mollitia et tempore amet?
-								</p>
-							</div>
-							<div class="markasread">
-								<button class="button-9">Mark as Read</button>
-							</div>
-						</div>
-						<div id="commentContainer">
-							<div class="comment-header">
-								<p class="username">Name</p>
-							</div>
-							<div class="commentInside">
-								<img src="../../images/eat.jpg" alt="person" />
-								<p class="comment-body unread">
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi
-									sit debitis dolores, id esse quibusdam sapiente ex ab quaerat
-									quis eos adipisci cupiditate repellendus reprehenderit
-									possimus mollitia et tempore amet? Lorem ipsum dolor sit amet
-									consectetur adipisicing elit. Sequi sit debitis dolores, id
-									esse quibusdam sapiente ex ab quaerat quis eos adipisci
-									cupiditate repellendus reprehenderit possimus mollitia et
-									tempore amet? possimus mollitia et tempore amet? Lorem ipsum
-									dolor sit amet consectetur adipisicing elit. Sequi sit debitis
-									dolores, id esse quibusdam sapiente ex ab quaerat quis eos
-									adipisci cupiditate repellendus reprehenderit possimus
-									mollitia et tempore amet? possimus mollitia et tempore amet?
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi
-									sit debitis dolores, id esse quibusdam sapiente ex ab quaerat
-									quis eos adipisci cupiditate repellendus reprehenderit
-									possimus mollitia et tempore amet?
-								</p>
-							</div>
-							<div class="markasread">
-								<button class="button-9">Mark as Read</button>
-							</div>
+						<table></table>
+						<div class="yesno-modal" data-modal="trigger-1">
+							<article class="content-wrapper">
+								<button class="close"></button>
+								<header class="yesno-modal-header">
+									<h2>Delete</h2>
+								</header>
+								<div class="content">
+									<h3>Are Sure to delete this order</h3>
+									<p></p>
+								</div>
+								<footer class="yesno-modal-footer">
+									<button class="action">Accept</button>
+									<button class="action">Decline</button>
+								</footer>
+							</article>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		<section class="modal hidden">
+			<div class="flex">
+				<button class="flag button-9" style="background-color: #405cf5">
+					Editting
+				</button>
+				<button
+					class="btn-close close-btn"
+					id="close-btn"
+					type="reset"
+					form="form"
+				>
+					⨉
+				</button>
+			</div>
+			<div class="container">
+				<form class="inner-container" name="form" id="form">
+					<header>
+						<h1>Order Form</h1>
+						<div>
+							<small class="err form-err hidden">Error message</small>
+						</div>
 
+						<div class="set">
+							<div class="dish-name stepper-container">
+								<button
+									type="button"
+									class="btn-incre"
+									id="decrement"
+									onclick="stepper(this)"
+								>
+									-
+								</button>
+								<input
+									type="number"
+									min="1"
+									max="100"
+									step="1"
+									value="1"
+									id="my-input"
+									name="count"
+									readonly
+								/>
+								<button
+									type="button"
+									class="btn-decre"
+									id="increment"
+									onclick="stepper(this)"
+								>
+									+
+								</button>
+							</div>
+							<div class="stepper-container">
+								<input type="text" value="1" id="price" name="price" readonly />
+							</div>
+							<small class="hidden"></small>
+						</div>
+
+						<div class="dish-spayed-neutered form-group">
+							<h4>Check delivery means</h4>
+							<label for="delivery" class="form-control">
+								<input
+									type="radio"
+									id="delivery"
+									name="delivery"
+									value="Delivery"
+								/>
+								Delivery
+							</label>
+
+							<label for="takeaway" class="form-control">
+								<input
+									type="radio"
+									id="takeaway"
+									name="delivery"
+									value="Take away"
+								/>
+								Take away
+							</label>
+
+							<label for="dinein" class="form-control">
+								<input
+									type="radio"
+									id="dinein"
+									name="delivery"
+									value="Dine-in"
+								/>
+								Dine-in
+							</label>
+						</div>
+
+						<div class="dish-spayed-neutered form-group">
+							<label for="pet-spayed">Enter Delivery Location</label>
+							<div class="form-group location">
+								<input type="text" name="location" id="location" />
+								<small class="hidden"></small>
+							</div>
+						</div>
+						<div class="dish-spayed-neutered form-group">
+							<label for="pet-spayed">When will you need it?</label>
+							<div class="form-group time">
+								<input type="datetime-local" name="time" id="time" />
+							</div>
+						</div>
+					</header>
+				</form>
+			</div>
+			<button class="modal-btn save-btn" id="save-btn">Save</button>
+		</section>
 		<!-- =========== Scripts =========  -->
-		<script src="js/main.js"></script>
+		<script src="../LoungeAdmin/js/main.js"></script>
 
 		<!-- ====== ionicons ======= -->
 		<script

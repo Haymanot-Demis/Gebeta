@@ -15,6 +15,10 @@ const commentSchema = new Schema(
 			ref: Lounges,
 			default: "641768cfa16c164b38ac0358",
 		},
+		read: {
+			type: Boolean,
+			default: false,
+		},
 		rating: {
 			type: Number,
 			min: 1,

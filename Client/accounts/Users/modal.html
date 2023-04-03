@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="./styles/yesno modal.css" />
+		<script defer src="./js/yesnomodal.js"></script>
+	</head>
+	<body>
+		<button class="trigger" data-modal-trigger="trigger-1">Modal 1</button>
+		<div class="yesno-modal" data-modal="trigger-1">
+			<article class="content-wrapper">
+				<button class="close"></button>
+				<header class="yesno-modal-header">
+					<h2>Delete</h2>
+				</header>
+				<div class="content">
+					<h3>Are Sure to delete this order</h3>
+					<p></p>
+				</div>
+				<footer class="yesno-modal-footer">
+					<button class="action">Accept</button>
+					<button class="action">Decline</button>
+				</footer>
+			</article>
+		</div>
+	</body>
+</html>

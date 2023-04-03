@@ -260,6 +260,35 @@ dishRouter
 			});
 	});
 
+dishRouter.route("/:dishId/comments/:commentId").put((req, res, next) => {
+	Dishes.findById(req.params.dishId).then((dish) => {
+		if (!dish) {
+			res.statusCode = 404;
+			res.contentType = "application/json";
+			res.json({
+				msg:
+					"Dishes comment with dish id " + req.params.dishId + " is not found",
+			});
+			return next(
+				new Error(
+					"Dishes Comment with dish id " + req.params.dishId + "is not found"
+				)
+			);
+		}
+		dish.comment.forEach((comment) => {
+			if (comment._id.toString() === req.params.commentId) {
+				comment.read = true;
+				dish.save().then((result) => {
+					res.statusCode = 200;
+					res.contentType = "application/json";
+					res.json(result);
+					next();
+				});
+			}
+		});
+	});
+});
+
 dishRouter
 	.route("/comments/all")
 	.get(isAuthenticated, verifyLoungeAdmin, async (req, res, next) => {
@@ -269,12 +298,12 @@ dishRouter
 			.sort({ createdAt: 1 })
 			.populate("comment.author")
 			.populate("comment.lounge")
-			.then((comments) => {
+			.then((dishes) => {
 				res.statusCode = 200;
 				res.contentType = "application/json";
 				var com = [];
-				comments.forEach((comment) => {
-					com.push(...comment.comment);
+				dishes.forEach((dish) => {
+					com.push(...dish.comment);
 				});
 				// console.log(com);
 				res.json(com);

@@ -45,17 +45,20 @@ cardNumbers[3].innerText =
 	orders.reduce((total, order) => {
 		return total + order.totalPrice;
 	}, 0);
-
 try {
 	var response;
 	lists[2].classList.add("hovered");
-	response = await axios.get("http://localhost:3000/dishes");
+	response = await axios.get("http://localhost:3000/dishes"); // we need only those dishes of this lounge
 	const dishes = response.data;
-	response = await axios.get("http://localhost:3000/lounges");
+	response = await axios.get("http://localhost:3000/lounges"); // this is one lounge so we will access it by id when the auth part is done
 	const lounges = response.data;
-
+	console.log();
+	lists[8].classList.add("lounges");
+	lists[8].querySelector("a").href =
+		"./gallery.html?from=mylounge&id=641768cfa16c164b38ac0358"; //lounges._id
 	// lounge options
 	for (let i = 0; i < lounges.length; i++) {
+		// no need to put the oprion while adding dish because we are here in one lounge admin
 		let option = createCustomElement("option", {
 			value: lounges[i].name,
 			id: lounges[i]._id,
@@ -166,7 +169,7 @@ try {
 	details.style.gridTemplateColumns = "1fr";
 	details.style.padding = "50px";
 	let rows = tabularData.querySelector("table").querySelectorAll("tr");
-
+	let btnsWrapper = document.querySelectorAll("div.btn-div");
 	deleteBtns = document.querySelectorAll(".delete-btn");
 	editBtns = document.querySelectorAll(".edit-btn");
 	//attaching event listeners to the edit buttons
@@ -182,8 +185,7 @@ try {
 	attachEventListner(deleteBtns, "click", deleteBtnAction);
 	// attachEventListner(editBtns, "click", editBtnAction);
 	// attachEventListner(rows, "dblclick", editBtnAction);
-
-	rowEventListner(rows);
+	rowEventListner(rows, btnsWrapper);
 } catch (error) {
 	console.log(error);
 }

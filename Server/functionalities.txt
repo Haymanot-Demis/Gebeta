@@ -24,6 +24,9 @@ Lounge Admin CDUD operations
 orders page => overflow table, 
 rating after the user has ordered 
 adding more image for the lounge and the dishes
+// no need to put the oprion while adding dish because we are here in one lounge admin
+// we need only those dishes of this lounge
+// this is one lounge so we will access it by id when the auth part is done
 After authentication part is done well there to many things to be corrected at the endpoints
 user data should be inserted direcly from the system after auth is done 
 dish order user must be corrected

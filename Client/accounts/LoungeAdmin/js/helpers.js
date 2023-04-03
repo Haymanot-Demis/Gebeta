@@ -14,24 +14,24 @@ function attachEventListner(elements, event, eventListner, ...rest) {
 	}
 }
 
-function rowEventListner(rows) {
+function rowEventListner(rows, elemTochangeDisplay) {
 	for (let i = 1; i < rows.length; i++) {
 		rows[i].addEventListener("mouseenter", (e) => {
-			makeVisble(rows[i]);
+			makeVisble(elemTochangeDisplay[i - 1]);
 		});
 
 		rows[i].addEventListener("mouseleave", (e) => {
-			makeInVisble(rows[i]);
+			makeInVisble(elemTochangeDisplay[i - 1]);
 		});
 	}
 }
 
 function makeVisble(elem) {
-	elem.querySelector("div.btn-div").style.display = "flex";
+	elem.style.display = "flex";
 }
 
 function makeInVisble(elem) {
-	elem.querySelector("div.btn-div").style.display = "none";
+	elem.style.display = "none";
 }
 
 function validate(value, regexp = "") {

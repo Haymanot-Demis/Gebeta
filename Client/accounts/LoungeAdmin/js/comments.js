@@ -50,7 +50,7 @@ for (let comment of comments) {
 	body.classList.add("unread");
 	body.textContent = comment.comment;
 	commentInside.append(img, body);
-	mark = createCustomElement("div");
+	mark = createCustomElement("div", { id: comment._id });
 	mark.classList.add("markasread");
 	btn = createCustomElement("button");
 	btn.classList.add("button-9");
@@ -60,3 +60,16 @@ for (let comment of comments) {
 	container.append(header, commentInside, mark);
 	tabularData.appendChild(container);
 }
+
+let markasread = document.querySelectorAll(".markasread");
+console.log(markasread);
+attachEventListner(markasread, "click", (elem) => {
+	elem.parentElement.querySelector(".comment-body").classList.remove("unread");
+	// try {
+	// 	axios.put(DISHES_URL + "" + "/comments/" + elem.id, {
+	// 		read: true,
+	// 	});
+	// } catch (error) {
+	// 	console.log(error);
+	// }
+});

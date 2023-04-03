@@ -19,6 +19,7 @@ import { ORDERS_URL, DISHES_URL } from "../../../config/EndPoints.js";
 try {
 	let response = await axios.get(ORDERS_URL);
 	var orders = response.data;
+	console.log(orders);
 	response = await axios.get(DISHES_URL + "/comments/all");
 	var comments = response.data;
 } catch (error) {
@@ -33,7 +34,7 @@ cardNumbers[3].innerText =
 	}, 0);
 
 lists[3].classList.add("hovered");
-var response = await axios.get(ORDERS_URL + "/loungeAdmin");
+var response = await axios.get(ORDERS_URL + "/loungeAdmin/all"); // + loungeId
 const Orders = response.data;
 const Delivered = Orders.filter((order) => {
 	return order.status.toLowerCase() === "delivered";

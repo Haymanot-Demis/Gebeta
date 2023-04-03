@@ -1,6 +1,11 @@
 const url = new URL(location.href);
 const id = url.searchParams.get("id");
-import { DISHES_URL, LOUNGES_URL, ORDERS_URL } from "../../config/EndPoints.js";
+import {
+	DISHES_URL,
+	GALLERY_URL,
+	LOUNGES_URL,
+	ORDERS_URL,
+} from "../../config/EndPoints.js";
 import sliderImageManager from "../../script/sliderImageManager.js";
 var response = "";
 var Dish = "";
@@ -27,10 +32,9 @@ var time = document.querySelector("#time");
 var delivery = document.getElementsByName("delivery");
 var locationFormGroup = document.querySelector(".form-group.location");
 const price = document.getElementById("price");
-console.log(Dish.price * parseInt(countElem.value));
 var deliveryValue;
 var deliveryLocation;
-let orderBtn = document.querySelector(".detail-container .button");
+let orderBtn = document.querySelector(".order-btn");
 let saveBtn = document.getElementById("save-btn");
 let closeBtn = document.getElementById("close-btn");
 let incerement = document.getElementById("increment");
@@ -53,9 +57,7 @@ mylocation.onkeydown = () => {
 saveBtn.onclick = OnSave;
 async function dish() {
 	try {
-		const dish_images = await axios.get(
-			"http://localhost:3000/lounges/gallery/" + Dish._id
-		);
+		const dish_images = await axios.get(GALLERY_URL + "/dishes/" + Dish._id);
 
 		const images = dish_images.data;
 
@@ -64,7 +66,6 @@ async function dish() {
 
 		const detailContainer = document.querySelector(".detail-container");
 
-		console.log(detailContainer);
 		const description = document.createElement("div");
 		description.classList.add("desc");
 		const detail = document.createElement("div");
@@ -206,7 +207,7 @@ async function OnSave() {
 	let orderCount = countElem.value?.trim();
 	let timeToCome = time.value?.trim();
 	deliveryLocation = mylocation.value?.trim();
-	let isValid = validateOrderForm(locationFormGroup, deliveryLocation);
+	let isValid = validDeliveryLocation(locationFormGroup, deliveryLocation);
 	if (isValid) {
 		let data = {};
 		data.quantity = orderCount;
@@ -220,6 +221,7 @@ async function OnSave() {
 		data.totalPrice = Dish.price * parseInt(data.quantity);
 		data.dish = Dish._id;
 		data.user = "641acad3d4d88fa9291e44e3"; // will be updated later
+		data.lounge = "641768cfa16c164b38ac0358"; // will be updated later
 		console.log(data);
 		try {
 			const response = await axios.post(ORDERS_URL, data);
@@ -232,7 +234,7 @@ async function OnSave() {
 		let small = document.createElement("small");
 		small.id = "err-msg";
 		small.style.color = "red";
-		small.innerText = "Please enter a valid delivery location";
+		small.innerText = "Please enter delivery location";
 		locationFormGroup.appendChild(small);
 		mylocation.style.border = "1px solid red";
 		alert("Please enter a valid order");
@@ -240,9 +242,11 @@ async function OnSave() {
 	}
 }
 
-function validateOrderForm(location, deliveryLocation) {
+function validDeliveryLocation(location, deliveryLocation) {
 	if (location.style?.display == "block" && !deliveryLocation) {
 		return false;
 	}
 	return true;
 }
+
+export { stepper, validDeliveryLocation, orderOnline };

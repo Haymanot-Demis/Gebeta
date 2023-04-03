@@ -67,7 +67,7 @@ loungeRouter
 	})
 	.post(
 		isAuthenticated,
-		verifyLoungeAdmin,
+		verifyAdmin,
 		upload.single("image"),
 		(req, res, next) => {
 			// console.log(req?.file);
@@ -89,12 +89,12 @@ loungeRouter
 				});
 		}
 	)
-	.put(isAuthenticated, verifyLoungeAdmin, (req, res, next) => {
+	.put(isAuthenticated, verifyAdmin, (req, res, next) => {
 		res.statusCode = 403;
 		res.end("PUT operation not supported on /dishes");
 		next();
 	})
-	.delete(isAuthenticated, verifyLoungeAdmin, (req, res, next) => {
+	.delete(isAuthenticated, verifyAdmin, (req, res, next) => {
 		Lounges.deleteMany({ loungeAdmin: req.user._id })
 			.then((result) => {
 				res.statusCode = 200;
@@ -128,7 +128,7 @@ loungeRouter
 			next();
 		});
 	})
-	.post(isAuthenticated, verifyLoungeAdmin, (req, res, next) => {
+	.post(isAuthenticated, verifyAdmin, (req, res, next) => {
 		res.statusCode = 403;
 		res.send("POST operation not supported on /lounges/" + req.params.id);
 	})
@@ -150,7 +150,7 @@ loungeRouter
 			})
 			.catch((err) => next(err));
 	})
-	.delete(isAuthenticated, verifyLoungeAdmin, (req, res, next) => {
+	.delete(isAuthenticated, verifyAdmin, (req, res, next) => {
 		Lounges.deleteOne({ loungeAdmin: req.user._id, _id: req.params.id })
 			.then((result) => {
 				res.statusCode = 200;

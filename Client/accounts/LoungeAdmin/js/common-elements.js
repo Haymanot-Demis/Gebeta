@@ -7,6 +7,7 @@ var rows = table?.querySelectorAll("tr");
 var recentCustomers = details?.querySelector(".recentCustomers");
 var sales = document.querySelector(".numbers");
 var cardNumbers = document.querySelectorAll(".numbers");
+console.log(lists);
 export {
 	dashboardContainer,
 	lists,

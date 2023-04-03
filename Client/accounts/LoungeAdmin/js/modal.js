@@ -14,15 +14,16 @@ import { validate } from "./helpers.js";
 import escapeHTML from "../../../script/escapeHTML.js";
 import { DISHES_URL } from "../../../config/EndPoints.js";
 
-const openModal = function (event) {
-	console.log(window);
+const openModalBtns = document.querySelectorAll(".btn-open");
+console.log(openModalBtns, closeModalBtn, saveBtn);
+const openModal = function () {
 	modal.classList.remove("hidden");
 	overlay.classList.remove("hidden");
 	modal.style.top = window.scrollY + "px";
 };
 
-openModalBtn.addEventListener("click", (event) => {
-	openModal(event);
+openModalBtn?.addEventListener("click", () => {
+	openModal();
 	flag.innerHTML = "Adding";
 	saveBtn.addEventListener("click", async () => {
 		if (!error) {
@@ -32,15 +33,16 @@ openModalBtn.addEventListener("click", (event) => {
 });
 
 const closeModal = function () {
-	modal.querySelector("form").reset();
 	modal.classList.add("hidden");
 	overlay.classList.add("hidden");
-	inputs[1].parentNode.nextElementSibling
-		.querySelector("#imagePreview")
-		.querySelector("img").src = "../../images/camera.png";
 };
 
-closeModalBtn.addEventListener("click", closeModal);
+closeModalBtn.addEventListener("click", () => {
+	closeModal();
+	let next_sibiling = inputs[1].parentNode.nextElementSibling;
+	next_sibiling.querySelector("#imagePreview").querySelector("img").src =
+		"../../images/camera.png";
+});
 
 saveBtn.addEventListener("click", save);
 
@@ -149,6 +151,7 @@ async function update() {
 
 export {
 	openModal,
+	closeModal,
 	update,
 	saveBtn,
 	modal,

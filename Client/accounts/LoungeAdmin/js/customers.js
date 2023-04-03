@@ -19,6 +19,7 @@ lists[5].classList.add("hovered");
 try {
 	response = await axios.get("http://localhost:3000/users/all");
 	const users = response.data;
+	console.log(users);
 	response = await axios.get(ORDERS_URL);
 	var orders = response.data;
 	response = await axios.get(DISHES_URL + "/comments/all");
