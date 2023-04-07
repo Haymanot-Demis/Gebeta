@@ -7,6 +7,7 @@ const {
 	isAuthenticated,
 	verifyAdmin,
 	verifyLoungeAdmin,
+	verifyToken,
 } = require("../authenticate/authenticate");
 const Orders = require("../models/orders");
 const lounges = require("../models/lounges");

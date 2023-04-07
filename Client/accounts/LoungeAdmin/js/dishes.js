@@ -31,12 +31,20 @@ var deleteBtns;
 var editBtns;
 
 try {
-	let response = await axios.get(ORDERS_URL);
+	let response = await axios.get(ORDERS_URL, {
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: "Bearer " + localStorage.getItem("token"),
+		},
+	});
 	var orders = response.data;
 	response = await axios.get(DISHES_URL + "/comments/all");
 	var comments = response.data;
 } catch (error) {
-	console.log(error);
+	// if (error?.response?.status == 401) {
+	// 	location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+	// }
+	console.log(error.response);
 }
 cardNumbers[2].innerText = comments.length;
 cardNumbers[1].innerText = orders.length;
@@ -187,6 +195,9 @@ try {
 	// attachEventListner(rows, "dblclick", editBtnAction);
 	rowEventListner(rows, btnsWrapper);
 } catch (error) {
+	if (error?.response?.status == 401) {
+		location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+	}
 	console.log(error);
 }
 

@@ -7,7 +7,9 @@ const path = require("path");
 const config = require("./authenticate/config");
 const passport = require("passport");
 const expressSession = require("express-session");
-const authenticate = require("./authenticate/authenticate");
+const MongoDBStore = require("connect-mongodb-session")(expressSession);
+// const FileStore = require("session-file-store")(expressSession);
+// const authenticate = require("./authenticate/authenticate");
 const cookieParser = require("cookie-parser");
 const hbs = require("express-handlebars");
 const ejs = require("ejs");
@@ -30,10 +32,13 @@ mongoose
 	})
 	.catch((err) => console.log(err));
 
+const sessionStore = new MongoDBStore({
+	uri: config.mongodbURL,
+	collection: "session",
+	databaseName: "haymanot",
+});
 //built in middlewares
 // app.use(cookieParser("hayme"));
-// app.set("view engine", "ejs");
-// app.set("views", path.join(__dirname, "views"));
 
 app.engine("handlebars", hbs.engine({ extname: ".hbs" }));
 app.set("view engine", "handlebars");
@@ -59,6 +64,7 @@ app.use(
 		secret: process.env.SECRETE,
 		resave: false,
 		saveUninitialized: false,
+		store: sessionStore,
 	})
 );
 app.use(passport.initialize());
@@ -74,18 +80,6 @@ app.use("/gallery", galleryRouter);
 
 app.get("/", (req, res) => {
 	res.render("index");
-});
-
-app.get("/users/login", (req, res, next) => {
-	res.render("login");
-});
-
-app.get("/users/signup", (req, res, next) => {
-	res.render("signup");
-});
-
-app.get("/users/logout", (req, res, next) => {
-	res.render("logout");
 });
 
 // user auth

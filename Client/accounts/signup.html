@@ -1,63 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./styles/style.css" />
-    <title>Document</title>
-  </head>
-  <body>
-    <h1 class="home-header">
-      <a href="http://127.0.0.1:5500/Gebeta/Client/index.html">AASTU GEBETA</a>
-    </h1>
-    <div class="login-box">
-      <h2>Register</h2>
-      <form method="post" action="http://localhost:3000/users/signup">
-        <div class="user-box">
-          <input type="text" name="fname" id="fname" required="" />
-          <label>First Name</label>
-          <span class="msg success"></span>
-        </div>
-        <div class="user-box">
-          <input type="text" name="lname" id="lname" required="" />
-          <label>Last Name</label>
-          <span class="msg success"></span>
-        </div>
-        <div class="user-box">
-          <input type="text" name="username" id="username" required="" />
-          <label>Username</label>
-          <span class="msg success"></span>
-        </div>
-        <div class="user-box">
-          <input type="email" name="email" id="email" required="" />
-          <label>Email</label>
-          <span class="msg success"></span>
-        </div>
-        <div class="user-box">
-          <input type="password" name="password" id="password" required="" />
-          <label>Password</label>
-          <span class="msg success"></span>
-        </div>
-        <div class="user-box">
-          <input
-            type="password"
-            name="confirmPass"
-            id="confirmPass"
-            required=""
-          />
-          <label>Confirm Password</label>
-        </div>
-        <button type="submit">
-          <a>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            Submit
-          </a>
-        </button>
-      </form>
-    </div>
-  </body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+		<link rel="stylesheet" href="./styles/style.css" />
+		<script type="module" src="./js/signup.js"></script>
+		<title>Document</title>
+	</head>
+	<body>
+		<h1 class="home-header">
+			<a href="http://127.0.0.1:5500/Client/index.html">AASTU GEBETA</a>
+		</h1>
+		<div class="login-box">
+			<h2>Register</h2>
+			<small></small>
+			<form method="post" action="http://localhost:3000/users/signup">
+				<div class="user-box">
+					<input type="text" name="fname" id="fname" required="" />
+					<label>First Name</label>
+					<span class="msg success"></span>
+				</div>
+				<div class="user-box">
+					<input type="text" name="lname" id="lname" required="" />
+					<label>Last Name</label>
+					<span class="msg success"></span>
+				</div>
+				<div class="user-box">
+					<input type="email" name="email" id="username" required="" />
+					<label>Email</label>
+					<span class="msg success"></span>
+				</div>
+				<div class="user-box">
+					<input type="password" name="password" id="password" required="" />
+					<label>Password</label>
+					<span class="msg success"></span>
+				</div>
+				<div class="user-box">
+					<input
+						type="password"
+						name="confirmPass"
+						id="confirmPass"
+						required=""
+					/>
+					<label>Confirm Password</label>
+					<span class="msg success"></span>
+				</div>
+				<div class="user-box" title="Profile picture">
+					<input type="file" name="profile" id="profile" required="" />
+					<span class="msg success"></span>
+				</div>
+				<button type="submit" id="submit">
+					<a>
+						<span></span>
+						<span></span>
+						<span></span>
+						<span></span>
+						Submit
+					</a>
+				</button>
+			</form>
+		</div>
+	</body>
 </html>
