@@ -12,7 +12,7 @@ var error = false;
 
 import { validate } from "./helpers.js";
 import escapeHTML from "../../../script/escapeHTML.js";
-import { DISHES_URL } from "../../../config/EndPoints.js";
+import { DISHES_URL, axiosInstance } from "../../../config/EndPoints.js";
 
 const openModalBtns = document.querySelectorAll(".btn-open");
 console.log(openModalBtns, closeModalBtn, saveBtn);
@@ -27,7 +27,7 @@ openModalBtn?.addEventListener("click", () => {
 	flag.innerHTML = "Adding";
 	saveBtn.addEventListener("click", async () => {
 		if (!error) {
-			const response = await axios.post(DISHES_URL, formdata);
+			const response = await axiosInstance.post(DISHES_URL, formdata);
 		}
 	});
 });
@@ -141,7 +141,10 @@ async function update() {
 	saveBtn.addEventListener("click", async () => {
 		console.log("clicked");
 		if (!error) {
-			const response = await axios.put(DISHES_URL + "/" + saveBtn.id, formdata);
+			const response = await axiosInstance.put(
+				DISHES_URL + "/" + saveBtn.id,
+				formdata
+			);
 			closeModal();
 		} else {
 			console.log(error);

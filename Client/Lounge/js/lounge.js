@@ -4,24 +4,23 @@ import {
 	DISHES_URL,
 	GALLERY_URL,
 	LOUNGES_URL,
+	axiosInstance,
 } from "../../config/EndPoints.js";
 import sliderImageManager from "../../script/sliderImageManager.js";
 import display from "../../script/displayDishesCard.js";
 import getDishes from "../../script/getDishes.js";
+import { getUser, authorize } from "../../script/auth.js";
+var user = await getUser();
 lounge();
 menu();
 async function lounge() {
 	try {
-		const response = await axios.get(LOUNGES_URL + `/${id}`, {
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
+		const response = await axiosInstance.get(LOUNGES_URL + `/${id}`);
 
 		const lounge = response.data;
 		console.log(lounge);
 
-		const loune_images_res = await axios.get(
+		const loune_images_res = await axiosInstance.get(
 			GALLERY_URL + "/lounges/" + lounge._id
 		);
 		const loune_images = loune_images_res.data;

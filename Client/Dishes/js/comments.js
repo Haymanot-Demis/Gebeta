@@ -2,7 +2,11 @@ const url = new URL(location.href);
 const id = url.searchParams.get("id");
 const commnetArea = document.querySelector(".leaveComment textarea");
 const submit = document.getElementById("submitComment");
-import { DISHES_URL, LOUNGES_URL } from "../../config/EndPoints.js";
+import {
+	DISHES_URL,
+	LOUNGES_URL,
+	axiosInstance,
+} from "../../config/EndPoints.js";
 import escapeHTML from "../../script/escapeHTML.js";
 
 submit.onclick = async () => {
@@ -13,20 +17,15 @@ submit.onclick = async () => {
 	}
 
 	try {
-		const response = await axios.post(
-			DISHES_URL + `/${id}/comments`,
-			{
-				comment,
-			},
-			{
-				headers: {
-					"Content-Type": "application/json",
-				},
-			}
-		);
+		const response = await axiosInstance.post(DISHES_URL + `/${id}/comments`, {
+			comment,
+		});
 		location.reload();
 		console.log(response.data);
 	} catch (error) {
+		if (error?.response?.status == 401) {
+			location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+		}
 		console.log(error);
 	}
 };

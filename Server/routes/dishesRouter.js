@@ -6,6 +6,7 @@ const {
 	verifyAdmin,
 	isAuthenticated,
 	verifyLoungeAdmin,
+	verifyToken,
 } = require("../authenticate/authenticate");
 const Orders = require("../models/orders");
 const multer = require("multer");
@@ -49,26 +50,20 @@ dishRouter.use(bodyParser.json());
 dishRouter
 	.route("/")
 	.get(async (req, res, next) => {
-		// console.log(req?.body?.options);
-		let options;
-		if (req?.user?.loungeAdmin) {
-			const lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
-			options = { ...req.body.options, lounge: lounge._id };
-		}
-		Dishes.find(options)
+		Dishes.find({})
 			.populate("lounge")
 			.populate("lounge.loungeAdmin")
 			.populate("comment.author")
 			.then((dishes) => {
 				res.statusCode = 200;
 				res.contentType("application/json");
-				// console.log(dishes);
 				res.json(dishes);
 				next();
 			})
 			.catch((err) => next(err));
 	})
 	.post(
+		verifyToken,
 		isAuthenticated,
 		verifyLoungeAdmin,
 		upload.single("image"),
@@ -90,29 +85,28 @@ dishRouter
 				.catch((err) => next(err));
 		}
 	)
-	.put(isAuthenticated, verifyLoungeAdmin, (req, res, next) => {
+	.put(verifyToken, isAuthenticated, verifyLoungeAdmin, (req, res, next) => {
 		res.statusCode = 403;
 		res.end("PUT operation not supported on /dishes");
 		next();
 	})
-	.delete(isAuthenticated, verifyLoungeAdmin, async (req, res, next) => {
-		// lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
-		// Dishes.deleteMany({ lounge: lounge._id })
-
-		Dishes.deleteMany({})
-			.then((result) => {
-				res.statusCode = 200;
-				res.contentType("application/json");
-				res.json(result);
-				next();
-			})
-			.catch((err) => next(err));
-	});
-
-dishRouter.route("/option/:option").get(async (req, res, next) => {
-	console.log(req.params.option);
-	res.end();
-});
+	.delete(
+		verifyToken,
+		isAuthenticated,
+		verifyLoungeAdmin,
+		async (req, res, next) => {
+			// lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
+			// Dishes.deleteMany({ lounge: lounge._id })
+			Dishes.deleteMany({})
+				.then((result) => {
+					res.statusCode = 200;
+					res.contentType("application/json");
+					res.json(result);
+					next();
+				})
+				.catch((err) => next(err));
+		}
+	);
 
 dishRouter.route("/distinct").get((req, res, next) => {
 	Dishes.distinct(req?.body?.field, req.body.filter)
@@ -142,12 +136,13 @@ dishRouter
 			})
 			.catch((err) => next(err));
 	})
-	.post(isAuthenticated, verifyLoungeAdmin, (req, res, next) => {
+	.post(verifyToken, isAuthenticated, verifyLoungeAdmin, (req, res, next) => {
 		res.statusCode = 403;
 		res.end(`POST operation not supported on /dishes ${req.params.dishid}`);
 		next();
 	})
 	.put(
+		verifyToken,
 		isAuthenticated,
 		verifyLoungeAdmin,
 		upload.single("image"),
@@ -165,7 +160,7 @@ dishRouter
 					(err) => {
 						if (err) {
 							console.log(err);
-							next(err);
+							return next(err);
 						}
 						console.log("deleted");
 					}
@@ -175,7 +170,6 @@ dishRouter
 			}
 
 			Dishes.findOneAndUpdate(
-				// { lounge: lounge?._id, _id: req.params.dishid },
 				{ _id: req.params.dishid },
 				{
 					$set: req.body,
@@ -192,46 +186,35 @@ dishRouter
 				.catch((err) => next(err));
 		}
 	)
-	.delete(isAuthenticated, verifyLoungeAdmin, async (req, res, next) => {
-		// Dishes.deleteOne({ loungeAdmin: req.user._id, _id: req.params.dishid }) later
-		const dish = await Dishes.findOne({ _id: req.params.dishid });
-		fs.unlink(
-			__dirname + "/../uploads/loungeImages/" + dish.image.split("\\").pop(),
-			(err) => {
-				if (err) {
-					console.log(err);
-					next(err);
+	.delete(
+		verifyToken,
+		isAuthenticated,
+		verifyLoungeAdmin,
+		async (req, res, next) => {
+			const dish = await Dishes.findOne({ _id: req.params.dishid });
+			fs.unlink(
+				__dirname + "/../uploads/loungeImages/" + dish.image.split("\\").pop(),
+				(err) => {
+					if (err) {
+						console.log(err);
+						next(err);
+					}
+					console.log("deleted");
 				}
-				console.log("deleted");
-			}
-		);
-		Dishes.deleteOne({ _id: req.params.dishid })
-			.then((dishes) => {
-				res.statusCode = 200;
-				res.contentType("application/json");
-				res.json(dishes);
-			})
-			.catch((err) => next(err));
-	});
-
-dishRouter.route("/lounge/:loungeId").get((req, res, next) => {
-	console.log(typeof req.params.loungeId);
-	Lounges.findById(req.params.loungeId).then((lounge) => {
-		Dishes.findOne({})
-			.then((dishes) => {
-				res.statusCode = 200;
-				res.contentType("application/json");
-				console.log(dishes?.lounge);
-				res.json(dishes);
-				next();
-			})
-			.catch((err) => next(err));
-	});
-});
+			);
+			Dishes.deleteOne({ _id: req.params.dishid })
+				.then((dishes) => {
+					res.statusCode = 200;
+					res.contentType("application/json");
+					res.json(dishes);
+				})
+				.catch((err) => next(err));
+		}
+	);
 
 dishRouter
 	.route("/:dishId/comments")
-	.get((req, res, next) => {
+	.get(verifyToken, isAuthenticated, (req, res, next) => {
 		Dishes.findById(req.params.dishId)
 			.populate("comment.author")
 			.then((dish) => {
@@ -240,7 +223,7 @@ dishRouter
 				res.json(dish.comment);
 			});
 	})
-	.post((req, res, next) => {
+	.post(verifyToken, isAuthenticated, (req, res, next) => {
 		Dishes.findById(req.params.dishId)
 			.then(async (dish) => {
 				if (!dish) {
@@ -260,58 +243,67 @@ dishRouter
 			});
 	});
 
-dishRouter.route("/:dishId/comments/:commentId").put((req, res, next) => {
-	Dishes.findById(req.params.dishId).then((dish) => {
-		if (!dish) {
-			res.statusCode = 404;
-			res.contentType = "application/json";
-			res.json({
-				msg:
-					"Dishes comment with dish id " + req.params.dishId + " is not found",
-			});
-			return next(
-				new Error(
-					"Dishes Comment with dish id " + req.params.dishId + "is not found"
-				)
-			);
-		}
-		dish.comment.forEach((comment) => {
-			if (comment._id.toString() === req.params.commentId) {
-				comment.read = true;
-				dish.save().then((result) => {
-					res.statusCode = 200;
-					res.contentType = "application/json";
-					res.json(result);
-					next();
+dishRouter
+	.route("/:dishId/comments/:commentId")
+	.put(verifyToken, isAuthenticated, (req, res, next) => {
+		Dishes.findById(req.params.dishId).then((dish) => {
+			if (!dish) {
+				res.statusCode = 404;
+				res.contentType = "application/json";
+				res.json({
+					msg:
+						"Dishes comment with dish id " +
+						req.params.dishId +
+						" is not found",
 				});
+				return next(
+					new Error(
+						"Dishes Comment with dish id " + req.params.dishId + "is not found"
+					)
+				);
 			}
+			dish.comment.forEach((comment) => {
+				if (comment._id.toString() === req.params.commentId) {
+					comment.read = true;
+					dish.save().then((result) => {
+						res.statusCode = 200;
+						res.contentType = "application/json";
+						res.json(result);
+						next();
+					});
+				}
+			});
 		});
 	});
-});
 
 dishRouter
 	.route("/comments/all")
-	.get(isAuthenticated, verifyLoungeAdmin, async (req, res, next) => {
-		// let lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
-		// Dishes.find({ lounge: lounge._id }, { comments: "1" })
-		Dishes.find({}, { comment: "1" })
-			.sort({ createdAt: 1 })
-			.populate("comment.author")
-			.populate("comment.lounge")
-			.then((dishes) => {
-				res.statusCode = 200;
-				res.contentType = "application/json";
-				var com = [];
-				dishes.forEach((dish) => {
-					com.push(...dish.comment);
-				});
-				// console.log(com);
-				res.json(com);
-				next();
-			})
-			.catch((err) => {
-				next(err);
+	.get(
+		verifyToken,
+		isAuthenticated,
+		verifyLoungeAdmin,
+		async (req, res, next) => {
+			let lounge = await Lounges.findOne({
+				loungeAdmin: req.user._id,
 			});
-	});
+			Dishes.find({ lounge: lounge._id }, { comments: "1" })
+				.sort({ createdAt: 1 })
+				.populate("comment.author")
+				.then((dishes) => {
+					res.statusCode = 200;
+					res.contentType = "application/json";
+					var com = [];
+					dishes.forEach((dish) => {
+						com.push(...dish.comment);
+					});
+					// console.log(com);
+					res.json(com);
+					next();
+				})
+				.catch((err) => {
+					next(err);
+				});
+		}
+	);
 
 module.exports = dishRouter;

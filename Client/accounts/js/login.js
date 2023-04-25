@@ -26,20 +26,19 @@ submit.onclick = async (e) => {
 				{
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: "Bearer Token",
 					},
 				}
 			);
 			const small = form.parentNode.querySelector("small");
-			localStorage.setItem("token", response.data.token);
 			console.log(small, response);
 			if (response.data.success) {
+				localStorage.setItem("token", response.data.token);
 				small.classList.remove("err");
 				small.classList.add("success");
 				small.innerText = response.data.status;
 				console.log(small.innerHTML);
 				// location.href =  "http://127.0.0.1:5500/Client/accounts/LoungeAdmin/dishes.html";
-				// window.history.go(-1);
+				window.history.go(-1);
 			}
 		} catch (e) {
 			const small = form.parentNode.querySelector("small");

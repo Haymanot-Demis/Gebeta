@@ -40,9 +40,9 @@ const sessionStore = new MongoDBStore({
 //built in middlewares
 // app.use(cookieParser("hayme"));
 
-app.engine("handlebars", hbs.engine({ extname: ".hbs" }));
-app.set("view engine", "handlebars");
-app.set("views", path.join(__dirname, "views"));
+// app.engine("handlebars", hbs.engine({ extname: ".hbs" }));
+// app.set("view engine", "handlebars");
+// app.set("views", path.join(__dirname, "views"));
 var whitelist = [];
 var corsOptions = {
 	origin: function (origin, callback) {
@@ -78,10 +78,6 @@ app.use("/orders", orderRouter);
 app.use("/comments", commentsRouter);
 app.use("/gallery", galleryRouter);
 
-app.get("/", (req, res) => {
-	res.render("index");
-});
-
 // user auth
 // app.use((req, res, next) => {
 //     if(!req.isAuthenticated()){
@@ -92,10 +88,6 @@ app.get("/", (req, res) => {
 //       next();
 //     }
 // })
-
-app.get("/home", (req, res) => {
-	res.render("login");
-});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

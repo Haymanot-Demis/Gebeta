@@ -14,15 +14,21 @@ import {
 	recentCustomers,
 	cardNumbers,
 } from "./common-elements.js";
-import { ORDERS_URL, DISHES_URL } from "../../../config/EndPoints.js";
+import {
+	ORDERS_URL,
+	DISHES_URL,
+	axiosInstance,
+} from "../../../config/EndPoints.js";
 
 try {
-	let response = await axios.get(ORDERS_URL);
+	let response = await axiosInstance.get(ORDERS_URL);
 	var orders = response.data;
-	console.log(orders);
-	response = await axios.get(DISHES_URL + "/comments/all");
+	response = await axiosInstance.get(DISHES_URL + "/comments/all");
 	var comments = response.data;
 } catch (error) {
+	if (error?.response?.status == 401) {
+		location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+	}
 	console.log(error);
 }
 cardNumbers[2].innerText = comments.length;
@@ -34,14 +40,24 @@ cardNumbers[3].innerText =
 	}, 0);
 
 lists[3].classList.add("hovered");
-var response = await axios.get(ORDERS_URL + "/loungeAdmin/all"); // + loungeId
-const Orders = response.data;
-const Delivered = Orders.filter((order) => {
-	return order.status.toLowerCase() === "delivered";
-});
-const Pending = Orders.filter((order) => {
-	return order.status.toLowerCase() === "pending";
-});
+
+try {
+	var response = await axiosInstance.get(ORDERS_URL + "/loungeAdmin/all"); // + loungeId
+	var Orders = response.data;
+
+	var Delivered = Orders.filter((order) => {
+		return order.status.toLowerCase() === "delivered";
+	});
+	var Pending = Orders.filter((order) => {
+		return order.status.toLowerCase() === "pending";
+	});
+} catch (error) {
+	console.log(error);
+
+	if (error?.response?.status == 401) {
+		location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+	}
+}
 
 let thead = createCustomElement("thead");
 let tr = createCustomElement("tr");
@@ -113,12 +129,16 @@ function display(orders, i) {
 	return i;
 }
 
-console.log(document.querySelectorAll("select"));
-
 async function EventListener(elem) {
-	let res = await axios.put(ORDERS_URL + "/loungeAdmin/" + elem.id, {
-		status: elem.value,
-	});
+	try {
+		let res = await axiosInstance.put(ORDERS_URL + "/loungeAdmin/" + elem.id, {
+			status: elem.value,
+		});
+	} catch (error) {
+		if (error?.response?.status == 401) {
+			location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+		}
+	}
 }
 
 /*

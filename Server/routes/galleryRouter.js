@@ -128,6 +128,7 @@ galleryRouter
 			.then((images) => {
 				res.statusCode = 200;
 				res.contentType = "application/json";
+				console.log(images);
 				res.json(images);
 				next();
 			})

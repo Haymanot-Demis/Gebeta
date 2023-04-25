@@ -3,7 +3,11 @@ import {
 	table,
 	dashboardContainer,
 } from "../../LoungeAdmin/js/common-elements.js";
-import { DISHES_URL, ORDERS_URL } from "../../../config/EndPoints.js";
+import {
+	DISHES_URL,
+	ORDERS_URL,
+	axiosInstance,
+} from "../../../config/EndPoints.js";
 import {
 	createCustomElement,
 	rowEventListner,
@@ -11,23 +15,27 @@ import {
 
 import { openModal, closeModal } from "../../LoungeAdmin/js/modal.js";
 import modalEvent from "./yesnomodal.js";
+import { getUser } from "../../../script/auth.js";
 
 var response;
 var orders;
 var Dish;
 
 try {
-	response = await axios.get(ORDERS_URL); // ORDERS_URL + userid
+	response = await axiosInstance.get(ORDERS_URL);
 	orders = response.data;
+	var Delivered = orders.filter((order) => {
+		return order.status.toLowerCase() === "delivered";
+	});
+	var Pending = orders.filter((order) => {
+		return order.status.toLowerCase() === "pending";
+	});
 } catch (error) {
+	if (error?.response?.status == 401) {
+		location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+	}
 	console.error(error);
 }
-const Delivered = orders.filter((order) => {
-	return order.status.toLowerCase() === "delivered";
-});
-const Pending = orders.filter((order) => {
-	return order.status.toLowerCase() === "pending";
-});
 
 let thead = createCustomElement("thead");
 let tr = createCustomElement("tr");
@@ -212,10 +220,13 @@ function display(orders, i) {
 
 async function reloadTable() {
 	try {
-		response = await axios.get(ORDERS_URL); // ORDERS_URL + userid
+		response = await axiosInstance.get(ORDERS_URL); // ORDERS_URL + userid
 		orders = response.data;
 	} catch (error) {
-		console.error(error);
+		if (error?.response?.status == 401) {
+			location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+		}
+		console.log(error);
 	}
 	let Delivered = orders.filter((order) => {
 		return order.status.toLowerCase() === "delivered";
@@ -228,7 +239,7 @@ async function reloadTable() {
 }
 
 async function onSave(Dish) {
-	const data = {};
+	const user = await getUser();
 	let orderCount = countElem.value?.trim();
 	let timeToCome = time.value?.trim();
 	deliveryLocation = mylocation.value?.trim();
@@ -245,13 +256,13 @@ async function onSave(Dish) {
 			data.timeToCome = timeToCome;
 		}
 		data.totalPrice = Dish?.price ?? 0 * parseInt(data.quantity);
-		data.dish = Dish?._id ?? "6413d4ee778fa73811bc64f8";
-		data.user = orders?.user?._id ?? "641acad3d4d88fa9291e44e3"; // will be updated later
-		data.lounge = orders?.lounge?._id ?? "641768cfa16c164b38ac0358";
+		data.dish = Dish?._id;
+		data.user = orders?.user?._id ?? user._id;
+		data.lounge = orders?.lounge?._id;
 		console.log(data);
 
 		try {
-			const response = await axios.put(
+			const response = await axiosInstance.put(
 				ORDERS_URL + "/" + orderBtn.id?.slice(1),
 				data
 			);
@@ -262,6 +273,9 @@ async function onSave(Dish) {
 			console.log(response.status);
 			// closeModal();
 		} catch (error) {
+			if (error?.response?.status == 401) {
+				location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+			}
 			formErr.classList.remove("hidden");
 			formErr.innerText = error.response.data.msg;
 			console.log(error);
@@ -280,9 +294,14 @@ async function onSave(Dish) {
 
 delete_confirm.onclick = async () => {
 	try {
-		response = await axios.delete(ORDERS_URL + "/" + orderBtn.id?.slice(1));
+		response = await axiosInstance.delete(
+			ORDERS_URL + "/" + orderBtn.id?.slice(1)
+		);
 		console.log(response);
 	} catch (error) {
+		if (error?.response?.status == 401) {
+			location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+		}
 		console.log(error);
 	}
 };
@@ -304,10 +323,15 @@ mylocation.onkeydown = () => {
 
 async function EditSetup() {
 	try {
-		response = await axios.get(ORDERS_URL + "/" + orderBtn.id?.slice(1));
+		response = await axiosInstance.get(
+			ORDERS_URL + "/" + orderBtn.id?.slice(1)
+		);
 		console.log(response);
 		Dish = response.data.dish;
 	} catch (error) {
+		if (error?.response?.status == 401) {
+			location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+		}
 		console.log(error);
 	}
 	price.value = Dish?.price ?? 0 * parseInt(countElem.value) + " ETB";

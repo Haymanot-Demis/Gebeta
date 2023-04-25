@@ -13,18 +13,25 @@ import {
 	recentCustomers,
 	cardNumbers,
 } from "./common-elements.js";
-import { DISHES_URL, ORDERS_URL } from "../../../config/EndPoints.js";
+import {
+	DISHES_URL,
+	ORDERS_URL,
+	axiosInstance,
+} from "../../../config/EndPoints.js";
 var response;
 lists[5].classList.add("hovered");
 try {
-	response = await axios.get("http://localhost:3000/users/all");
+	response = await axiosInstance.get("http://localhost:3000/users/all");
 	const users = response.data;
 	console.log(users);
-	response = await axios.get(ORDERS_URL);
+	response = await axiosInstance.get(ORDERS_URL);
 	var orders = response.data;
-	response = await axios.get(DISHES_URL + "/comments/all");
+	response = await axiosInstance.get(DISHES_URL + "/comments/all");
 	var comments = response.data;
 } catch (error) {
+	if (error?.response?.status == 401) {
+		location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+	}
 	console.log(error);
 }
 

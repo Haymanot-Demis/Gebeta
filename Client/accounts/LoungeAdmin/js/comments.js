@@ -9,14 +9,21 @@ import {
 	tabularData,
 	cardNumbers,
 } from "./common-elements.js";
-import { DISHES_URL, ORDERS_URL } from "../../../config/EndPoints.js";
+import {
+	DISHES_URL,
+	ORDERS_URL,
+	axiosInstance,
+} from "../../../config/EndPoints.js";
 try {
-	var response = await axios.get(ORDERS_URL);
+	var response = await axiosInstance.get(ORDERS_URL);
 	var orders = response.data;
-	var response = await axios.get(DISHES_URL + "/comments/all");
+	var response = await axiosInstance.get(DISHES_URL + "/comments/all");
 	var comments = response.data;
 	console.log(comments);
 } catch (error) {
+	if (error?.response?.status == 401) {
+		location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+	}
 	console.log(error);
 }
 
@@ -66,7 +73,7 @@ console.log(markasread);
 attachEventListner(markasread, "click", (elem) => {
 	elem.parentElement.querySelector(".comment-body").classList.remove("unread");
 	// try {
-	// 	axios.put(DISHES_URL + "" + "/comments/" + elem.id, {
+	// 	axiosInstance.put(DISHES_URL + "" + "/comments/" + elem.id, {
 	// 		read: true,
 	// 	});
 	// } catch (error) {

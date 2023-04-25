@@ -12,17 +12,15 @@ passport.deserializeUser(Users.deserializeUser());
 passport.use(
 	new jwtStrategy(
 		{
-			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken,
+			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 			secretOrKey: process.env.SECRETE,
 		},
 		(payload, done) => {
 			console.log(payload);
-			Users.findById(payload, (err, user) => {
+			Users.findById(payload.id, (err, user) => {
 				if (err) {
-					console.log(err);
 					return done(err, false);
 				} else if (user) {
-					console.log("jwt", user);
 					return done(null, user);
 				} else {
 					return done(null, false);
@@ -35,7 +33,7 @@ passport.use(
 const verifyToken = passport.authenticate("jwt", { session: false });
 
 const verifyAdmin = (req, res, next) => {
-	if (req?.user?.systemAdmin) {
+	if (req?.user?.role?.indexOf("admin") != -1) {
 		return next();
 	}
 	const err = new Error("Unauthorized Access");
@@ -50,12 +48,13 @@ const verifyLoungeAdmin = (req, res, next) => {
 		res.send(
 			"This account is not ready for use. Please wait until it is activated"
 		);
-	} else if (!req?.user?.loungeAdmin) {
+	} else if (req?.user?.role?.indexOf("loungeadmin") == -1) {
 		const err = new Error("Unauthorized Access");
 		res.statusCode = 403;
 		res.contentType = "application/json";
 		return next(err);
 	}
+	next();
 };
 
 const isAuthenticated = (req, res, next) => {

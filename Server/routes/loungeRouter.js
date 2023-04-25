@@ -4,6 +4,7 @@ const {
 	verifyAdmin,
 	isAuthenticated,
 	verifyLoungeAdmin,
+	verifyToken,
 } = require("../authenticate/authenticate");
 const Lounges = require("../models/lounges");
 const multer = require("multer");
@@ -11,6 +12,7 @@ const bodyParser = require("body-parser");
 const crypto = require("crypto");
 const { ObjectId } = require("mongodb");
 const Gallery = require("../models/gallery");
+const Dishes = require("../models/dishes");
 
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
@@ -48,15 +50,8 @@ loungeRouter.use(bodyParser.urlencoded({ extended: false }));
 loungeRouter
 	.route("/")
 	.get((req, res, next) => {
-		let options = {};
-		if (req?.user?.loungeAdmin) {
-			options = {
-				loungeAdmin: req.user._id,
-			};
-		}
-		options = { ...options, ...req.body };
 		// console.log(req.body);
-		Lounges.find(options)
+		Lounges.find({})
 			.populate("loungeAdmin")
 			.then((lounges) => {
 				res.statusCode = 200;
@@ -66,6 +61,7 @@ loungeRouter
 			.catch((err) => next(err));
 	})
 	.post(
+		verifyToken,
 		isAuthenticated,
 		verifyAdmin,
 		upload.single("image"),
@@ -89,12 +85,12 @@ loungeRouter
 				});
 		}
 	)
-	.put(isAuthenticated, verifyAdmin, (req, res, next) => {
+	.put(verifyToken, isAuthenticated, verifyAdmin, (req, res, next) => {
 		res.statusCode = 403;
 		res.end("PUT operation not supported on /dishes");
 		next();
 	})
-	.delete(isAuthenticated, verifyAdmin, (req, res, next) => {
+	.delete(verifyToken, isAuthenticated, verifyAdmin, (req, res, next) => {
 		Lounges.deleteMany({ loungeAdmin: req.user._id })
 			.then((result) => {
 				res.statusCode = 200;
@@ -103,20 +99,6 @@ loungeRouter
 			})
 			.catch((err) => next(err));
 	});
-
-// loungeRouter.route("/gallery/:loungeId").get((req, res, next) => {
-//   Gallery.find({ object: req.params.loungeId })
-//     .populate("object")
-//     .then((images) => {
-//       res.statusCode = 200;
-//       res.contentType = "application/json";
-//       res.json(images);
-//       next();
-//     })
-//     .catch((err) => {
-//       next(err);
-//     });
-// });
 
 loungeRouter
 	.route("/:id")
@@ -128,28 +110,33 @@ loungeRouter
 			next();
 		});
 	})
-	.post(isAuthenticated, verifyAdmin, (req, res, next) => {
+	.post(verifyToken, isAuthenticated, verifyAdmin, (req, res, next) => {
 		res.statusCode = 403;
 		res.send("POST operation not supported on /lounges/" + req.params.id);
 	})
-	.put(isAuthenticated, verifyLoungeAdmin, (req, res, next) => {
-		Lounges.updateMany(
-			{
-				_id: req.params.id,
-				loungeAdmin: req.user._id,
-			},
-			{
-				$set: req.body,
-			},
-			{ new: true }
-		)
-			.then((lounge) => {
-				res.statusCode = 200;
-				res.contentType = "application/json";
-				res.json(lounge);
-			})
-			.catch((err) => next(err));
-	})
+	.put(
+		verifyLoungeAdmin,
+		isAuthenticated,
+		verifyLoungeAdmin,
+		(req, res, next) => {
+			Lounges.updateMany(
+				{
+					_id: req.params.id,
+					loungeAdmin: req.user._id,
+				},
+				{
+					$set: req.body,
+				},
+				{ new: true }
+			)
+				.then((lounge) => {
+					res.statusCode = 200;
+					res.contentType = "application/json";
+					res.json(lounge);
+				})
+				.catch((err) => next(err));
+		}
+	)
 	.delete(isAuthenticated, verifyAdmin, (req, res, next) => {
 		Lounges.deleteOne({ loungeAdmin: req.user._id, _id: req.params.id })
 			.then((result) => {
@@ -158,6 +145,43 @@ loungeRouter
 				res.json(result);
 			})
 			.catch((err) => next(err));
+	});
+loungeRouter
+	.route("/admin/lounge")
+	.get(verifyToken, isAuthenticated, verifyLoungeAdmin, (req, res, next) => {
+		Lounges.findOne({ loungeAdmin: req.user._id }).then((lounge) => {
+			if (!lounge) {
+				res.statusCode = 404;
+				res.contentType = "application/json";
+				res.json({
+					status: "failed",
+					message: "Lounge with admin id " + req.user._id + " does not exist",
+				});
+				return next(
+					new Error("Lounge with admin id " + req.user._id + " does not exist")
+				);
+			}
+			res.statusCode = 200;
+			res.contentType = "application/json";
+			res.json(lounge);
+			next();
+		});
+	});
+
+loungeRouter
+	.route("/:loungeId/dishes")
+	.get(verifyToken, isAuthenticated, verifyLoungeAdmin, (req, res, next) => {
+		Lounges.findById(req.params.loungeId).then((lounge) => {
+			Dishes.find({ lounge: lounge._id })
+				.populate("lounge")
+				.then((dishes) => {
+					res.statusCode = 200;
+					res.contentType("application/json");
+					res.json(dishes);
+					next();
+				})
+				.catch((err) => next(err));
+		});
 	});
 
 module.exports = loungeRouter;

@@ -14,9 +14,9 @@ import { createCustomElement } from "../js/helpers.js";
 var EndPoint = "/dishes/";
 var id = url.searchParams.get("id");
 
-if (url.searchParams.get("from").slice(1, -1) == "mylounge") {
+if (url.searchParams.get("from") == "mylounge") {
 	EndPoint = "/lounges/";
-	id = url.searchParams.get("id").slice(1, -1);
+	id = url.searchParams.get("id");
 }
 console.log(EndPoint, id);
 
@@ -57,6 +57,9 @@ try {
 		autoGrid.append(li);
 	}
 } catch (error) {
+	if (error?.response?.status == 401) {
+		location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+	}
 	console.log(error);
 }
 

@@ -5,16 +5,19 @@ import {
 	GALLERY_URL,
 	LOUNGES_URL,
 	ORDERS_URL,
+	axiosInstance,
 } from "../../config/EndPoints.js";
+import { getUser, authorize } from "../../script/auth.js";
 import sliderImageManager from "../../script/sliderImageManager.js";
-var response = "";
-var Dish = "";
+var user = await getUser();
+if (user) {
+	authorize(user);
+}
+var response;
+var Dish;
+
 try {
-	response = await axios.get(DISHES_URL + `/${id}`, {
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
+	response = await axiosInstance.get(DISHES_URL + `/${id}`);
 
 	Dish = response.data;
 	console.log(Dish);
@@ -57,7 +60,9 @@ mylocation.onkeydown = () => {
 saveBtn.onclick = OnSave;
 async function dish() {
 	try {
-		const dish_images = await axios.get(GALLERY_URL + "/dishes/" + Dish._id);
+		const dish_images = await axiosInstance.get(
+			GALLERY_URL + "/dishes/" + Dish._id
+		);
 
 		const images = dish_images.data;
 
@@ -220,14 +225,17 @@ async function OnSave() {
 		}
 		data.totalPrice = Dish.price * parseInt(data.quantity);
 		data.dish = Dish._id;
-		data.user = "641acad3d4d88fa9291e44e3"; // will be updated later
-		data.lounge = "641768cfa16c164b38ac0358"; // will be updated later
+		data.user = user._id;
+		data.lounge = Dish.lounge?._id;
 		console.log(data);
 		try {
-			const response = await axios.post(ORDERS_URL, data);
+			const response = await axiosInstance.post(ORDERS_URL, data);
 			console.log(response);
 			closeBtn.click();
 		} catch (error) {
+			if (error?.response?.status == 401) {
+				location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+			}
 			console.log(error);
 		}
 	} else {

@@ -15,6 +15,9 @@ try {
 	var response = await axios.get(DISHES_URL + "/comments/all");
 	var comments = response.data;
 } catch (error) {
+	if (error?.response?.status == 401) {
+		location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+	}
 	console.log(error);
 }
 

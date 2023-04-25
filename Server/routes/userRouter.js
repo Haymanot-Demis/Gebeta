@@ -46,11 +46,12 @@ const upload = multer({
 
 userRouter.use(bodyParser.json());
 
-userRouter.route("/").get((req, res, next) => {
+userRouter.route("/").get(authenticate.verifyToken, (req, res, next) => {
+	console.log(req.user);
 	if (req.isAuthenticated()) {
 		res.statusCode = 200;
 		res.contentType = "application/json";
-		res.json(req.user);
+		res.json({ success: true, user: req.user });
 		return next();
 	} else {
 		res.statusCode = 401;
@@ -59,6 +60,7 @@ userRouter.route("/").get((req, res, next) => {
 		next(new Error("Not Authenticated"));
 	}
 });
+
 userRouter
 	.route("/signup")
 	.post(upload.single("profileImage"), (req, res, next) => {
@@ -116,7 +118,7 @@ userRouter.route("/signin").post((req, res, next) => {
 	console.log("user", req.user);
 	console.log(req.session);
 	if (req.user) {
-		console.log("logged in", req.user);
+		console.log("A logged in", req.user);
 		res.statusCode = 200;
 		res.contentType = "application/json";
 		res.json({ success: true, status: "Already Loggedin" });
@@ -152,8 +154,14 @@ userRouter.route("/signin").post((req, res, next) => {
 				console.log("logged in", req.user);
 				res.statusCode = 200;
 				res.contentType = "application/json";
-				res.cookie("user", req.user.firstname);
-				const token = jwt.sign(req.user._id.valueOf(), process.env.SECRETE);
+				const token = jwt.sign(
+					{ id: req.user._id.valueOf() },
+					process.env.SECRETE,
+					{
+						expiresIn: 60,
+					}
+				);
+				console.log(token);
 				return res.json({ success: true, token, status: "Login Successfully" });
 			});
 		}
@@ -162,45 +170,50 @@ userRouter.route("/signin").post((req, res, next) => {
 
 userRouter.route("/logout").get((req, res, next) => {
 	req.logOut();
-	res.redirect("/");
+	res.statusCode = 200;
+	res.send({ success: true, msg: "logged out" });
 });
 
 userRouter
 	.route("/account/changePassword")
-	.post(authenticate.isAuthenticated, (req, res, next) => {
-		Users.findByUsername(req.user.username)
-			.then((user) => {
-				if (!user) {
-					res.statusCode = 401;
-					res.contentType = "text/plain";
-					res.send("User is found");
-					return next();
-				}
-				console.log(user);
-				user.changePassword(
-					req.body.oldPassword,
-					req.body.newPassword,
-					(err, result) => {
-						if (err) {
-							res.statusCode = 400;
-							res.contentType = "application/json";
-							res.json(err);
-							return next(err);
-						}
-						const info = sendEmail(
-							user.email,
-							"Password Change",
-							"Password Successfullly Changed"
-						);
-						console.log(JSON.parsei(info));
-						res.statusCode = 200;
-						res.contentType = "text/html";
-						return res.send(result);
+	.post(
+		authenticate.verifyToken,
+		authenticate.isAuthenticated,
+		(req, res, next) => {
+			Users.findByUsername(req.user.username)
+				.then((user) => {
+					if (!user) {
+						res.statusCode = 401;
+						res.contentType = "text/plain";
+						res.send("User is found");
+						return next();
 					}
-				);
-			})
-			.catch((err) => next(err));
-	});
+					console.log(user);
+					user.changePassword(
+						req.body.oldPassword,
+						req.body.newPassword,
+						(err, result) => {
+							if (err) {
+								res.statusCode = 400;
+								res.contentType = "application/json";
+								res.json(err);
+								return next(err);
+							}
+							const info = sendEmail(
+								user.email,
+								"Password Change",
+								"Password Successfullly Changed"
+							);
+							console.log(JSON.parsei(info));
+							res.statusCode = 200;
+							res.contentType = "text/html";
+							return res.send(result);
+						}
+					);
+				})
+				.catch((err) => next(err));
+		}
+	);
 
 userRouter.route("/account/resetPassword").post((req, res, next) => {
 	Users.findOne({ _id: req.body.user_id }).then(async (user) => {
@@ -267,19 +280,18 @@ userRouter.route("/account/resetPasswordRequest").post((req, res, next) => {
 	});
 });
 
-userRouter
-	.route("/all")
-	.get(
-		authenticate.isAuthenticated,
-		authenticate.verifyAdmin,
-		(req, res, next) => {
-			Users.find(req?.body).then((users) => {
-				res.statusCode = 200;
-				res.contentType = "application/json";
-				res.json(users);
-			});
-		}
-	);
+userRouter.route("/all").get(
+	authenticate.verifyToken,
+	authenticate.isAuthenticated,
+	// authenticate.verifyAdmin,
+	(req, res, next) => {
+		Users.find(req?.body).then((users) => {
+			res.statusCode = 200;
+			res.contentType = "application/json";
+			res.json(users);
+		});
+	}
+);
 
 userRouter.route("/activateUserAccount").put((req, res, next) => {
 	Users.findOne(req.body).then((user) => {

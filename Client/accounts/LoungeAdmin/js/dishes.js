@@ -1,3 +1,10 @@
+import { getUser } from "../../../script/auth.js";
+var user = await getUser();
+
+if (user.role.indexOf("loungeadmin") == -1) {
+	location.href = "http://127.0.0.1:5500/Client/index.html";
+	exit();
+}
 import { deleteBtnAction, editBtnAction } from "./eventListners.js";
 import {
 	createCustomElement,
@@ -25,27 +32,32 @@ import {
 	selects,
 	flag,
 } from "./modal.js";
-import { DISHES_URL, ORDERS_URL } from "../../../config/EndPoints.js";
+import {
+	DISHES_URL,
+	LOUNGES_URL,
+	ORDERS_URL,
+	axiosInstance,
+} from "../../../config/EndPoints.js";
 
 var deleteBtns;
 var editBtns;
-
+var orders;
+var lounge;
+var comments;
 try {
-	let response = await axios.get(ORDERS_URL, {
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: "Bearer " + localStorage.getItem("token"),
-		},
-	});
-	var orders = response.data;
-	response = await axios.get(DISHES_URL + "/comments/all");
-	var comments = response.data;
+	var response = await axiosInstance.get(ORDERS_URL + "/loungeAdmin/all");
+	orders = response.data;
+	console.log(orders);
+	response = await axiosInstance.get(DISHES_URL + "/comments/all");
+	comments = response.data;
+	console.log(comments);
 } catch (error) {
-	// if (error?.response?.status == 401) {
-	// 	location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
-	// }
-	console.log(error.response);
+	if (error?.response?.status == 401) {
+		location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+	}
+	console.log(error);
 }
+
 cardNumbers[2].innerText = comments.length;
 cardNumbers[1].innerText = orders.length;
 cardNumbers[3].innerText =
@@ -53,20 +65,26 @@ cardNumbers[3].innerText =
 	orders.reduce((total, order) => {
 		return total + order.totalPrice;
 	}, 0);
+
 try {
-	var response;
 	lists[2].classList.add("hovered");
-	response = await axios.get("http://localhost:3000/dishes"); // we need only those dishes of this lounge
+	response = await axiosInstance.get(LOUNGES_URL + "/admin/lounge");
+	lounge = response.data;
+	console.log(lounge);
+	response = await axiosInstance.get(
+		LOUNGES_URL + "/" + lounge._id + "/dishes"
+	); // we need only those dishes of this lounge
 	const dishes = response.data;
-	response = await axios.get("http://localhost:3000/lounges"); // this is one lounge so we will access it by id when the auth part is done
+	console.log(dishes);
+	response = await axiosInstance.get("http://localhost:3000/lounges"); // this is one lounge so we will access it by id when the auth part is done
 	const lounges = response.data;
 	console.log();
 	lists[8].classList.add("lounges");
 	lists[8].querySelector("a").href =
-		"./gallery.html?from=mylounge&id=641768cfa16c164b38ac0358"; //lounges._id
+		"./gallery.html?from=mylounge&id=" + lounge._id; //lounges._id
 	// lounge options
 	for (let i = 0; i < lounges.length; i++) {
-		// no need to put the oprion while adding dish because we are here in one lounge admin
+		// no need to put the otrion while adding dish because we are here in one lounge admin
 		let option = createCustomElement("option", {
 			value: lounges[i].name,
 			id: lounges[i]._id,

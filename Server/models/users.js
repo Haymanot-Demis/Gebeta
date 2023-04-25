@@ -15,13 +15,9 @@ const User = new Schema({
 		type: String,
 		default: "",
 	},
-	systemAdmin: {
-		type: Boolean,
-		default: false,
-	},
-	loungeAdmin: {
-		type: Boolean,
-		default: false,
+	role: {
+		type: [String],
+		default: ["user"],
 	},
 	isactivated: {
 		type: Boolean,

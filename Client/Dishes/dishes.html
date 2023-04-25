@@ -1,190 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script
-      src="https://kit.fontawesome.com/934a07558b.js"
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="../script/delayedReveal.js" defer></script>
-    <script type="module" defer src="./js/getDishes.js"></script>
-    <link rel="stylesheet" href="../css/navStyle.css" />
-    <link rel="stylesheet" href="../css/HomepageCss2.css" />
-  </head>
-  <body id="body">
-    <header>
-      <div class="top2">
-        <div class="logo" style="height: 100px; width: 125px">
-          <a href="http://127.0.0.1:5500/Client/index.html">
-            <svg height="100" width="125">
-              <ellipse cx="62.5" cy="50" rx="55" ry="45" fill="url(#grad2)" />
-              <polygon
-                points="62.5,5 85,50 62.5,95 40,50"
-                style="stroke: rgb(255, 255, 255); fill: rgba(255, 255, 0, 1)"
-              />
-              <text
-                fill="#000000"
-                font-size="25"
-                font-family="Verdana"
-                x="20"
-                y="60"
-              >
-                AA
-              </text>
-              <text
-                fill="#000000"
-                font-size="25"
-                font-family="Verdana"
-                x="52.5"
-                y="60"
-              >
-                STU
-              </text>
-              <text
-                fill="#000000"
-                font-size="25"
-                font-family="Verdana"
-                x="90"
-                y="60"
-              ></text>
-              <text
-                fill="#000000"
-                font-size="15"
-                font-family="Verdana"
-                x="30"
-                y="80"
-              >
-                GEBETA
-              </text>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script
+			src="https://kit.fontawesome.com/934a07558b.js"
+			crossorigin="anonymous"
+		></script>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script type="module" src="../script/delayedReveal.js" defer></script>
+		<script type="module" defer src="./js/getDishes.js"></script>
+		<script type="module" src="../script/authorize.js"></script>
+		<link rel="stylesheet" href="../css/HomepageCss2.css" />
+		<link rel="stylesheet" href="../css/navStyle.css" />
+	</head>
+	<body id="body">
+		<header>
+			<div class="top2">
+				<div class="logo" style="height: 100px; width: 125px">
+					<a href="http://127.0.0.1:5500/Client/index.html">
+						<svg height="100" width="125">
+							<ellipse cx="62.5" cy="50" rx="55" ry="45" fill="url(#grad2)" />
+							<polygon
+								points="62.5,5 85,50 62.5,95 40,50"
+								style="stroke: rgb(255, 255, 255); fill: rgba(255, 255, 0, 1)"
+							/>
+							<text
+								fill="#000000"
+								font-size="25"
+								font-family="Verdana"
+								x="20"
+								y="60"
+							>
+								AA
+							</text>
+							<text
+								fill="#000000"
+								font-size="25"
+								font-family="Verdana"
+								x="52.5"
+								y="60"
+							>
+								STU
+							</text>
+							<text
+								fill="#000000"
+								font-size="25"
+								font-family="Verdana"
+								x="90"
+								y="60"
+							></text>
+							<text
+								fill="#000000"
+								font-size="15"
+								font-family="Verdana"
+								x="30"
+								y="80"
+							>
+								GEBETA
+							</text>
 
-              <defs>
-                <linearGradient
-                  id="grad2"
-                  x1="0%"
-                  y1="0%"
-                  x2="50%"
-                  y2="0%"
-                  x3="51%"
-                  y3="0%"
-                  x4="100%"
-                  y4="100%"
-                >
-                  <stop
-                    offset="0%"
-                    style="stop-color: rgb(0, 255, 0); stop-opacity: 1"
-                  />
-                  <stop
-                    offset="100%"
-                    style="stop-color: rgb(255, 255, 0); stop-opacity: 1"
-                  />
-                  <stop
-                    offset="100%"
-                    style="stop-color: rgb(255, 255, 0); stop-opacity: 1"
-                  />
-                  <stop
-                    offset="200%"
-                    style="stop-color: rgb(255, 0, 0); stop-opacity: 1"
-                  />
-                </linearGradient>
-              </defs>
-            </svg>
-          </a>
-        </div>
-        <div class="login-container">
-          <button class="login" style="width: 100px">
-            <a href="../accounts/login.html">LogIn</a>
-          </button>
-          <button class="signup">
-            <a href="../accounts/signup.html">Sign up</a>
-          </button>
-        </div>
+							<defs>
+								<linearGradient
+									id="grad2"
+									x1="0%"
+									y1="0%"
+									x2="50%"
+									y2="0%"
+									x3="51%"
+									y3="0%"
+									x4="100%"
+									y4="100%"
+								>
+									<stop
+										offset="0%"
+										style="stop-color: rgb(0, 255, 0); stop-opacity: 1"
+									/>
+									<stop
+										offset="100%"
+										style="stop-color: rgb(255, 255, 0); stop-opacity: 1"
+									/>
+									<stop
+										offset="100%"
+										style="stop-color: rgb(255, 255, 0); stop-opacity: 1"
+									/>
+									<stop
+										offset="200%"
+										style="stop-color: rgb(255, 0, 0); stop-opacity: 1"
+									/>
+								</linearGradient>
+							</defs>
+						</svg>
+					</a>
+				</div>
+				<div class="login-container">
+					<button class="login" style="width: 100px">
+						<a href="../accounts/login.html">LogIn</a>
+					</button>
+					<button class="signup">
+						<a href="../accounts/signup.html">Sign up</a>
+					</button>
+				</div>
 
-        <div class="search-bar-container">
-          <div class="input-container">
-            <input
-              class="searchBar"
-              type="Search"
-              name="searchBar"
-              value=""
-              placeholder="Where to go... "
-              list="ethiopia"
-            />
-            <a href="#" class="search-icon">
-              <i class="fa fa-2x fa-search" aria-hidden="true"></i>
-            </a>
-          </div>
+				<!-- <div class="search-bar-container">
+					<div class="input-container">
+						<input
+							class="searchBar"
+							type="Search"
+							name="searchBar"
+							value=""
+							placeholder="Where to go... "
+							list="ethiopia"
+						/>
+						<a href="#" class="search-icon">
+							<i class="fa fa-2x fa-search" aria-hidden="true"></i>
+						</a>
+					</div>
 
-          <div class="autocom-box" style="margin-left: 10px">
-            <ul>
-              <li></li>
-            </ul>
-          </div>
-        </div>
-      </div>
+					<div class="autocom-box" style="margin-left: 10px">
+						<ul>
+							<li></li>
+						</ul>
+					</div>
+				</div> -->
+			</div>
 
-      <nav>
-        <label for="fa-bars-label" class="fa-bars-label" onclick="changeFont()">
-          <i class="fas fa-bars"></i>
-        </label>
-        <input type="checkbox" id="fa-bars-label" />
-        <ul>
-          <li>
-            <a href="../index.html">Home</a>
-          </li>
-          <li>
-            <label for="dest-label" class="show">Lounges+</label>
-            <a href="../Lounge/lounges.html">Lounges</a>
-            <input type="checkbox" id="dest-label" />
-            <ul>
-              <li>
-                <label for="addis-label" style="margin-left: 50px" class="show"
-                  >Addis A.+</label
-                >
-                <a href="destination/addisababa/addisababa.html">Addis Ababa</a>
-                <input type="checkbox" id="addis-label" />
-                <ul>
-                  <li>
-                    <a href="destination/addisababa/mountentoto.html">Entoto</a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <label for="hotel-label" class="show">Dishes+</label>
-            <a href="../Dishes/dishes.html">Dishes</a>
-            <input type="checkbox" id="hotel-label" />
-            <ul>
-              <li>
-                <a href="#">Sheraton</a>
-              </li>
-            </ul>
-          </li>
-          <li class="Experience">
-            <a href="../Contact Us/contact us.html">Contact Us</a>
-          </li>
-          <li class="About-us">
-            <a href="../About us/About us.html">About us</a>
-          </li>
-        </ul>
-      </nav>
-    </header>
-    <main>
-      <div class="Background-video-container" height="30%">
-        <img
-          width="100%"
-          height="100%"
-          src="../images/AASTU-2.jpg"
-          alt="AASTU"
-        />
-        <!-- <video id="auto" width="100%" ; height="min(900px,30%)" autoplay muted loop>
+			<nav>
+				<label for="fa-bars-label" class="fa-bars-label" onclick="changeFont()">
+					<i class="fas fa-bars"></i>
+				</label>
+				<input type="checkbox" id="fa-bars-label" />
+				<ul>
+					<li>
+						<a href="../index.html">Home</a>
+					</li>
+					<li>
+						<label for="dest-label" class="show">Lounges+</label>
+						<a href="../Lounge/lounges.html">Lounges</a>
+						<input type="checkbox" id="dest-label" />
+						<ul>
+							<li>
+								<label for="addis-label" style="margin-left: 50px" class="show"
+									>Addis A.+</label
+								>
+								<a href="destination/addisababa/addisababa.html">Addis Ababa</a>
+								<input type="checkbox" id="addis-label" />
+								<ul>
+									<li>
+										<a href="destination/addisababa/mountentoto.html">Entoto</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<label for="hotel-label" class="show">Dishes+</label>
+						<a href="../Dishes/dishes.html">Dishes</a>
+						<input type="checkbox" id="hotel-label" />
+						<ul>
+							<li>
+								<a href="#">Sheraton</a>
+							</li>
+						</ul>
+					</li>
+					<li class="Experience">
+						<a href="../Contact Us/contact us.html">Contact Us</a>
+					</li>
+					<li class="About-us">
+						<a href="../About us/About us.html">About us</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+		<main>
+			<div class="Background-video-container" height="30%">
+				<img
+					width="100%"
+					height="100%"
+					src="../images/AASTU-2.jpg"
+					alt="AASTU"
+				/>
+				<!-- <video id="auto" width="100%" ; height="min(900px,30%)" autoplay muted loop>
                 <source src="A Tour of Ethiopia's Amazing Landscapes.mp4" type="video/mp4">Your browser doesn't support the video
             </video> -->
-      </div>
-    </main>
-  </body>
+			</div>
+		</main>
+	</body>
 </html>

@@ -83,11 +83,25 @@ async function save() {
 }
 
 async function create(formdata) {
-	const response = await axios.post(DISHES_URL, formdata);
+	try {
+		const response = await axios.post(DISHES_URL, formdata);
+	} catch (error) {
+		if (error?.response?.status == 401) {
+			location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+		}
+		console.log(error);
+	}
 }
 
 async function update(formdata, id) {
-	const response = await axios.pust(DISHES_URL + "/" + id, formdata);
+	try {
+		const response = await axios.put(DISHES_URL + "/" + id, formdata);
+	} catch (error) {
+		if (error?.response?.status == 401) {
+			location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+		}
+		console.log(error);
+	}
 }
 
 async function action(btn) {
