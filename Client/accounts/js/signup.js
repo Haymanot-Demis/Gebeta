@@ -59,6 +59,7 @@ submit.onclick = async (e) => {
 				small.classList.add("success");
 				small.innerText = "Successfully Registered";
 				// window.location.href = "http://127.0.0.1:5500/Gebeta/Client/index.html";
+				window.history.go(-1);
 			}
 		} catch (e) {
 			const small = form.parentNode.querySelector("small");

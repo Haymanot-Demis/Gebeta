@@ -169,7 +169,6 @@ userRouter.route("/signin").post((req, res, next) => {
 });
 
 userRouter.route("/logout").get((req, res, next) => {
-	req.logOut();
 	res.statusCode = 200;
 	res.send({ success: true, msg: "logged out" });
 });

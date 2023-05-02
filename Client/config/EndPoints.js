@@ -5,6 +5,7 @@ const USERS_URL = "http://localhost:3000/users";
 const GALLERY_URL = "http://localhost:3000/gallery";
 const SIGNUP_URL = "http://localhost:3000/users/signup";
 const SIGNIN_URL = "http://localhost:3000/users/signin";
+const LOGOUT_URL = "http://localhost:3000/users/logout";
 const axiosInstance = axios.create({
 	headers: {
 		Authorization: `Bearer ${localStorage.getItem("token")}`,
