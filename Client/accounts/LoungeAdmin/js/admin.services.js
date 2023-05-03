@@ -9,6 +9,11 @@ import {
 	recentCustomers,
 	cardNumbers,
 } from "./common-elements.js";
+import {
+	Client_URL,
+	DISHES_URL,
+	USERS_URL,
+} from "../../../config/EndPoints.js";
 try {
 	var response = await axios.get(ORDERS_URL);
 	var orders = response.data;
@@ -16,7 +21,7 @@ try {
 	var comments = response.data;
 } catch (error) {
 	if (error?.response?.status == 401) {
-		location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+		location.href = Client_URL + "/accounts/login.html";
 	}
 	console.log(error);
 }
@@ -43,7 +48,7 @@ async function users(id) {
 				break;
 			case 2:
 				lists[id].classList.add("hovered");
-				response = await axios.get("http://localhost:3000/dishes");
+				response = await axios.get(DISHES_URL);
 				const dishes = response.data;
 				tabularData.querySelector(".title").innerText = "Dishes";
 				tabularData.querySelector("table").innerHTML = "";
@@ -135,13 +140,13 @@ async function users(id) {
 				break;
 			case 3:
 				lists[id].classList.add("hovered");
-				response = await axios.get("http://localhost:3000/orders");
+				response = await axios.get(ORDERS_URL);
 				const orders = response.data;
 				console.log(orders);
 				break;
 			case 5:
 				lists[id].classList.add("hovered");
-				response = await axios.get("http://localhost:3000/users/all");
+				response = await axios.get(USERS_URL + "/all");
 				const users = response.data;
 				console.log(users);
 				break;
@@ -174,8 +179,7 @@ function rowEventListner(rows) {
 
 		rows[i].addEventListener("dblclick", (e) => {
 			location.assign(
-				"http://127.0.0.1:5500/Gebeta/Client/accounts/LoungeAdmin/editDish.html?id=" +
-					rows[i].id
+				Client_URL + "/accounts/LoungeAdmin/editDish.html?id=" + rows[i].id
 			);
 		});
 	}

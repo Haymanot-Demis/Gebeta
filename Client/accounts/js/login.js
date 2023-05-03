@@ -37,7 +37,7 @@ submit.onclick = async (e) => {
 				small.classList.add("success");
 				small.innerText = response.data.status;
 				console.log(small.innerHTML);
-				// location.href =  "http://127.0.0.1:5500/Client/accounts/LoungeAdmin/dishes.html";
+				// location.href =  "https://aastu-gebeta-w24u.onrender.com/accounts/LoungeAdmin/dishes.html";
 				window.history.go(-1);
 			}
 		} catch (e) {

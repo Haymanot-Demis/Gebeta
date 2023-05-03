@@ -14,14 +14,16 @@ import {
 	cardNumbers,
 } from "./common-elements.js";
 import {
+	Client_URL,
 	DISHES_URL,
 	ORDERS_URL,
+	USERS_URL,
 	axiosInstance,
 } from "../../../config/EndPoints.js";
 var response;
 lists[5].classList.add("hovered");
 try {
-	response = await axiosInstance.get("http://localhost:3000/users/all");
+	response = await axiosInstance.get(USERS_URL + "/all");
 	const users = response.data;
 	console.log(users);
 	response = await axiosInstance.get(ORDERS_URL);
@@ -30,7 +32,7 @@ try {
 	var comments = response.data;
 } catch (error) {
 	if (error?.response?.status == 401) {
-		location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+		location.href = Client_URL + "/accounts/login.html";
 	}
 	console.log(error);
 }

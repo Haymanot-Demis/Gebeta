@@ -58,7 +58,7 @@ submit.onclick = async (e) => {
 				small.classList.remove("err");
 				small.classList.add("success");
 				small.innerText = "Successfully Registered";
-				// window.location.href = "http://127.0.0.1:5500/Gebeta/Client/index.html";
+				// window.location.href = "https://aastu-gebeta-w24u.onrender.com";
 				window.history.go(-1);
 			}
 		} catch (e) {

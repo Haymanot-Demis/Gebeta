@@ -10,6 +10,7 @@ import {
 	cardNumbers,
 } from "./common-elements.js";
 import {
+	Client_URL,
 	DISHES_URL,
 	ORDERS_URL,
 	axiosInstance,
@@ -22,7 +23,7 @@ try {
 	console.log(comments);
 } catch (error) {
 	if (error?.response?.status == 401) {
-		location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+		location.href = Client_URL + "/accounts/login.html";
 	}
 	console.log(error);
 }

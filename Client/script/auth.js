@@ -1,4 +1,9 @@
-import { DISHES_URL, USERS_URL, axiosInstance } from "../config/EndPoints.js";
+import {
+	Client_URL,
+	DISHES_URL,
+	USERS_URL,
+	axiosInstance,
+} from "../config/EndPoints.js";
 async function getUser() {
 	try {
 		let response = await axiosInstance.get(USERS_URL);
@@ -18,14 +23,11 @@ function authorize(user) {
 	// profile_pic = new File(user.profile);
 	// console.log(profile_pic.exists());
 	if (user.role.indexOf("admin") != -1) {
-		profile_link.href =
-			"http://127.0.0.1:5500/Client/accounts/LoungeAdmin/loungeAdmin.html";
+		profile_link.href = Client_URL + "/accounts/LoungeAdmin/loungeAdmin.html";
 	} else if (user.role.indexOf("loungeadmin") != -1) {
-		profile_link.href =
-			"http://127.0.0.1:5500/Client/accounts/LoungeAdmin/loungeAdmin.html";
+		profile_link.href = Client_URL + "/accounts/LoungeAdmin/loungeAdmin.html";
 	} else {
-		profile_link.href =
-			"http://127.0.0.1:5500/Client/accounts/Users/order.html";
+		profile_link.href = Client_URL + "/accounts/Users/order.html";
 	}
 	profile_link.innerText = user.firstname[0];
 	profile_link.style =

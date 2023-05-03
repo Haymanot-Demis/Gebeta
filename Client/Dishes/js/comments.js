@@ -24,7 +24,8 @@ submit.onclick = async () => {
 		console.log(response.data);
 	} catch (error) {
 		if (error?.response?.status == 401) {
-			location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+			location.href =
+				"https://aastu-gebeta-w24u.onrender.com/accounts/login.html";
 		}
 		console.log(error);
 	}

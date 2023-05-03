@@ -4,6 +4,7 @@ import {
 	dashboardContainer,
 } from "../../LoungeAdmin/js/common-elements.js";
 import {
+	Client_URL,
 	DISHES_URL,
 	ORDERS_URL,
 	axiosInstance,
@@ -32,7 +33,7 @@ try {
 	});
 } catch (error) {
 	if (error?.response?.status == 401) {
-		location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+		location.href = Client_URL + "/accounts/login.html";
 	}
 	console.error(error);
 }
@@ -224,7 +225,7 @@ async function reloadTable() {
 		orders = response.data;
 	} catch (error) {
 		if (error?.response?.status == 401) {
-			location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+			location.href = Client_URL + "/accounts/login.html";
 		}
 		console.log(error);
 	}
@@ -274,7 +275,7 @@ async function onSave(Dish) {
 			// closeModal();
 		} catch (error) {
 			if (error?.response?.status == 401) {
-				location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+				location.href = Client_URL + "/accounts/login.html";
 			}
 			formErr.classList.remove("hidden");
 			formErr.innerText = error.response.data.msg;
@@ -300,7 +301,7 @@ delete_confirm.onclick = async () => {
 		console.log(response);
 	} catch (error) {
 		if (error?.response?.status == 401) {
-			location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+			location.href = Client_URL + "/accounts/login.html";
 		}
 		console.log(error);
 	}
@@ -330,7 +331,7 @@ async function EditSetup() {
 		Dish = response.data.dish;
 	} catch (error) {
 		if (error?.response?.status == 401) {
-			location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+			location.href = Client_URL + "/accounts/login.html";
 		}
 		console.log(error);
 	}

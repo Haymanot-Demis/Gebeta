@@ -1,8 +1,9 @@
 import { getUser } from "../../../script/auth.js";
+import { Client_URL } from "../../../config/EndPoints.js";
 var user = await getUser();
 
 if (user.role.indexOf("loungeadmin") == -1) {
-	location.href = "http://127.0.0.1:5500/Client/index.html";
+	location.href = Client_URL;
 	exit();
 }
 import { deleteBtnAction, editBtnAction } from "./eventListners.js";
@@ -53,7 +54,7 @@ try {
 	console.log(comments);
 } catch (error) {
 	if (error?.response?.status == 401) {
-		location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+		location.href = Client_URL + "/accounts/login.html";
 	}
 	console.log(error);
 }
@@ -76,7 +77,7 @@ try {
 	); // we need only those dishes of this lounge
 	const dishes = response.data;
 	console.log(dishes);
-	response = await axiosInstance.get("http://localhost:3000/lounges"); // this is one lounge so we will access it by id when the auth part is done
+	response = await axiosInstance.get(LOUNGES_URL); // this is one lounge so we will access it by id when the auth part is done
 	const lounges = response.data;
 	console.log();
 	lists[8].classList.add("lounges");
@@ -168,7 +169,9 @@ try {
 		galleryBtn.classList.add("btn-gallery");
 		galleryBtn.classList.add("invisible");
 		galleryBtn.addEventListener("click", () => {
-			location.href = `http://127.0.0.1:5500/Client/accounts/LoungeAdmin/gallery.html?dish='yes'&id=${dish._id}`;
+			location.href =
+				Client_URL +
+				`/accounts/LoungeAdmin/gallery.html?dish='yes'&id=${dish._id}`;
 		});
 		imageWrapper.classList.add("image-wrapper");
 		imageWrapper.append(galleryBtn, img);
@@ -214,7 +217,7 @@ try {
 	rowEventListner(rows, btnsWrapper);
 } catch (error) {
 	if (error?.response?.status == 401) {
-		location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+		location.href = Client_URL + "/accounts/login.html";
 	}
 	console.log(error);
 }

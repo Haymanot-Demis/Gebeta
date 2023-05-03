@@ -1,3 +1,5 @@
+import { Client_URL } from "../config/EndPoints";
+
 export default function display(dishes, length, h2_data, grid_count) {
 	let i = 0;
 	let alone_grid = document.createElement("div");
@@ -58,7 +60,7 @@ export default function display(dishes, length, h2_data, grid_count) {
 		alone_card_btn.classList.add("alone-card-btn");
 		alone_card_btn.id = "alone-card-btn_" + i;
 
-		link.href = `http://127.0.0.1:5500/Client/Dishes/dish.html?id=${dishes[i]._id}`;
+		link.href = Client_URL + `/Dishes/dish.html?id=${dishes[i]._id}`;
 		alone_card_btn.appendChild(link);
 
 		alone_card_content.appendChild(alone_card_header);

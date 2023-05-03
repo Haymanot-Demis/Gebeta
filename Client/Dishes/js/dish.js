@@ -6,6 +6,7 @@ import {
 	LOUNGES_URL,
 	ORDERS_URL,
 	axiosInstance,
+	Client_URL,
 } from "../../config/EndPoints.js";
 import { getUser, authorize } from "../../script/auth.js";
 import sliderImageManager from "../../script/sliderImageManager.js";
@@ -234,7 +235,7 @@ async function OnSave() {
 			closeBtn.click();
 		} catch (error) {
 			if (error?.response?.status == 401) {
-				location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+				location.href = Client_URL + "/accounts/login.html";
 			}
 			console.log(error);
 		}

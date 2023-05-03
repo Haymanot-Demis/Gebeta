@@ -54,7 +54,7 @@ var corsOptions = {
 	},
 };
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());

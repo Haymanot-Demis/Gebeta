@@ -11,7 +11,7 @@ var formdata = new FormData();
 var error = false;
 import { validate } from "./helpers.js";
 import escapeHTML from "../../../script/escapeHTML.js";
-import { DISHES_URL } from "../../../config/EndPoints.js";
+import { Client_URL, DISHES_URL } from "../../../config/EndPoints.js";
 
 const openModal = function () {
 	modal.classList.remove("hidden");
@@ -87,7 +87,7 @@ async function create(formdata) {
 		const response = await axios.post(DISHES_URL, formdata);
 	} catch (error) {
 		if (error?.response?.status == 401) {
-			location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+			location.href = Client_URL + "/accounts/login.html";
 		}
 		console.log(error);
 	}
@@ -98,7 +98,7 @@ async function update(formdata, id) {
 		const response = await axios.put(DISHES_URL + "/" + id, formdata);
 	} catch (error) {
 		if (error?.response?.status == 401) {
-			location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+			location.href = Client_URL + "/accounts/login.html";
 		}
 		console.log(error);
 	}

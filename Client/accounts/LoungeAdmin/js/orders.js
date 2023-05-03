@@ -18,6 +18,7 @@ import {
 	ORDERS_URL,
 	DISHES_URL,
 	axiosInstance,
+	Client_URL,
 } from "../../../config/EndPoints.js";
 
 try {
@@ -27,7 +28,7 @@ try {
 	var comments = response.data;
 } catch (error) {
 	if (error?.response?.status == 401) {
-		location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+		location.href = Client_URL + "/accounts/login.html";
 	}
 	console.log(error);
 }
@@ -55,7 +56,7 @@ try {
 	console.log(error);
 
 	if (error?.response?.status == 401) {
-		location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+		location.href = Client_URL + "/accounts/login.html";
 	}
 }
 
@@ -136,7 +137,7 @@ async function EventListener(elem) {
 		});
 	} catch (error) {
 		if (error?.response?.status == 401) {
-			location.href = "http://127.0.0.1:5500/Client/accounts/login.html";
+			location.href = Client_URL + "/accounts/login.html";
 		}
 	}
 }

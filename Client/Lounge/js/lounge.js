@@ -1,6 +1,7 @@
 const url = new URL(location.href);
 const id = url.searchParams.get("id");
 import {
+	Client_URL,
 	DISHES_URL,
 	GALLERY_URL,
 	LOUNGES_URL,
@@ -84,31 +85,31 @@ async function menu() {
 		let a = document.createElement("a");
 		if (dish.type == "cooked-food") {
 			meals.push(dish);
-			a.href = "http://127.0.0.1:5500/Client/Dishes/dish.html?id=" + dish._id;
+			a.href = Client_URL + "/Dishes/dish.html?id=" + dish._id;
 			a.innerText = dish.name;
 			li.appendChild(a);
 			meals_elem.appendChild(li);
 		} else if (dish.category == "Hot Drink") {
 			hot_drinks.push(dish);
-			a.href = "http://127.0.0.1:5500/Client/Dishes/dish.html?id=" + dish._id;
+			a.href = Client_URL + "/Dishes/dish.html?id=" + dish._id;
 			a.innerText = dish.name;
 			li.appendChild(a);
 			hots_elem.appendChild(li);
 		} else if (dish.category == "Soft Drinks") {
 			soft_drinks.push(dish);
-			a.href = "http://127.0.0.1:5500/Client/Dishes/dish.html?id=" + dish._id;
+			a.href = Client_URL + "/Dishes/dish.html?id=" + dish._id;
 			a.innerText = dish.name;
 			li.appendChild(a);
 			soft_drinks.appendChild(li);
 		} else if (dish.category == "Fruits") {
 			fruit_products.push(dish);
-			a.href = "http://127.0.0.1:5500/Client/Dishes/dish.html?id=" + dish._id;
+			a.href = Client_URL + "/Dishes/dish.html?id=" + dish._id;
 			a.innerText = dish.name;
 			li.appendChild(a);
 			fruits_elem.appendChild(li);
 		} else if (dish.category == "Cold Drinks") {
 			other_cold_drinks.push(dish);
-			a.href = "http://127.0.0.1:5500/Client/Dishes/dish.html?id=" + dish.id;
+			a.href = Client_URL + "/Dishes/dish.html?id=" + dish.id;
 			a.innerText = dish.name;
 			li.appendChild(a);
 			others_elem.appendChild(li);
