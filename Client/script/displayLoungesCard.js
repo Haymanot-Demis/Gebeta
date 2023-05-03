@@ -1,4 +1,4 @@
-import { Client_URL } from "../config/EndPoints";
+import { Client_URL } from "../config/EndPoints.js";
 
 export default function display(lounges, length, h2_data, grid_count) {
 	let i = 0;
