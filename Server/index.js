@@ -88,6 +88,9 @@ app.use("/gallery", galleryRouter);
 //       next();
 //     }
 // })
+app.get("/", (req, res, next) => {
+	res.redirect("/dishes");
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
