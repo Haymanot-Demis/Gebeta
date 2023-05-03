@@ -43,7 +43,7 @@ const sessionStore = new MongoDBStore({
 // app.engine("handlebars", hbs.engine({ extname: ".hbs" }));
 // app.set("view engine", "handlebars");
 // app.set("views", path.join(__dirname, "views"));
-var whitelist = [];
+var whitelist = ["https://aastu-gebeta-w24u.onrender.com"];
 var corsOptions = {
 	origin: function (origin, callback) {
 		if (whitelist.indexOf(origin) !== -1) {
