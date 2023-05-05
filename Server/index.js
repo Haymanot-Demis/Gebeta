@@ -79,18 +79,10 @@ app.use("/orders", orderRouter);
 app.use("/comments", commentsRouter);
 app.use("/gallery", galleryRouter);
 
-// user auth
-// app.use((req, res, next) => {
-//     if(!req.isAuthenticated()){
-//         var err = new Error('You are not authenticated!');
-//         err.status = 403;
-//         next(err);
-//     }else{
-//       next();
-//     }
-// })
 app.get("/", (req, res, next) => {
-	res.redirect("/dishes");
+	res.contentType = "text/html";
+	res.statusCode = 200;
+	res.send("Welcome");
 });
 
 const PORT = process.env.PORT || 3000;

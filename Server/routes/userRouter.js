@@ -13,36 +13,7 @@ const { ObjectID, ObjectId } = require("bson");
 const sendEmail = require("../controllers/sendEmail");
 const multer = require("multer");
 const jwt = require("jsonwebtoken");
-
-const storage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		cb(null, "./uploads/loungeImages");
-	},
-	filename: (req, file, cb) => {
-		const extname = file.originalname.split(".")[1];
-		const filename =
-			file.originalname.split(".")[0] + crypto.randomBytes(5).toString("hex");
-		console.log(extname, filename);
-		cb(null, filename + "." + extname);
-	},
-});
-
-const upload = multer({
-	storage: storage,
-	fileFilter: (req, file, cb) => {
-		console.log("filename", file);
-		if (!file.originalname) {
-			console.log("no file is uploaded");
-			return cb(new Error("no file is uploaded"));
-		}
-		console.log(file.originalname.match(/\.(jpg|jpeg|png|gif|gfif)$/));
-		if (!file.originalname.match(/\.(jpg|jpeg|png|gif|jfif)$/)) {
-			console.log("Image file format must be .jpg . jpeg .gif .png");
-			return cb(new Error("Image file format must be .jpg . jpeg .gif .png"));
-		}
-		return cb(null, true);
-	},
-});
+const { Uploader, upload, cloudinary } = require("../controllers/uploader");
 
 userRouter.use(bodyParser.json());
 
@@ -72,43 +43,44 @@ userRouter
 				return next(err);
 			}
 			const authenticate = Users.authenticate();
-			authenticate(req.body.username, req.body.password, (err, result) => {
-				if (err) {
-					return next(err);
-				}
+			authenticate(
+				req.body.username,
+				req.body.password,
+				async (err, result) => {
+					if (err) {
+						return next(err);
+					}
 
-				if (user.loungeAdmin) {
-					user.isactivated = false;
-				}
+					if (user.loungeAdmin) {
+						user.isactivated = false;
+					}
 
-				user.profileImage = "http://127.0.0.1:5500/Server/" + req.file.path;
-				console.log(user);
-				user
-					.save()
-					.then((user) => {
-						res.statusCode = 200;
-						res.contentType = "application/json";
-						return res.json({
-							success: true,
-							status: "Successfully Resgistered",
-							user,
+					const uploaded_data = await Uploader(
+						"C:/Projects/Gebeta/Server/" + req.file.path
+					);
+
+					console.log(uploaded_data);
+
+					user.profileImage = uploaded_data.secure_url;
+					console.log(user);
+					user
+						.save()
+						.then((user) => {
+							res.statusCode = 200;
+							res.contentType = "application/json";
+							return res.json({
+								success: true,
+								status: "Successfully Resgistered",
+								user,
+							});
+						})
+						.catch((err) => {
+							next(err);
 						});
-					})
-					.catch((err) => {
-						next(err);
-					});
-			});
+				}
+			);
 		});
 	});
-
-// userRouter.route('/signin')
-// .post(passport.authenticate('local', {failureRedirect:'/'}), (req, res, next) => {
-//     console.log(req.user,"after signin");
-//     res.statusCode = 200;
-//     res.contentType = 'application/json';
-//     return res.json({"success" : true, "status" : "Login Successfully"});
-//     next()
-// });
 
 userRouter.route("/signin").post((req, res, next) => {
 	console.log(req.method);
@@ -158,7 +130,7 @@ userRouter.route("/signin").post((req, res, next) => {
 					{ id: req.user._id.valueOf() },
 					process.env.SECRETE,
 					{
-						expiresIn: 60,
+						expiresIn: 3600,
 					}
 				);
 				console.log(token);
@@ -179,34 +151,35 @@ userRouter
 		authenticate.verifyToken,
 		authenticate.isAuthenticated,
 		(req, res, next) => {
-			Users.findByUsername(req.user.username)
+			Users.findById(req.user._id)
 				.then((user) => {
 					if (!user) {
 						res.statusCode = 401;
 						res.contentType = "text/plain";
-						res.send("User is found");
+						res.send("User is not found");
 						return next();
 					}
 					console.log(user);
 					user.changePassword(
 						req.body.oldPassword,
 						req.body.newPassword,
-						(err, result) => {
+						async (err, result) => {
 							if (err) {
 								res.statusCode = 400;
 								res.contentType = "application/json";
 								res.json(err);
 								return next(err);
 							}
-							const info = sendEmail(
+							const info = await sendEmail(
 								user.email,
 								"Password Change",
 								"Password Successfullly Changed"
 							);
-							console.log(JSON.parsei(info));
+							let json = JSON.parse(info);
+							console.log("json", json);
 							res.statusCode = 200;
-							res.contentType = "text/html";
-							return res.send(result);
+							res.contentType = "application/json";
+							return res.json(json);
 						}
 					);
 				})
@@ -215,13 +188,14 @@ userRouter
 	);
 
 userRouter.route("/account/resetPassword").post((req, res, next) => {
+	console.log(req.body);
 	Users.findOne({ _id: req.body.user_id }).then(async (user) => {
 		console.log(user, req.body.user_id);
 		const resetToken = await Tokens.findOne({ user_id: ObjectId(user._id) });
 		if (!resetToken) {
 			res.statusCode = 403;
 			console.log("token not found");
-			const err = new Error("Invalid or expired password reset token");
+			const err = new Error("token not found");
 			return next(err);
 		}
 		const isValidToken = await bcrypt.compare(req.body.token, resetToken.token);
@@ -273,8 +247,8 @@ userRouter.route("/account/resetPasswordRequest").post((req, res, next) => {
 		const info = await sendEmail(user.email, "Reset Password", token);
 		res.statusCode = 200;
 		res.contentType = "application/json";
-		console.log(info);
-		res.json(JSON.parse(info));
+
+		res.json(info);
 		return next();
 	});
 });

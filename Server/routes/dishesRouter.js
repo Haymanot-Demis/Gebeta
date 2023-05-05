@@ -9,41 +9,10 @@ const {
 	verifyToken,
 } = require("../authenticate/authenticate");
 const Orders = require("../models/orders");
-const multer = require("multer");
-const crypto = require("crypto");
 const Lounges = require("../models/lounges");
 const { ObjectId } = require("mongodb");
 const fs = require("fs");
-
-const storage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		cb(null, "./uploads/loungeImages");
-	},
-	filename: (req, file, cb) => {
-		const extname = file.originalname.split(".")[1];
-		const filename =
-			file.originalname.split(".")[0] + crypto.randomBytes(5).toString("hex");
-		console.log(extname, filename);
-		cb(null, filename + "." + extname);
-	},
-});
-
-const upload = multer({
-	storage: storage,
-	fileFilter: (req, file, cb) => {
-		console.log("filename", file);
-		if (!file.originalname) {
-			console.log("no file is uploaded");
-			return cb(new Error("no file is uploaded"));
-		}
-		console.log(file.originalname.match(/\.(jpg|jpeg|png|gif|gfif)$/));
-		if (!file.originalname.match(/\.(jpg|jpeg|png|gif|jfif)$/)) {
-			console.log("Image file format must be .jpg . jpeg .gif .png");
-			return cb(new Error("Image file format must be .jpg . jpeg .gif .png"));
-		}
-		return cb(null, true);
-	},
-});
+const { cloudinary, Uploader, upload } = require("../controllers/uploader");
 
 dishRouter.use(bodyParser.json());
 
@@ -68,18 +37,22 @@ dishRouter
 		verifyLoungeAdmin,
 		upload.single("image"),
 		async (req, res, next) => {
-			console.log("http://127.0.0.1:5500/Server" + req?.file?.path);
-			// const lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
 			const lounge = await Lounges.findOne({ name: req.body.lounge });
 			req.body.lounge = lounge?._id;
+
 			Dishes.create({
-				image: "http://127.0.0.1:5500/Server/" + req?.file?.path,
+				image: "C:/Projects/Gebeta/Server/" + req?.file?.path,
 				...req.body,
 			})
-				.then((dishes) => {
+				.then(async (dish) => {
+					const upload_data = await Uploader(
+						"C:/Projects/Gebeta/Server/" + req?.file?.path
+					);
+					dish.image = upload_data.secure_url;
+					await dish.save();
 					res.statusCode = 200;
 					res.contentType("application/json");
-					res.json(dishes);
+					res.json(dish);
 					next();
 				})
 				.catch((err) => next(err));
@@ -152,7 +125,7 @@ dishRouter
 			const dish = await Dishes.findOne({ _id: req.params.dishid });
 			req.body.lounge = lounge?._id;
 			if (req?.file?.path) {
-				req.body.image = "http://127.0.0.1:5500/Server/" + req?.file?.path;
+				req.body.image = "C:/Projects/Gebeta/Server/" + req?.file?.path;
 				fs.unlink(
 					__dirname +
 						"/../uploads/loungeImages/" +
@@ -232,8 +205,7 @@ dishRouter
 					res.send("Dish with id" + req.params.dishId + " is not found");
 					return next();
 				}
-				// req.body.comment.author = req.user._id
-				// req.body.lounge = lounge._id
+
 				dish.comment.push({ ...req.body });
 				await dish.save();
 				res.send("comment saved");
@@ -296,7 +268,6 @@ dishRouter
 					dishes.forEach((dish) => {
 						com.push(...dish.comment);
 					});
-					// console.log(com);
 					res.json(com);
 					next();
 				})

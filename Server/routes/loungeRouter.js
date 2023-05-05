@@ -13,36 +13,7 @@ const crypto = require("crypto");
 const { ObjectId } = require("mongodb");
 const Gallery = require("../models/gallery");
 const Dishes = require("../models/dishes");
-
-const storage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		cb(null, "./uploads/loungeImages");
-	},
-	filename: (req, file, cb) => {
-		const extname = file.originalname.split(".")[1];
-		const filename =
-			file.originalname.split(".")[0] + crypto.randomBytes(5).toString("hex");
-		console.log(extname, filename);
-		cb(null, filename + "." + extname);
-	},
-});
-
-const upload = multer({
-	storage: storage,
-	fileFilter: (req, file, cb) => {
-		console.log("filename", file);
-		if (!file.originalname) {
-			console.log("no file is uploaded");
-			return cb(new Error("no file is uploaded"));
-		}
-		console.log(file.originalname.match(/\.(jpg|jpeg|png|gif)$/));
-		if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-			console.log("Image file format must be .jpg . jpeg .gif .png");
-			return cb(new Error("Image file format must be .jpg . jpeg .gif .png"));
-		}
-		return cb(null, true);
-	},
-});
+const { Uploader, upload, cloudinary } = require("../controllers/uploader");
 
 loungeRouter.use(bodyParser.json());
 loungeRouter.use(bodyParser.urlencoded({ extended: false }));
@@ -50,7 +21,6 @@ loungeRouter.use(bodyParser.urlencoded({ extended: false }));
 loungeRouter
 	.route("/")
 	.get((req, res, next) => {
-		// console.log(req.body);
 		Lounges.find({})
 			.populate("loungeAdmin")
 			.then((lounges) => {
@@ -66,17 +36,21 @@ loungeRouter
 		verifyAdmin,
 		upload.single("image"),
 		(req, res, next) => {
-			// console.log(req?.file);
 			req.body.loungeAdmin = req.user._id;
-			Lounges.create({ image: req?.file?.filename, ...req.body })
+			Lounges.create({ image: req?.file?.path, ...req.body })
 				.then(
-					(lounges) => {
+					async (lounge) => {
+						const upload_data = await Uploader(lounge.image);
+						console.log(upload_data);
+						lounge.image = upload_data.secure_url;
+						await lounge.save();
 						res.statusCode = 200;
 						res.contentType = "application/json";
-						res.json(lounges);
+						res.json(lounge);
 					},
 					(err) => {
 						console.log("err msg ", err.message);
+						next(err);
 					}
 				)
 				.catch((err) => {
