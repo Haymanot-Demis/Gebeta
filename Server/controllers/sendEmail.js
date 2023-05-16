@@ -13,7 +13,7 @@ const sendEmail = async (to, subject, text, from = "haymedin21@gmail.com") => {
 		subject,
 		text,
 	});
-	return JSON.stringify(info);
+	return info;
 };
 
 module.exports = sendEmail;

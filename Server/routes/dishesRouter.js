@@ -68,9 +68,8 @@ dishRouter
 		isAuthenticated,
 		verifyLoungeAdmin,
 		async (req, res, next) => {
-			// lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
-			// Dishes.deleteMany({ lounge: lounge._id })
-			Dishes.deleteMany({})
+			const lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
+			Dishes.deleteMany({ lounge: lounge._id })
 				.then((result) => {
 					res.statusCode = 200;
 					res.contentType("application/json");

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 const Schema = mongoose.Schema;
 const passportLocalMongoose = require("passport-local-mongoose");
 
@@ -6,14 +7,29 @@ const User = new Schema({
 	email: {
 		type: String,
 		required: true,
+		validate(value) {
+			if (!validator.isEmail(value)) {
+				throw new Error("Invalid Email format");
+			}
+		},
 	},
 	firstname: {
 		type: String,
-		default: "",
+		required: true,
+		validate(value) {
+			if (!/^[a-z ,.'-]+$/i.test(value)) {
+				throw new Error(`Invalid First Name Format`);
+			}
+		},
 	},
 	lastname: {
 		type: String,
-		default: "",
+		required: true,
+		validate(value) {
+			if (!/^[a-z ,.'-]+$/i.test(value)) {
+				throw new Error(`Invalid Last Name Format`);
+			}
+		},
 	},
 	role: {
 		type: [String],

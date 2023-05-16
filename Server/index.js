@@ -80,12 +80,9 @@ app.use("/comments", commentsRouter);
 app.use("/gallery", galleryRouter);
 
 app.get("/", (req, res, next) => {
-	res.contentType = "text/html";
+	res.contentType = "application/json";
 	res.statusCode = 200;
-	res.send("Welcome");
+	res.json({ greating: "Welcome" });
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-	console.log("Server is running at port " + PORT);
-});
+module.exports = app;
