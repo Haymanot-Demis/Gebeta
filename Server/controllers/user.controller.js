@@ -11,106 +11,113 @@ const crypto = require("crypto");
 const { ObjectID, ObjectId } = require("bson");
 
 const signupController = (req, res, next) => {
-	console.log(req.body);
-	console.log(req.file);
 	req.body.email = req.body.username;
-	Users.register(req.body, req.body.password, (err, user) => {
+	Users.register(req.body, req.body.password, async (err, user) => {
 		if (err) {
 			return next(err);
 		}
-		const authenticate = Users.authenticate();
-		authenticate(req.body.username, req.body.password, async (err, result) => {
-			if (err) {
-				return next(err);
-			}
 
-			if (user.loungeAdmin) {
-				user.isactivated = false;
-			}
+		if (user.loungeAdmin) {
+			user.isactivated = false;
+		}
 
-			if (req.file) {
-				const uploaded_data = await Uploader(
-					"C:/Projects/Gebeta/Server/" + req.file.path
-				);
-				console.log(uploaded_data);
-				user.profileImage = uploaded_data.secure_url;
-			}
+		if (req.file) {
+			const uploaded_data = await Uploader(
+				"C:/Projects/Gebeta/Server/" + req.file.path
+			);
+			console.log(uploaded_data);
+			user.profileImage = uploaded_data.secure_url;
+		}
 
-			user
-				.save()
-				.then((user) => {
-					res.statusCode = 200;
-					res.contentType = "application/json";
-					return res.json({
-						success: true,
-						status: "Successfully Resgistered",
-						user,
-					});
-				})
-				.catch((err) => {
-					next(err);
+		user
+			.save()
+			.then((user) => {
+				res.statusCode = 200;
+				res.contentType = "application/json";
+				return res.json({
+					success: true,
+					status: "Successfully Registered",
+					user,
 				});
-		});
+			})
+			.catch((err) => {
+				res.statusCode = 500;
+				res.contentType = "application/json";
+				res.json({
+					success: false,
+					status: "Saving Failed",
+					message: err.message,
+				});
+				return next(err);
+			});
 	});
 };
 
 const signinController = (req, res, next) => {
-	// console.log(req.method);
-	// console.log(req.headers.authorization);
-	// console.log(req.headers);
-	// console.log(req.body);
-	// console.log("user", req.user);
-	// console.log(req.session);
 	if (req.user) {
 		res.statusCode = 200;
 		res.contentType = "application/json";
 		res.json({ success: true, status: "Already Loggedin" });
 		return next();
 	}
-	passport.authenticate("local", (err, user, info) => {
-		if (err) {
-			return next(err);
-		}
-		if (!user) {
-			res.statusCode = 401;
-			res.contentType = "application/json";
-			res.json({ success: false, status: "Login Failed", info: info.message });
-		} else {
-			//   if (!user.isactivated) {
-			//     res.statusCode = 200;
-			//     return res.send(
-			//       "This account is not ready for use. Please wait until it is activated"
-			//     );
-			//   }
-			req.logIn(user, (err) => {
-				if (err) {
-					res.statusCode = 401;
+
+	try {
+		passport.authenticate("local", (err, user, info) => {
+			if (err) {
+				console.log(err);
+				return next(err);
+			}
+			if (!user) {
+				console.log(info);
+				res.statusCode = 401;
+				res.contentType = "application/json";
+				res.json({
+					success: false,
+					status: "Login Failed",
+					info: info.message,
+				});
+			} else {
+				//   if (!user.isactivated) {
+				//     res.statusCode = 200;
+				//     return res.send(
+				//       "This account is not ready for use. Please wait until it is activated"
+				//     );
+				//   }
+				req.logIn(user, (err) => {
+					if (err) {
+						console.log("login", err);
+						res.statusCode = 401;
+						res.contentType = "application/json";
+						return res.json({
+							success: false,
+							status: "Login Failed",
+							err,
+						});
+					}
+
+					const token = jwt.sign(
+						{ id: req.user._id.valueOf() },
+						process.env.SECRETE,
+						{
+							expiresIn: 3600,
+						}
+					);
+					res.statusCode = 200;
 					res.contentType = "application/json";
 					return res.json({
-						success: false,
-						status: "Login Failed",
-						err,
+						success: true,
+						token,
+						status: "Loggedin Successfully",
 					});
-				}
-				console.log("logged in", req.user._id);
-				res.statusCode = 200;
-				res.contentType = "application/json";
-				const token = jwt.sign(
-					{ id: req.user._id.valueOf() },
-					process.env.SECRETE,
-					{
-						expiresIn: 3600,
-					}
-				);
-				console.log(token);
-				return res.json({ success: true, token, status: "Login Successfully" });
-			});
-		}
-	})(req, res, next);
+				});
+			}
+		})(req, res, next);
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 const changePasswordController = (req, res, next) => {
-	console.log("entered");
 	Users.findById(req.user._id)
 		.then((user) => {
 			if (!user) {
@@ -119,15 +126,15 @@ const changePasswordController = (req, res, next) => {
 				res.send("User is not found");
 				return next();
 			}
-			console.log(user);
 			user.changePassword(
 				req.body.oldPassword,
 				req.body.newPassword,
-				async (err, result) => {
+				async (err, updated_user) => {
 					if (err) {
-						res.statusCode = 400;
+						console.log(err.message);
+						res.statusCode = 401;
 						res.contentType = "application/json";
-						res.json(err);
+						res.json({ msg: err.message });
 						return next(err);
 					}
 					const info = await sendEmail(
@@ -135,7 +142,6 @@ const changePasswordController = (req, res, next) => {
 						"Password Change",
 						"Password Successfullly Changed"
 					);
-					console.log("json", info);
 					res.statusCode = 200;
 					res.contentType = "application/json";
 					return res.json(info);

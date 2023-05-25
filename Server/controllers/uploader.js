@@ -13,10 +13,9 @@ const Uploader = async (imagePath) => {
 
 	try {
 		const result = await cloudinary.uploader.upload(imagePath, options);
-		console.log(result);
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error.message;
 	}
 };
 
@@ -49,7 +48,5 @@ const upload = multer({
 		return cb(null, true);
 	},
 });
-
-console.log(cloudinary.config());
 
 module.exports = { cloudinary, Uploader, upload };

@@ -17,7 +17,7 @@ passport.use(
 		},
 		(payload, done) => {
 			console.log(payload);
-			Users.findById(payload.id, (err, user) => {
+			Users.findOne({ _id: payload.id }, (err, user) => {
 				if (err) {
 					return done(err, false);
 				} else if (user) {

@@ -2,7 +2,12 @@ require("dotenv").config();
 const express = require("express");
 const userRouter = express.Router();
 const bodyParser = require("body-parser");
-const authenticate = require("../authenticate/authenticate");
+const {
+	verifyAdmin,
+	verifyLoungeAdmin,
+	verifyToken,
+	isAuthenticated,
+} = require("../authenticate/authenticate");
 const passport = require("passport");
 const Users = require("../models/users");
 const Tokens = require("../models/token");
@@ -24,7 +29,7 @@ const {
 
 userRouter.use(bodyParser.json());
 
-userRouter.route("/").get(authenticate.verifyToken, (req, res, next) => {
+userRouter.route("/").get(verifyToken, (req, res, next) => {
 	console.log(req.user);
 	if (req.isAuthenticated()) {
 		res.statusCode = 200;
@@ -52,20 +57,16 @@ userRouter.route("/logout").get((req, res, next) => {
 
 userRouter
 	.route("/account/changePassword")
-	.post(
-		authenticate.verifyToken,
-		authenticate.isAuthenticated,
-		changePasswordController
-	);
+	.post(verifyToken, isAuthenticated, changePasswordController);
 
 userRouter.route("/account/resetPassword").post(resetPasswordController);
 
 userRouter.route("/account/resetPasswordRequest").post(passwordResetToken);
 
 userRouter.route("/all").get(
-	authenticate.verifyToken,
-	authenticate.isAuthenticated,
-	// authenticate.verifyAdmin,
+	verifyToken,
+	isAuthenticated,
+	// verifyAdmin,
 	(req, res, next) => {
 		Users.find(req?.body).then((users) => {
 			res.statusCode = 200;

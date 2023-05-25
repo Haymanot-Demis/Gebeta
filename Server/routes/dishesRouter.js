@@ -164,16 +164,26 @@ dishRouter
 		verifyLoungeAdmin,
 		async (req, res, next) => {
 			const dish = await Dishes.findOne({ _id: req.params.dishid });
-			fs.unlink(
+			fs.access(
 				__dirname + "/../uploads/loungeImages/" + dish.image.split("\\").pop(),
-				(err) => {
-					if (err) {
-						console.log(err);
-						next(err);
+				(error) => {
+					if (!error) {
+						fs.unlink(
+							__dirname +
+								"/../uploads/loungeImages/" +
+								dish.image.split("\\").pop(),
+							(err) => {
+								if (err) {
+									console.log(err);
+									next(err);
+								}
+								console.log("deleted");
+							}
+						);
 					}
-					console.log("deleted");
 				}
 			);
+
 			Dishes.deleteOne({ _id: req.params.dishid })
 				.then((dishes) => {
 					res.statusCode = 200;

@@ -23,8 +23,11 @@ const userRouter = require("./routes/userRouter");
 const orderRouter = require("./routes/orderRouter");
 const commentsRouter = require("./routes/commentsRouter");
 const galleryRouter = require("./routes/galleryRouter");
+const Users = require("./models/users");
 
 //Connecting server to MongoDB
+// .connect("mongodb://127.0.0.1:27017/haymanot")
+
 mongoose
 	.connect(config.mongodbURL)
 	.then(() => {
