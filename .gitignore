@@ -1,2 +1,5 @@
 fontawesome-free-6.3.0-web
 node_modules
+Server/__tests__/CRUD on dishes.test.js
+Server/__tests__/signin.test.js
+Server/__tests__/signup.test.js

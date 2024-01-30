@@ -19,13 +19,7 @@ const sendEmail = require("../controllers/sendEmail");
 const multer = require("multer");
 const jwt = require("jsonwebtoken");
 const { Uploader, upload, cloudinary } = require("../controllers/uploader");
-const {
-	signupController,
-	signinController,
-	changePasswordController,
-	passwordResetToken,
-	resetPasswordController,
-} = require("../controllers/user.controller");
+const userController = require("../controllers/user.controller");
 
 userRouter.use(bodyParser.json());
 
@@ -46,9 +40,9 @@ userRouter.route("/").get(verifyToken, (req, res, next) => {
 
 userRouter
 	.route("/signup")
-	.post(upload.single("profileImage"), signupController);
+	.post(upload.single("profileImage"), userController.signupController);
 
-userRouter.route("/signin").post(signinController);
+userRouter.route("/signin").post(userController.signinController);
 
 userRouter.route("/logout").get((req, res, next) => {
 	res.statusCode = 200;
@@ -57,39 +51,22 @@ userRouter.route("/logout").get((req, res, next) => {
 
 userRouter
 	.route("/account/changePassword")
-	.post(verifyToken, isAuthenticated, changePasswordController);
+	.post(verifyToken, isAuthenticated, userController.changePasswordController);
 
-userRouter.route("/account/resetPassword").post(resetPasswordController);
+userRouter
+	.route("/account/resetPassword")
+	.post(userController.resetPasswordController);
 
-userRouter.route("/account/resetPasswordRequest").post(passwordResetToken);
+userRouter
+	.route("/account/resetPasswordRequest")
+	.post(userController.passwordResetToken);
 
-userRouter.route("/all").get(
-	verifyToken,
-	isAuthenticated,
-	// verifyAdmin,
-	(req, res, next) => {
-		Users.find(req?.body).then((users) => {
-			res.statusCode = 200;
-			res.contentType = "application/json";
-			res.json(users);
-		});
-	}
-);
+userRouter
+	.route("/all")
+	.get(verifyToken, isAuthenticated, verifyAdmin, userController.getAllUsers);
 
-userRouter.route("/activateUserAccount").put((req, res, next) => {
-	Users.findOne(req.body).then((user) => {
-		user.isactivated = true;
-		user.save((err, result) => {
-			if (err) {
-				res.statusCode = 400;
-				res.contentType = "application/json";
-				return next(err);
-			}
-			res.statusCode = 200;
-			res.contentType = "application/json";
-			res.json(result);
-		});
-	});
-});
+userRouter
+	.route("/activateUserAccount")
+	.put(verifyToken, verifyAdmin, userController.activateUserAccount);
 
 module.exports = userRouter;

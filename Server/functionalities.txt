@@ -61,3 +61,11 @@ const transorter = nodemailer.createTransport({
         return next();
       }
     );
+
+
+
+1. refactor to controller and using try/catch instead of callback
+2. refactor by creating services 
+3. take config in authenticate folder to its own config folder
+4. after order is sent to the lounge, then the lounge must accept the order if it can deliver, then the user will pay for it.
+5. fileuploads filters and destinations

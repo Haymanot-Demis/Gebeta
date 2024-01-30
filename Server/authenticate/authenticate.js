@@ -58,6 +58,7 @@ const verifyLoungeAdmin = (req, res, next) => {
 };
 
 const isAuthenticated = (req, res, next) => {
+	console.log(req.user);
 	if (!req.isAuthenticated()) {
 		var err = new Error("You are not authenticated!");
 		err.status = 401;

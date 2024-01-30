@@ -13,6 +13,7 @@ const commonSchema = {
 		default: 1,
 	},
 };
+
 const dishGallerySchema = new Schema(
 	{
 		object: {
@@ -25,6 +26,7 @@ const dishGallerySchema = new Schema(
 		timestamps: true,
 	}
 );
+
 const loungeGallerySchema = new Schema(
 	{
 		object: {

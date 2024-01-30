@@ -24,12 +24,14 @@ const orderRouter = require("./routes/orderRouter");
 const commentsRouter = require("./routes/commentsRouter");
 const galleryRouter = require("./routes/galleryRouter");
 const Users = require("./models/users");
+const { ObjectId } = require("mongodb");
+const axios = require("axios");
 
-//Connecting server to MongoDB
-// .connect("mongodb://127.0.0.1:27017/haymanot")
-
+mongoose.set("strictQuery", true);
 mongoose
-	.connect(config.mongodbURL)
+	.connect(config.mongodbURL, {
+		useNewUrlParser: true,
+	})
 	.then(() => {
 		console.log("Database connected Successfully");
 	})
@@ -40,12 +42,9 @@ const sessionStore = new MongoDBStore({
 	collection: "session",
 	databaseName: "haymanot",
 });
-//built in middlewares
-// app.use(cookieParser("hayme"));
 
-// app.engine("handlebars", hbs.engine({ extname: ".hbs" }));
-// app.set("view engine", "handlebars");
-// app.set("views", path.join(__dirname, "views"));
+app.use(cookieParser("hayme"));
+
 var whitelist = ["https://aastu-gebeta-w24u.onrender.com"];
 var corsOptions = {
 	origin: function (origin, callback) {
@@ -74,7 +73,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// user defined middlewares
+// routes
+// TODO: paginating get many routes
 app.use("/dishes", dishRouter);
 app.use("/lounges", loungeRouter);
 app.use("/users", userRouter);

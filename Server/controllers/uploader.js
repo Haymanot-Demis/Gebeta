@@ -4,6 +4,8 @@ const multer = require("multer");
 const crypto = require("crypto");
 
 cloudinary.config(process.env.CLOUDINARY_URL);
+
+// this is service for uploading images to cloudinary
 const Uploader = async (imagePath) => {
 	const options = {
 		use_filename: true,
@@ -19,6 +21,7 @@ const Uploader = async (imagePath) => {
 	}
 };
 
+// options for multer
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
 		cb(null, "./uploads/loungeImages");
@@ -32,6 +35,7 @@ const storage = multer.diskStorage({
 	},
 });
 
+// multer middleware
 const upload = multer({
 	storage: storage,
 	fileFilter: (req, file, cb) => {

@@ -10,6 +10,30 @@ const Tokens = require("../models/token");
 const crypto = require("crypto");
 const { ObjectID, ObjectId } = require("bson");
 
+const getAllUsers = (req, res, next) => {
+	Users.find({}).then((users) => {
+		res.statusCode = 200;
+		res.contentType = "application/json";
+		res.json(users);
+	});
+};
+
+const activateUserAccount = (req, res, next) => {
+	Users.findOne(req.body).then((user) => {
+		user.isactivated = true;
+		user.save((err, result) => {
+			if (err) {
+				res.statusCode = 400;
+				res.contentType = "application/json";
+				return next(err);
+			}
+			res.statusCode = 200;
+			res.contentType = "application/json";
+			res.json(result);
+		});
+	});
+};
+
 const signupController = (req, res, next) => {
 	req.body.email = req.body.username;
 	Users.register(req.body, req.body.password, async (err, user) => {
@@ -63,6 +87,7 @@ const signinController = (req, res, next) => {
 
 	try {
 		passport.authenticate("local", (err, user, info) => {
+			console.log("passport.authenticate");
 			if (err) {
 				console.log(err);
 				return next(err);
@@ -83,6 +108,7 @@ const signinController = (req, res, next) => {
 				//       "This account is not ready for use. Please wait until it is activated"
 				//     );
 				//   }
+				console.log("user exists");
 				req.logIn(user, (err) => {
 					if (err) {
 						console.log("login", err);
@@ -94,7 +120,7 @@ const signinController = (req, res, next) => {
 							err,
 						});
 					}
-
+					console.log("create token");
 					const token = jwt.sign(
 						{ id: req.user._id.valueOf() },
 						process.env.SECRETE,
@@ -102,6 +128,8 @@ const signinController = (req, res, next) => {
 							expiresIn: 3600,
 						}
 					);
+					console.log(token);
+
 					res.statusCode = 200;
 					res.contentType = "application/json";
 					return res.json({
@@ -113,7 +141,7 @@ const signinController = (req, res, next) => {
 			}
 		})(req, res, next);
 	} catch (error) {
-		console.log(error);
+		// console.log(error);
 	}
 };
 
@@ -121,6 +149,7 @@ const changePasswordController = (req, res, next) => {
 	Users.findById(req.user._id)
 		.then((user) => {
 			if (!user) {
+				console.log("User is not found");
 				res.statusCode = 401;
 				res.contentType = "text/plain";
 				res.send("User is not found");
@@ -183,8 +212,8 @@ const resetPasswordController = (req, res, next) => {
 	Users.findOne({ _id: req.body.user_id }).then(async (user) => {
 		if (!user) {
 			res.statusCode = 404;
-			console.log("user not found");
-			const err = new Error("user not found");
+			console.log("User not found");
+			const err = new Error("User not found");
 			res.send(err);
 			return next(err);
 		}
@@ -198,15 +227,20 @@ const resetPasswordController = (req, res, next) => {
 			res.send(err);
 			return next(err);
 		}
+		console.log(req.body.token);
+		console.log(resetToken.token);
 		const isValidToken = await bcrypt.compare(req.body.token, resetToken.token);
+		console.log(isValidToken);
 		if (!isValidToken) {
 			res.statusCode = 403;
 			console.log("Invalid");
 			const err = new Error("Invalid or expired password reset token");
 			return next(err);
 		}
+
 		user.setPassword(req.body.password, async (err, result) => {
 			if (err) {
+				console.log(err);
 				res.statusCode = 400;
 				res.contentType = "application/json";
 				res.json(err);
@@ -220,12 +254,14 @@ const resetPasswordController = (req, res, next) => {
 			);
 			res.statusCode = 200;
 			res.contentType = "application/json";
-			return res.send(result);
+			return res.json(info);
 		});
 	});
 };
 
 module.exports = {
+	getAllUsers,
+	activateUserAccount,
 	signupController,
 	signinController,
 	changePasswordController,
