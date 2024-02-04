@@ -4,28 +4,20 @@ const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const path = require("path");
-const config = require("./authenticate/config");
-const passport = require("passport");
+const config = require("./config/config");
 const expressSession = require("express-session");
-const MongoDBStore = require("connect-mongodb-session")(expressSession);
-// const FileStore = require("session-file-store")(expressSession);
-// const authenticate = require("./authenticate/authenticate");
 const cookieParser = require("cookie-parser");
-const hbs = require("express-handlebars");
-const ejs = require("ejs");
-const { engine } = require("express-handlebars");
 const cors = require("cors");
 
 // Importing Routes
+const authRouter = require("./routes/auth.route");
+const userRouter = require("./routes/userRouter");
+const roleRouter = require("./routes/role.route");
 const dishRouter = require("./routes/dishesRouter");
 const loungeRouter = require("./routes/loungeRouter");
-const userRouter = require("./routes/userRouter");
 const orderRouter = require("./routes/orderRouter");
 const commentsRouter = require("./routes/commentsRouter");
 const galleryRouter = require("./routes/galleryRouter");
-const Users = require("./models/users");
-const { ObjectId } = require("mongodb");
-const axios = require("axios");
 
 mongoose.set("strictQuery", true);
 mongoose
@@ -36,12 +28,6 @@ mongoose
 		console.log("Database connected Successfully");
 	})
 	.catch((err) => console.log(err));
-
-const sessionStore = new MongoDBStore({
-	uri: config.mongodbURL,
-	collection: "session",
-	databaseName: "haymanot",
-});
 
 app.use(cookieParser("hayme"));
 
@@ -61,20 +47,11 @@ app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(
-	expressSession({
-		name: process.env.SESSION_NAME,
-		secret: process.env.SECRETE,
-		resave: false,
-		saveUninitialized: false,
-		store: sessionStore,
-	})
-);
-app.use(passport.initialize());
-app.use(passport.session());
 
 // routes
 // TODO: paginating get many routes
+app.use("/auth", authRouter);
+app.use("/roles", roleRouter);
 app.use("/dishes", dishRouter);
 app.use("/lounges", loungeRouter);
 app.use("/users", userRouter);

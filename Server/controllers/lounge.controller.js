@@ -1,5 +1,5 @@
 const Lounges = require("../models/lounges");
-const { Uploader } = require("./uploader");
+const { cloudinaryUploader } = require("../middlewares/fileUploader");
 
 const getLounge = (req, res, next) => {
 	Lounges.findById(ObjectId(req.params.id)).then((lounge) => {

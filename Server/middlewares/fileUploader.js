@@ -6,7 +6,7 @@ const crypto = require("crypto");
 cloudinary.config(process.env.CLOUDINARY_URL);
 
 // this is service for uploading images to cloudinary
-const Uploader = async (imagePath) => {
+const cloudinaryUploader = async (imagePath) => {
 	const options = {
 		use_filename: true,
 		unique_filename: true,
@@ -53,4 +53,4 @@ const upload = multer({
 	},
 });
 
-module.exports = { cloudinary, Uploader, upload };
+module.exports = { cloudinary, cloudinaryUploader, upload };

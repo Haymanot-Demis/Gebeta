@@ -5,12 +5,12 @@ const {
 	isAuthenticated,
 	verifyLoungeAdmin,
 	verifyToken,
-} = require("../authenticate/authenticate");
+} = require("../middlewares/auth.middleware");
 const Lounges = require("../models/lounges");
 const bodyParser = require("body-parser");
 const { ObjectId } = require("mongodb");
 const Dishes = require("../models/dishes");
-const { Uploader, upload, cloudinary } = require("../controllers/uploader");
+const { Uploader, upload, cloudinary } = require("../middlewares/fileUploader");
 const loungeController = require("../controllers/lounge.controller");
 
 loungeRouter.use(bodyParser.json());

@@ -7,12 +7,16 @@ const {
 	isAuthenticated,
 	verifyLoungeAdmin,
 	verifyToken,
-} = require("../authenticate/authenticate");
+} = require("../middlewares/auth.middleware");
 const Orders = require("../models/orders");
 const Lounges = require("../models/lounges");
 const { ObjectId } = require("mongodb");
 const fs = require("fs");
-const { cloudinary, Uploader, upload } = require("../controllers/uploader");
+const {
+	cloudinary,
+	cloudinaryUploader,
+	upload,
+} = require("../middlewares/fileUploader");
 const dishController = require("../controllers/dish.controller");
 
 dishRouter.use(bodyParser.json());

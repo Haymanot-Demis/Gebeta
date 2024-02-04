@@ -8,7 +8,7 @@ const {
 	verifyAdmin,
 	verifyLoungeAdmin,
 	verifyToken,
-} = require("../authenticate/authenticate");
+} = require("../middlewares/auth.middleware");
 const Orders = require("../models/orders");
 const lounges = require("../models/lounges");
 const orderController = require("../controllers/order.controller");

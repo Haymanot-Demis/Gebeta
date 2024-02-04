@@ -1,6 +1,7 @@
+const express = require("express");
 const Dishes = require("../models/dishes");
 const Lounges = require("../models/lounges");
-const { Uploader } = require("./uploader");
+const { cloudinaryUploader } = require("../middlewares/fileUploader");
 const fs = require("fs");
 
 const getDish = (req, res, next) => {
@@ -22,6 +23,7 @@ const getDish = (req, res, next) => {
 		.catch((err) => next(err));
 };
 const getAllDishes = async (req, res, next) => {
+	console.log(req.headers);
 	Dishes.find({})
 		.populate("lounge")
 		.populate("lounge.loungeAdmin")
