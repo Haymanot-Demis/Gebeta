@@ -4,9 +4,11 @@ const Roles = require("../models/role.model");
 const ApiError = require("../utils/apiError");
 const httpStatus = require("http-status");
 const { isFound } = require("../utils/checks");
+const { encrypt } = require("../utils/auth");
 
 const createUser = async (req) => {
-	const { firstname, lastname, email, password, role_id } = req.body;
+	const { firstname, lastname, email, role_id } = req.body;
+	const password = await encrypt(req.body.password);
 
 	console.log(req.body);
 
@@ -21,6 +23,7 @@ const createUser = async (req) => {
 		lastname,
 		email,
 		password,
+		roles: [role],
 	});
 
 	console.log(req.file);

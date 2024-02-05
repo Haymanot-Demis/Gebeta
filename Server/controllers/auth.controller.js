@@ -1,18 +1,16 @@
-require("dotenv").config();
-const authenticate = require("../middlewares/auth.middleware");
-const { cloudinaryUploader } = require("../middlewares/fileUploader");
-const Users = require("../models/users");
 const jwt = require("jsonwebtoken");
-const passport = require("passport");
-const sendEmail = require("../utils/sendEmail");
 const bcrypt = require("bcrypt");
 const Tokens = require("../models/token");
 const crypto = require("crypto");
-const { ObjectID, ObjectId } = require("bson");
-const userService = require("../services/user.services");
-const { generateJWTToken, compare } = require("../utils/auth");
-const catchAsync = require("../utils/asyncHandler");
+const { ObjectID } = require("bson");
+
 const config = require("../config/config");
+const Users = require("../models/users");
+const userService = require("../services/user.services");
+const authService = require("../services/auth.services");
+const catchAsync = require("../utils/asyncHandler");
+const sendEmail = require("../utils/sendEmail");
+const { generateJWTToken } = require("../utils/auth");
 
 const activateUserAccount = catchAsync(async (req, res, next) => {
 	const update = { $set: { isactivated: true } };
@@ -23,8 +21,7 @@ const activateUserAccount = catchAsync(async (req, res, next) => {
 
 const signupController = catchAsync(async (req, res, next) => {
 	const user = await userService.createUser(req);
-	console.log(user);
-	// TODO: send email to verify email
+	// send email to verify email
 	const link = `http://localhost:${config.port}/auth/activateUserAccount/${user._id}`;
 	const info = await sendEmail(
 		user.email,
@@ -40,77 +37,44 @@ const signupController = catchAsync(async (req, res, next) => {
 	});
 });
 
-const signinController = async (req, res, next) => {
-	try {
-		const user = await userService.getUserByEmail(req.body.email);
+const signinController = catchAsync(async (req, res, next) => {
+	const user = await authService.loginWithEmailAndPassword(
+		req.body.email,
+		req.body.password
+	);
 
-		if (!user || !compare(req.body.password, user.password)) {
-			res.statusCode = 401;
-			res.contentType = "application/json";
-			return res.json({ msg: "Invalid Credentials" });
-		}
-		console.log(user);
-		if (!user.isactivated) {
-			res.statusCode = 200;
-			return res.send({
-				msg: "This account is not ready for use. Please wait until it is activated",
-			});
-		}
+	console.log("create token");
+	const token = generateJWTToken(user);
 
-		console.log("create token");
-		const token = jwt.sign({ id: user._id.valueOf() }, process.env.SECRETE, {
-			expiresIn: "7d",
-		});
+	console.log(token);
 
-		console.log(token);
+	res.statusCode = 200;
+	res.contentType = "application/json";
 
-		res.statusCode = 200;
-		res.contentType = "application/json";
+	return res.json({
+		success: true,
+		status: "Loggedin Successfully",
+		user,
+		token,
+	});
+});
 
-		return res.json({
-			success: true,
-			token,
-			status: "Loggedin Successfully",
-		});
-	} catch (error) {
-		next(error);
-	}
-};
+const changePasswordController = catchAsync(async (req, res, next) => {
+	const user = await authService.changePassword(
+		req.body.user_id,
+		req.body.oldPassword,
+		req.body.newPassword
+	);
 
-const changePasswordController = (req, res, next) => {
-	Users.findById(req.user._id)
-		.then((user) => {
-			if (!user) {
-				console.log("User is not found");
-				res.statusCode = 401;
-				res.contentType = "text/plain";
-				res.send("User is not found");
-				return next();
-			}
-			user.changePassword(
-				req.body.oldPassword,
-				req.body.newPassword,
-				async (err, updated_user) => {
-					if (err) {
-						console.log(err.message);
-						res.statusCode = 401;
-						res.contentType = "application/json";
-						res.json({ msg: err.message });
-						return next(err);
-					}
-					const info = await sendEmail(
-						user.email,
-						"Password Change",
-						"Password Successfullly Changed"
-					);
-					res.statusCode = 200;
-					res.contentType = "application/json";
-					return res.json(info);
-				}
-			);
-		})
-		.catch((err) => next(err));
-};
+	const info = await sendEmail(
+		user.email,
+		"Password Change",
+		"Password Successfullly Changed"
+	);
+	res.statusCode = 200;
+	res.contentType = "application/json";
+	return res.json(info);
+});
 
 const passwordResetToken = (req, res, next) => {
 	console.log(req.body.email);
