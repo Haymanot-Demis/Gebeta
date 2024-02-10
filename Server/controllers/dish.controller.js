@@ -1,6 +1,6 @@
 const express = require("express");
 const Dishes = require("../models/dishes");
-const Lounges = require("../models/lounges");
+const Lounges = require("../models/lounge.model");
 const { cloudinaryUploader } = require("../middlewares/fileUploader");
 const fs = require("fs");
 

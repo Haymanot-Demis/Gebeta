@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const Dishes = require("./dishes");
-const Lounges = require("./lounges");
+const Lounges = require("./lounge.model");
 
 const commonSchema = {
 	image: {

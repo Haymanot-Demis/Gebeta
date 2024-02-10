@@ -13,7 +13,6 @@ const createRole = async (req) => {
 
 const getRoleById = async (roleId) => {
 	const role = await Roles.findById(roleId);
-	isFound(role);
 	return role;
 };
 

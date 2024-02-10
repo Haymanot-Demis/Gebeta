@@ -9,7 +9,7 @@ const {
 	verifyToken,
 } = require("../middlewares/auth.middleware");
 const Orders = require("../models/orders");
-const lounges = require("../models/lounges");
+const lounges = require("../models/lounge.model");
 const orderController = require("../controllers/order.controller");
 
 orderRouter.use(bodyParser.json());

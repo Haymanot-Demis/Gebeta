@@ -1,5 +1,5 @@
 const { cloudinaryUploader } = require("../middlewares/fileUploader");
-const Users = require("../models/users");
+const Users = require("../models/user.model");
 const Roles = require("../models/role.model");
 const { ApiError } = require("../utils/apiError");
 const httpStatus = require("http-status");

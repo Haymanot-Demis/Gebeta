@@ -1,6 +1,6 @@
 const express = require("express");
 const dishRouter = express.Router();
-const Dishes = require("../models/dishes").default;
+const Dishes = require("../models/dishes");
 const bodyParser = require("body-parser");
 const {
 	verifyAdmin,
@@ -8,7 +8,7 @@ const {
 	verifyToken,
 } = require("../middlewares/auth.middleware");
 const Orders = require("../models/orders");
-const Lounges = require("../models/lounges");
+const Lounges = require("../models/lounge.model");
 const { ObjectId } = require("mongodb");
 const fs = require("fs");
 const {

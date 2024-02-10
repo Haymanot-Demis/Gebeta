@@ -16,6 +16,7 @@ const createRole = catchAsync(async (req, res, next) => {
 
 const getRoleById = catchAsync(async (req, res, next) => {
 	const role = await roleService.getRoleById(req.params.roleId);
+	isFound(role, `Role with id ${req.params.roleId} not found`);
 	res.statusCode = 200;
 	res.contentType = "application/json";
 	res.json(role);

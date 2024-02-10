@@ -5,7 +5,7 @@ const {
 	verifyLoungeAdmin,
 	verifyToken,
 } = require("../middlewares/auth.middleware");
-const Lounges = require("../models/lounges");
+const Lounges = require("../models/lounge.model");
 const bodyParser = require("body-parser");
 const { ObjectId } = require("mongodb");
 const Dishes = require("../models/dishes");

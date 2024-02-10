@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Dishes = require("./dishes");
-const Lounges = require("./lounges");
-const Users = require("./users");
+const Lounges = require("./lounge.model");
+const Users = require("./user.model");
 const Schema = mongoose.Schema;
 
 const orderSchema = new Schema(

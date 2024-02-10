@@ -1,9 +1,9 @@
 const bcrypt = require("bcrypt");
-const Tokens = require("../models/token");
+const Tokens = require("../models/token.model");
 const { ObjectID } = require("bson");
 
 const config = require("../config/config");
-const Users = require("../models/users");
+const Users = require("../models/user.model");
 const userService = require("../services/user.services");
 const authService = require("../services/auth.services");
 const catchAsync = require("../utils/asyncHandler");

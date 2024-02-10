@@ -1,5 +1,5 @@
 const httpStatus = require("http-status");
-const Users = require("../models/users");
+const Users = require("../models/user.model");
 const { compare, encrypt } = require("../utils/auth");
 const { ApiError } = require("../utils/apiError");
 const { isFound } = require("../utils/checks");

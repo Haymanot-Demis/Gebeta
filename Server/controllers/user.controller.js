@@ -1,7 +1,7 @@
 require("dotenv").config();
 const authenticate = require("../middlewares/auth.middleware");
 const { cloudinaryUploader } = require("../middlewares/fileUploader");
-const Users = require("../models/users");
+const Users = require("../models/user.model");
 const userservice = require("..//services/user.services");
 const catchAsync = require("../utils/asyncHandler");
 const { isFound } = require("../utils/checks");

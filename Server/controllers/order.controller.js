@@ -1,5 +1,5 @@
 const Orders = require("../models/orders");
-const Lounges = require("../models/lounges");
+const Lounges = require("../models/lounge.model");
 
 const getOrder = (req, res, next) => {
 	Orders.find({ _id: req.params.orderId })

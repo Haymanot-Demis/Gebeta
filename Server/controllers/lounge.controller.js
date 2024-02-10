@@ -1,4 +1,4 @@
-const Lounges = require("../models/lounges");
+const Lounges = require("../models/lounge.model");
 const { cloudinaryUploader } = require("../middlewares/fileUploader");
 
 const getLounge = (req, res, next) => {
