@@ -4,7 +4,6 @@ const orderRouter = express.Router();
 const Dishes = require("../models/dishes");
 const bodyParser = require("body-parser");
 const {
-	isAuthenticated,
 	verifyAdmin,
 	verifyLoungeAdmin,
 	verifyToken,
@@ -19,37 +18,27 @@ orderRouter.use(express.urlencoded({ extended: true }));
 orderRouter
 	.route("/")
 	// get all orders of the logged in user
-	.get(verifyToken, isAuthenticated, orderController.getManyOrders)
+	.get(verifyToken, orderController.getManyOrders)
 	// create a new order
-	.post(verifyToken, isAuthenticated, orderController.createOrder);
+	.post(verifyToken, orderController.createOrder);
 
 orderRouter
 	.route("/:orderId")
 	// get a specific order
-	.get(verifyToken, isAuthenticated, orderController.getOrder)
+	.get(verifyToken, orderController.getOrder)
 	// update a specific order
-	.put(verifyToken, isAuthenticated, orderController.updateOrder)
+	.put(verifyToken, orderController.updateOrder)
 	// delete a specific order
-	.delete(verifyToken, isAuthenticated, orderController.deleteOrder);
+	.delete(verifyToken, orderController.deleteOrder);
 
 orderRouter
 	.route("/loungeAdmin/all")
 	// get all orders in the lounge
-	.get(
-		verifyToken,
-		isAuthenticated,
-		verifyLoungeAdmin,
-		orderController.getOrdersOfLounge
-	);
+	.get(verifyToken, verifyLoungeAdmin, orderController.getOrdersOfLounge);
 
 orderRouter
 	.route("/loungeAdmin/:orderId")
 	// update a specific order status by admin
-	.put(
-		verifyToken,
-		isAuthenticated,
-		verifyLoungeAdmin,
-		orderController.updateOrderStatus
-	);
+	.put(verifyToken, verifyLoungeAdmin, orderController.updateOrderStatus);
 
 module.exports = orderRouter;

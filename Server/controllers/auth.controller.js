@@ -1,7 +1,5 @@
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const Tokens = require("../models/token");
-const crypto = require("crypto");
 const { ObjectID } = require("bson");
 
 const config = require("../config/config");
@@ -10,7 +8,16 @@ const userService = require("../services/user.services");
 const authService = require("../services/auth.services");
 const catchAsync = require("../utils/asyncHandler");
 const sendEmail = require("../utils/sendEmail");
-const { generateJWTToken } = require("../utils/auth");
+const {
+	generateJWTToken,
+	compareUserId,
+	encrypt,
+	generateResetPasswordToken,
+	compare,
+} = require("../utils/auth");
+const { isFound } = require("../utils/checks");
+const { ApiError, InvalidTokenException } = require("../utils/apiError");
+const httpStatus = require("http-status");
 
 const activateUserAccount = catchAsync(async (req, res, next) => {
 	const update = { $set: { isactivated: true } };
@@ -60,9 +67,22 @@ const signinController = catchAsync(async (req, res, next) => {
 });
 
 const changePasswordController = catchAsync(async (req, res, next) => {
-	const user = await authService.changePassword(
+	console.log(req.body);
+	console.log(req.user);
+	compareUserId(req.user.userId, req.body.user_id);
+
+	const user = await userService.getUserById(req.body.user_id);
+	console.log(user);
+	isFound(user, `User with id $(user._id} is`);
+
+	const isPasswordMathced = await compare(req.body.oldPassword, user?.password);
+
+	if (!user || !isPasswordMathced) {
+		throw ApiError(httpStatus.UNAUTHORIZED, "Invalid Credetial");
+	}
+
+	const use = await authService.changePassword(
 		req.body.user_id,
-		req.body.oldPassword,
 		req.body.newPassword
 	);
 
@@ -71,95 +91,69 @@ const changePasswordController = catchAsync(async (req, res, next) => {
 		"Password Change",
 		"Password Successfullly Changed"
 	);
+
 	res.statusCode = 200;
 	res.contentType = "application/json";
 	return res.json(info);
 });
 
-const passwordResetToken = (req, res, next) => {
+const resetPasswordToken = catchAsync(async (req, res, next) => {
 	console.log(req.body.email);
-	Users.findOne({ email: req.body.email }).then(async (user) => {
-		if (!user) {
-			res.statusCode = 404;
-			res.send("User not found");
-			return next();
-		}
+	const user = await userService.getUserByEmail(req.body.email);
 
-		const result = await Tokens.deleteMany({ user_id: ObjectID(user._id) });
-		console.log(result);
-		const token = crypto.randomBytes(32).toString("hex");
-		const hashedToken = await bcrypt.hash(token, Number(process.env.SALT));
-		const userToken = await Tokens.create({
-			user_id: user._id,
-			token: hashedToken,
-		});
-		console.log(userToken);
-		const info = await sendEmail(user.email, "Reset Password", token);
-		res.statusCode = 200;
-		res.contentType = "application/json";
-		console.log(info);
-		res.json(info);
-		return next();
+	// throw error if user not found
+	isFound(user, `User with email ${req.body.email} is`);
+
+	const result = await Tokens.deleteMany({ user_id: ObjectID(user._id) });
+	console.log(result);
+
+	const token = generateResetPasswordToken();
+	const hashedToken = await encrypt(token);
+	const userToken = await Tokens.create({
+		user_id: user._id,
+		token: hashedToken,
 	});
-};
 
-const resetPasswordController = (req, res, next) => {
-	console.log(req.body);
-	Users.findOne({ _id: req.body.user_id }).then(async (user) => {
-		if (!user) {
-			res.statusCode = 404;
-			console.log("User not found");
-			const err = new Error("User not found");
-			res.send(err);
-			return next(err);
-		}
-		console.log(user, req.body.user_id);
-		const resetToken = await Tokens.findOne({ user_id: user._id });
-		if (!resetToken) {
-			res.statusCode = 403;
-			console.log("token not found");
-			res.contentType = "text/plain";
-			const err = new Error("token not found");
-			res.send(err);
-			return next(err);
-		}
-		console.log(req.body.token);
-		console.log(resetToken.token);
-		const isValidToken = await bcrypt.compare(req.body.token, resetToken.token);
-		console.log(isValidToken);
-		if (!isValidToken) {
-			res.statusCode = 403;
-			console.log("Invalid");
-			const err = new Error("Invalid or expired password reset token");
-			return next(err);
-		}
+	console.log(userToken);
+	// send email to reset password
+	const info = await sendEmail(user.email, "Reset Password", token);
 
-		user.setPassword(req.body.password, async (err, result) => {
-			if (err) {
-				console.log(err);
-				res.statusCode = 400;
-				res.contentType = "application/json";
-				res.json(err);
-				return next(err);
-			}
-			await user.save();
-			const info = sendEmail(
-				user.email,
-				"Password Reset",
-				"Password Successfullly Reseted"
-			);
-			res.statusCode = 200;
-			res.contentType = "application/json";
-			return res.json(info);
-		});
-	});
-};
+	res.statusCode = 200;
+	res.contentType = "application/json";
+	console.log(info);
+	res.json(info);
+});
+
+const resetPasswordController = catchAsync(async (req, res, next) => {
+	const user = await userService.getUserByEmail(req.body.email);
+	isFound(user, `User with email ${req.body.email} is`);
+
+	const resetToken = await Tokens.findOne({ user_id: user._id });
+	isFound(resetToken, "Reset Token");
+	const isValidToken = await compare(req.body.token, resetToken.token);
+
+	if (!isValidToken) {
+		throw InvalidTokenException();
+	}
+
+	await authService.changePassword(user._id, req.body.password);
+
+	const info = await sendEmail(
+		user.email,
+		"Password Reset",
+		"Password Successfullly Reseted"
+	);
+
+	res.statusCode = 200;
+	res.contentType = "application/json";
+	res.json(info);
+});
 
 module.exports = {
 	activateUserAccount,
 	signupController,
 	signinController,
 	changePasswordController,
-	passwordResetToken,
+	resetPasswordToken,
 	resetPasswordController,
 };

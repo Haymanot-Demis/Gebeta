@@ -4,7 +4,6 @@ const Dishes = require("../models/dishes").default;
 const bodyParser = require("body-parser");
 const {
 	verifyAdmin,
-	isAuthenticated,
 	verifyLoungeAdmin,
 	verifyToken,
 } = require("../middlewares/auth.middleware");
@@ -26,64 +25,47 @@ dishRouter
 	.get(dishController.getAllDishes)
 	.post(
 		verifyToken,
-		isAuthenticated,
-		// verifyLoungeAdmin,
+		verifyLoungeAdmin,
 		upload.single("image"),
 		dishController.createDish
 	)
-	.put(verifyToken, isAuthenticated, verifyLoungeAdmin, (req, res, next) => {
+	.put(verifyToken, verifyLoungeAdmin, (req, res, next) => {
 		res.statusCode = 403;
 		res.end("PUT operation not supported on /dishes");
 		next();
 	})
-	.delete(
-		verifyToken,
-		isAuthenticated,
-		verifyLoungeAdmin,
-		dishController.deleteManyDish
-	);
+	.delete(verifyToken, verifyLoungeAdmin, dishController.deleteManyDish);
 
 // dishRouter.route("/:loungeId").get(dishController.getDishesByLounge);
 
 dishRouter
 	.route("/:dishid")
 	.get(dishController.getDish)
-	.post(verifyToken, isAuthenticated, verifyLoungeAdmin, (req, res, next) => {
+	.post(verifyToken, verifyLoungeAdmin, (req, res, next) => {
 		res.statusCode = 403;
 		res.end(`POST operation not supported on /dishes/${req.params.dishid}`);
 		next();
 	})
 	.put(
 		verifyToken,
-		isAuthenticated,
 		verifyLoungeAdmin,
 		upload.single("image"),
 		dishController.updateDish
 	)
-	.delete(
-		verifyToken,
-		isAuthenticated,
-		verifyLoungeAdmin,
-		dishController.deleteDish
-	);
+	.delete(verifyToken, verifyLoungeAdmin, dishController.deleteDish);
 
 dishRouter
 	.route("/:dishId/comments")
-	.get(verifyToken, isAuthenticated, dishController.getDishComments)
-	.post(verifyToken, isAuthenticated, dishController.createDishComment);
+	.get(verifyToken, dishController.getDishComments)
+	.post(verifyToken, dishController.createDishComment);
 
 dishRouter
 	.route("/:dishId/comments/:commentId")
-	.put(verifyToken, isAuthenticated, dishController.updateDishComment);
+	.put(verifyToken, dishController.updateDishComment);
 
 dishRouter
 	.route("/comments/all")
-	.get(
-		verifyToken,
-		isAuthenticated,
-		verifyLoungeAdmin,
-		dishController.getAllComments
-	);
+	.get(verifyToken, verifyLoungeAdmin, dishController.getAllComments);
 
 dishRouter.route("/distinct").get((req, res, next) => {
 	Dishes.distinct(req?.body?.field, req.body.filter)

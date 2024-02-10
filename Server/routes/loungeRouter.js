@@ -2,7 +2,6 @@ const express = require("express");
 const loungeRouter = express.Router();
 const {
 	verifyAdmin,
-	isAuthenticated,
 	verifyLoungeAdmin,
 	verifyToken,
 } = require("../middlewares/auth.middleware");
@@ -21,45 +20,29 @@ loungeRouter
 	.get(loungeController.getLounges)
 	.post(
 		verifyToken,
-		isAuthenticated,
 		verifyAdmin,
 		upload.single("image"),
 		loungeController.createLounge
 	)
-	.put(verifyToken, isAuthenticated, verifyAdmin, (req, res, next) => {
+	.put(verifyToken, verifyAdmin, (req, res, next) => {
 		res.statusCode = 403;
 		res.end("PUT operation not supported on /lounges");
 		next();
 	})
-	.delete(
-		verifyToken,
-		isAuthenticated,
-		verifyAdmin,
-		loungeController.deleteManyLounge
-	);
+	.delete(verifyToken, verifyAdmin, loungeController.deleteManyLounge);
 
 loungeRouter
 	.route("/:id")
 	.get(loungeController.getLounge)
-	.post(verifyToken, isAuthenticated, verifyAdmin, (req, res, next) => {
+	.post(verifyToken, verifyAdmin, (req, res, next) => {
 		res.statusCode = 403;
 		res.send("POST operation not supported on /lounges/" + req.params.id);
 	})
-	.put(
-		verifyLoungeAdmin,
-		isAuthenticated,
-		verifyLoungeAdmin,
-		loungeController.updateLounge
-	)
-	.delete(isAuthenticated, verifyAdmin, loungeController.deleteLounge);
+	.put(verifyLoungeAdmin, verifyLoungeAdmin, loungeController.updateLounge)
+	.delete(verifyAdmin, loungeController.deleteLounge);
 
 loungeRouter
 	.route("/admin/lounge")
-	.get(
-		verifyToken,
-		isAuthenticated,
-		verifyLoungeAdmin,
-		loungeController.getLoungesByAdmin
-	);
+	.get(verifyToken, verifyLoungeAdmin, loungeController.getLoungesByAdmin);
 
 module.exports = loungeRouter;

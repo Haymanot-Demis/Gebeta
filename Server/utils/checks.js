@@ -1,4 +1,4 @@
-const ApiError = require("./apiError");
+const { ApiError } = require("./apiError");
 const httpStatus = require("http-status");
 
 const isFound = (obj, objType = "Entity") => {

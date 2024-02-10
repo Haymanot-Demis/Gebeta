@@ -1,7 +1,7 @@
 const { cloudinaryUploader } = require("../middlewares/fileUploader");
 const Users = require("../models/users");
 const Roles = require("../models/role.model");
-const ApiError = require("../utils/apiError");
+const { ApiError } = require("../utils/apiError");
 const httpStatus = require("http-status");
 const { isFound } = require("../utils/checks");
 const { encrypt } = require("../utils/auth");
@@ -49,14 +49,14 @@ const getUserByEmail = async (email) => {
 };
 
 const getAllUsers = async () => {
-	const users = await Users.find({});
+	const users = await Users.find({}).select("-password");
 	return users;
 };
 
 const updateUser = async (userId, update) => {
 	var user = await Users.findOneAndUpdate({ _id: userId }, update, {
 		new: true,
-	});
+	}).select("-password");
 	isFound(user, "User");
 	return user;
 };
