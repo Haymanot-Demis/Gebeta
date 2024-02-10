@@ -39,7 +39,6 @@ const createUser = async (req) => {
 
 const getUserById = async (userId) => {
 	const user = await Users.findById(userId);
-	isFound(user, "User");
 	return user;
 };
 
@@ -57,7 +56,6 @@ const updateUser = async (userId, update) => {
 	var user = await Users.findOneAndUpdate({ _id: userId }, update, {
 		new: true,
 	}).select("-password");
-	isFound(user, "User");
 	return user;
 };
 
@@ -73,7 +71,6 @@ const getRolesOfUser = async (userId) => {
 	const user = await Users.findById(userId)
 		.populate("roles")
 		.select({ roles: 1 });
-	isFound(user, "User");
 	return user.roles;
 };
 

@@ -45,10 +45,8 @@ const compare = async (data, encryptedData) => {
 
 // Compare the loggedin user id with the user id on which the operation is being performed
 const compareUserId = (loggedinUserId, userId) => {
-	if (loggedinUserId != userId) {
-		throw ApiError(403, "Unauthorized Access");
-	}
-	return true;
+	console.log("compare", loggedinUserId, userId);
+	return loggedinUserId === userId;
 };
 
 const isAccountActive = (user) => {

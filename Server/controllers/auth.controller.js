@@ -69,7 +69,9 @@ const signinController = catchAsync(async (req, res, next) => {
 const changePasswordController = catchAsync(async (req, res, next) => {
 	console.log(req.body);
 	console.log(req.user);
-	compareUserId(req.user.userId, req.body.user_id);
+	if (!compareUserId(req.user.userId, req.body.user_id)) {
+		throw ApiError(httpStatus.UNAUTHORIZED, "Unauthorized Access");
+	}
 
 	const user = await userService.getUserById(req.body.user_id);
 	console.log(user);

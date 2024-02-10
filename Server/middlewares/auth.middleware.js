@@ -6,6 +6,7 @@ const { ApiError } = require("../utils/apiError");
 const httpStatus = require("http-status");
 const { USER_ROLES } = require("../utils/constants");
 const catchAsync = require("../utils/asyncHandler");
+const { compareUserId } = require("../utils/auth");
 
 const getTokenFromHeader = (req) => {
 	const bearerHeader = req.headers["authorization"];
@@ -65,8 +66,26 @@ const verifyLoungeAdmin = (req, res, next) => {
 	next();
 };
 
+const verifyPrivacy = (req, res, next) => {
+	console.log("verify privacy", req.user.roles);
+	if (
+		!req.user.roles.includes(USER_ROLES.ADMIN) &&
+		!compareUserId(
+			req.user.userId /* loggedinuser */,
+			req.params.userId /*requested user*/
+		)
+	) {
+		const err = new Error("Unauthorized Access");
+		res.statusCode = 403;
+		res.contentType = "application/json";
+		return next(err);
+	}
+	next();
+};
+
 module.exports = {
 	verifyToken,
 	verifyAdmin,
 	verifyLoungeAdmin,
+	verifyPrivacy,
 };

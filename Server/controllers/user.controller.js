@@ -4,6 +4,9 @@ const { cloudinaryUploader } = require("../middlewares/fileUploader");
 const Users = require("../models/users");
 const userservice = require("..//services/user.services");
 const catchAsync = require("../utils/asyncHandler");
+const { isFound } = require("../utils/checks");
+const { compareUserId } = require("../utils/auth");
+const { ApiError, UnauthorizedException } = require("../utils/apiError");
 
 // get all users
 const getAllUsers = catchAsync(async (req, res, next) => {
@@ -14,9 +17,9 @@ const getAllUsers = catchAsync(async (req, res, next) => {
 });
 
 // get one user by id
-
 const getOneUser = catchAsync(async (req, res, next) => {
-	const user = await userservice.getUserById(req.params.id);
+	const user = await userservice.getUserById(req.params.userId);
+	isFound(user, "User");
 	res.statusCode = 200;
 	res.contentType = "application/json";
 	res.json(user);
@@ -24,15 +27,35 @@ const getOneUser = catchAsync(async (req, res, next) => {
 
 // update user
 const updateUser = catchAsync(async (req, res, next) => {
-	const user = await userservice.updateUser(req.params.id, req.body);
+	const user = await userservice.getUserById(req.params.userId);
+	isFound(user, "User");
+
+	if (!compareUserId(req.user.userId, req.params.userId)) {
+		throw UnauthorizedException("Unauthorized Access");
+	}
+
+	// remove password from the request body since changing password here is not allowed
+	req.body.password = undefined;
+
+	if (req.file) {
+		const result = await cloudinaryUploader(req.file.path);
+		req.body.profileImage = result.secure_url;
+	}
+
+	const updated = await userservice.updateUser(user._id, req.body);
+
+	// remove password from the response
+	updated.password = undefined;
+
 	res.statusCode = 200;
 	res.contentType = "application/json";
-	res.json(user);
+	res.json(updated);
 });
 
 // delete user
 const deleteUser = catchAsync(async (req, res, next) => {
 	const user = await userservice.deleteUser({ _id: req.params.id });
+	isFound(user, "User");
 	res.statusCode = 200;
 	res.contentType = "application/json";
 	res.json(user);
