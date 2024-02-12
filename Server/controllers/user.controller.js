@@ -5,7 +5,7 @@ const Users = require("../models/user.model");
 const userservice = require("..//services/user.services");
 const catchAsync = require("../utils/asyncHandler");
 const { isFound } = require("../utils/checks");
-const { compareUserId } = require("../utils/auth");
+const { checkOwnership } = require("../utils/auth");
 const { ApiError, UnauthorizedException } = require("../utils/apiError");
 
 // get all users
@@ -30,7 +30,7 @@ const updateUser = catchAsync(async (req, res, next) => {
 	const user = await userservice.getUserById(req.params.userId);
 	isFound(user, "User");
 
-	if (!compareUserId(req.user.userId, req.params.userId)) {
+	if (!checkOwnership(req.user.userId, req.params.userId)) {
 		throw UnauthorizedException("Unauthorized Access");
 	}
 
@@ -52,7 +52,7 @@ const updateUser = catchAsync(async (req, res, next) => {
 	res.json(updated);
 });
 
-// delete user
+// TODO:  we need to cascade when we delete user
 const deleteUser = catchAsync(async (req, res, next) => {
 	const user = await userservice.deleteUser({ _id: req.params.id });
 	isFound(user, "User");
@@ -62,7 +62,19 @@ const deleteUser = catchAsync(async (req, res, next) => {
 });
 
 const addRole = catchAsync(async (req, res, next) => {
-	const user = await userservice.addRole(req.body.userId, req.body.roleId);
+	const user = await userservice.addRole(req.body.userId, {
+		_id: req.body.roleId,
+	});
+	res.statusCode = 200;
+	res.contentType = "application/json";
+	res.json(user);
+});
+
+// TODO: ADD revoke user role
+const revokeRole = catchAsync(async (req, res, next) => {
+	const user = await userservice.revokeRole(req.body.userId, {
+		_id: req.body.roleId,
+	});
 	res.statusCode = 200;
 	res.contentType = "application/json";
 	res.json(user);

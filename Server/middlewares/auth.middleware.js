@@ -6,7 +6,7 @@ const { ApiError } = require("../utils/apiError");
 const httpStatus = require("http-status");
 const { USER_ROLES } = require("../utils/constants");
 const catchAsync = require("../utils/asyncHandler");
-const { compareUserId } = require("../utils/auth");
+const { checkOwnership } = require("../utils/auth");
 
 const getTokenFromHeader = (req) => {
 	const bearerHeader = req.headers["authorization"];
@@ -20,13 +20,13 @@ const getTokenFromHeader = (req) => {
 		if (!bearerToken) {
 			const err = ApiError(
 				httpStatus.UNAUTHORIZED,
-				"token not found in header"
+				"bearer token not found in header"
 			);
 			throw err;
 		}
 		return bearerToken;
 	} else {
-		const err = ApiError(httpStatus.UNAUTHORIZED, "token not found in header");
+		const err = ApiError(httpStatus.UNAUTHORIZED, "auth header is not found");
 		throw err;
 	}
 };
@@ -37,7 +37,7 @@ const verifyToken = async (req, res, next) => {
 		console.log(token, process.env.SECRETE);
 		const decoded = jwt.verify(token, process.env.SECRETE);
 		req.user = decoded;
-		console.log(decoded);
+		console.log("decoded", decoded);
 		next();
 	} catch (err) {
 		res.statusCode = 403;
@@ -70,7 +70,7 @@ const verifyPrivacy = (req, res, next) => {
 	console.log("verify privacy", req.user.roles);
 	if (
 		!req.user.roles.includes(USER_ROLES.ADMIN) &&
-		!compareUserId(
+		!checkOwnership(
 			req.user.userId /* loggedinuser */,
 			req.params.userId /*requested user*/
 		)
@@ -83,9 +83,23 @@ const verifyPrivacy = (req, res, next) => {
 	next();
 };
 
+// TOD0: what if I give this a callback function to check ownership of the resource
+const authorizeRoles = (roles) => {
+	return (req, res, next) => {
+		let isAuthorized = req.user.roles.some((role) => roles.includes(role));
+
+		if (!isAuthorized) {
+			const err = ApiError(httpStatus.UNAUTHORIZED, "Unauthorized Access");
+			next(err);
+		}
+		next();
+	};
+};
+
 module.exports = {
 	verifyToken,
 	verifyAdmin,
 	verifyLoungeAdmin,
 	verifyPrivacy,
+	authorizeRoles,
 };

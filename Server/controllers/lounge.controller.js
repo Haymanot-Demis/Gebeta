@@ -1,88 +1,117 @@
-const Lounges = require("../models/lounge.model");
+const loungeService = require("../services/lounge.services");
+const userService = require("../services/user.services");
 const { cloudinaryUploader } = require("../middlewares/fileUploader");
+const catchAsync = require("../utils/asyncHandler");
+const { NotFoundException, ApiError } = require("../utils/apiError");
+const httpStatus = require("http-status");
+const { USER_ROLES } = require("../utils/constants");
+const { isFound } = require("../utils/checks");
+const { checkOwnership } = require("../utils/auth");
 
-const getLounge = (req, res, next) => {
-	Lounges.findById(ObjectId(req.params.id)).then((lounge) => {
-		res.statusCode = 200;
-		res.contentType = "application/json";
-		res.json(lounge);
-		next();
+const getLounge = catchAsync(async (req, res, next) => {
+	const lounge = await loungeService.getLoungeById(req.params.id);
+	isFound(lounge);
+
+	res.statusCode = 200;
+	res.contentType = "application/json";
+	res.json(lounge);
+});
+
+// TODO: pagination
+const getLounges = catchAsync(async (req, res, next) => {
+	const lounges = await loungeService.getAllLounges();
+	res.statusCode = 200;
+	res.contentType = "application/json";
+	res.json(lounges);
+	next();
+});
+
+const createLounge = catchAsync(async (req, res, next) => {
+	const user = await userService.getUserById(req.body.loungeAdmin);
+
+	console.log(user);
+
+	if (!user) {
+		throw NotFoundException("Lounge Admin not found");
+	}
+	const isLoungeAdmin = await userService.hasRole(
+		user._id,
+		USER_ROLES.LOUNGE_ADMIN
+	);
+	if (isLoungeAdmin) {
+		throw ApiError(
+			httpStatus.BAD_REQUEST,
+			"User already has a lounge. Cannot create another lounge. Please contact the admin."
+		);
+	}
+
+	if (req.file) {
+		const result = await cloudinaryUploader(req.file.path);
+		req.body.image = result.secure_url;
+	}
+
+	const newLounge = await loungeService.createLounge(req.body);
+	await userService.addRole(user._id, { name: USER_ROLES.LOUNGE_ADMIN });
+	res.statusCode = 201;
+	res.contentType = "application/json";
+	res.json(newLounge);
+});
+
+const updateLounge = catchAsync(async (req, res, next) => {
+	const isExist = await loungeService.exists({
+		_id: req.params.id,
+		loungeAdmin: req.user.userId,
 	});
-};
+	isFound(isExist, `Lounge with ${req.params.id} is`);
 
-const getLounges = (req, res, next) => {
-	Lounges.find({})
-		.populate("loungeAdmin")
-		.then((lounges) => {
-			res.statusCode = 200;
-			res.contentType = "application/json";
-			res.json(lounges);
-		})
-		.catch((err) => next(err));
-};
+	if (req.file) {
+		const result = await cloudinaryUploader(req.file.path);
+		req.body.image = result.secure_url;
+	}
 
-const createLounge = (req, res, next) => {
-	req.body.loungeAdmin = req.user._id;
-	Lounges.create({ image: req?.file?.path, ...req.body })
-		.then(
-			async (lounge) => {
-				const upload_data = await Uploader(lounge.image);
-				console.log(upload_data);
-				lounge.image = upload_data.secure_url;
-				await lounge.save();
-				res.statusCode = 200;
-				res.contentType = "application/json";
-				res.json(lounge);
-			},
-			(err) => {
-				console.log("err msg ", err.message);
-				next(err);
-			}
-		)
-		.catch((err) => {
-			console.log("here", err.message);
-			next(err);
-		});
-};
+	const lounge = await loungeService.updateLounge(req.params.id, req.body);
 
-const updateLounge = (req, res, next) => {
-	Lounges.updateMany(
-		{
-			_id: req.params.id,
-			loungeAdmin: req.user._id,
-		},
-		{
-			$set: req.body,
-		},
-		{ new: true }
-	)
-		.then((lounge) => {
-			res.statusCode = 200;
-			res.contentType = "application/json";
-			res.json(lounge);
-		})
-		.catch((err) => next(err));
-};
+	res.statusCode = 200;
+	res.contentType = "application/json";
+	res.json(lounge);
+});
 
-const deleteManyLounge = (req, res, next) => {
-	Lounges.deleteMany({ loungeAdmin: req.user._id })
-		.then((result) => {
-			res.statusCode = 200;
-			res.contentType = "application/json";
-			res.json(result);
-		})
-		.catch((err) => next(err));
-};
+const deleteManyLounge = catchAsync(async (req, res, next) => {
+	await loungeService.deleteMany(req.body);
+});
 
-const deleteLounge = (req, res, next) => {
-	Lounges.deleteOne({ loungeAdmin: req.user._id, _id: req.params.id })
-		.then((result) => {
-			res.statusCode = 200;
-			res.contentType = "application/json";
-			res.json(result);
-		})
-		.catch((err) => next(err));
-};
+const deleteLounge = catchAsync(async (req, res, next) => {
+	const lounge = await loungeService.getLoungeById(req.params.id);
+
+	isFound(lounge, `Lounge with id ${req.params.id} is`);
+
+	const isAdmin = await userService.hasRole(req.user.userId, USER_ROLES.ADMIN);
+
+	if (!isAdmin && req.user.userId !== lounge.loungeAdmin.toString()) {
+		throw ApiError(
+			httpStatus.FORBIDDEN,
+			"You are not authorized to delete this lounge"
+		);
+	}
+
+	const restult = await loungeService.deleteMany({
+		_id: req.params.id,
+	});
+
+	const result = await userService.revokeRole(lounge.loungeAdmin, {
+		name: USER_ROLES.LOUNGE_ADMIN,
+	});
+
+	console.log(result);
+
+	res.statusCode = 200;
+	res.contentType = "application/json";
+	res.json({
+		status: "success",
+		message: "Lounge deleted successfully",
+		restult,
+	});
+});
 
 const getLoungesByAdmin = (req, res, next) => {
 	Lounges.findOne({ loungeAdmin: req.user._id }).then((lounge) => {

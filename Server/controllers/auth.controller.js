@@ -1,16 +1,15 @@
-const bcrypt = require("bcrypt");
 const Tokens = require("../models/token.model");
 const { ObjectID } = require("bson");
 
 const config = require("../config/config");
-const Users = require("../models/user.model");
 const userService = require("../services/user.services");
 const authService = require("../services/auth.services");
+const loungeService = require("../services/lounge.services");
 const catchAsync = require("../utils/asyncHandler");
 const sendEmail = require("../utils/sendEmail");
 const {
 	generateJWTToken,
-	compareUserId,
+	checkOwnership,
 	encrypt,
 	generateResetPasswordToken,
 	compare,
@@ -18,6 +17,7 @@ const {
 const { isFound } = require("../utils/checks");
 const { ApiError, InvalidTokenException } = require("../utils/apiError");
 const httpStatus = require("http-status");
+const { DEFAULT_VALUES } = require("../utils/constants");
 
 const activateUserAccount = catchAsync(async (req, res, next) => {
 	const update = { $set: { isactivated: true } };
@@ -28,6 +28,15 @@ const activateUserAccount = catchAsync(async (req, res, next) => {
 
 const signupController = catchAsync(async (req, res, next) => {
 	const user = await userService.createUser(req);
+
+	if (req.body.loungeAdmin) {
+		const lounge = await loungeService.createLounge({
+			name: req.body.loungeName ?? DEFAULT_VALUES.LOUNGE_NAME,
+			loungeAdmin: user._id,
+		});
+		console.log(lounge);
+	}
+
 	// send email to verify email
 	const link = `http://localhost:${config.port}/auth/activateUserAccount/${user._id}`;
 	const info = await sendEmail(
@@ -36,7 +45,7 @@ const signupController = catchAsync(async (req, res, next) => {
 		`<a href=${link}>Click to activate</a>`
 	);
 
-	res.statusCode = 200;
+	res.statusCode = 201;
 	res.contentType = "application/json";
 	return res.json({
 		success: true,
@@ -69,7 +78,7 @@ const signinController = catchAsync(async (req, res, next) => {
 const changePasswordController = catchAsync(async (req, res, next) => {
 	console.log(req.body);
 	console.log(req.user);
-	if (!compareUserId(req.user.userId, req.body.user_id)) {
+	if (!checkOwnership(req.user.userId, req.body.user_id)) {
 		throw ApiError(httpStatus.UNAUTHORIZED, "Unauthorized Access");
 	}
 
@@ -94,7 +103,7 @@ const changePasswordController = catchAsync(async (req, res, next) => {
 		"Password Successfullly Changed"
 	);
 
-	res.statusCode = 200;
+	res.statusCode = 204;
 	res.contentType = "application/json";
 	return res.json(info);
 });
@@ -146,7 +155,7 @@ const resetPasswordController = catchAsync(async (req, res, next) => {
 		"Password Successfullly Reseted"
 	);
 
-	res.statusCode = 200;
+	res.statusCode = 204;
 	res.contentType = "application/json";
 	res.json(info);
 });

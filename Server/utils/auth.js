@@ -44,8 +44,8 @@ const compare = async (data, encryptedData) => {
 };
 
 // Compare the loggedin user id with the user id on which the operation is being performed
-const compareUserId = (loggedinUserId, userId) => {
-	console.log("compare", loggedinUserId, userId);
+const checkOwnership = (loggedinUserId, userId) => {
+	console.log("checkOwnership", loggedinUserId, userId);
 	return loggedinUserId === userId;
 };
 
@@ -62,7 +62,7 @@ module.exports = {
 	verifyJWTToken,
 	encrypt,
 	compare,
-	compareUserId,
+	checkOwnership,
 	isAccountActive,
 	generateResetPasswordToken,
 };

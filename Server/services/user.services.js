@@ -5,6 +5,28 @@ const { ApiError } = require("../utils/apiError");
 const httpStatus = require("http-status");
 const { isFound } = require("../utils/checks");
 const { encrypt } = require("../utils/auth");
+const roleServices = require("./role.services");
+const { USER_ROLES } = require("../utils/constants");
+
+const getRoles = async (role_id = undefined) => {
+	// Fetch the default user role
+	const userRole = await roleServices.getRoleByName(USER_ROLES.USER);
+	if (!userRole) {
+		throw ApiError(httpStatus.NOT_FOUND, "Default user role not found");
+	}
+
+	let roles = new Set([userRole._id]); // Default user role is always added
+
+	if (role_id) {
+		const role = await roleServices.getRoleById(role_id);
+		if (!role) {
+			throw ApiError(httpStatus.NOT_FOUND, "Requested role not found");
+		}
+		roles.push(role._id);
+	}
+
+	return roles;
+};
 
 const createUser = async (req) => {
 	const { firstname, lastname, email, role_id } = req.body;
@@ -12,18 +34,14 @@ const createUser = async (req) => {
 
 	console.log(req.body);
 
-	const role = await Roles.findById(role_id);
-
-	if (!role) {
-		throw ApiError(httpStatus.NOT_FOUND, "Role not found");
-	}
+	const roles = await getRoles(role_id);
 
 	const newUser = await Users.create({
 		firstname,
 		lastname,
 		email,
 		password,
-		roles: [role],
+		roles,
 	});
 
 	console.log(req.file);
@@ -74,14 +92,37 @@ const getRolesOfUser = async (userId) => {
 	return user.roles;
 };
 
-const addRole = async (userId, roleId) => {
+const addRole = async (userId, roleFilter = {}) => {
 	const user = await Users.findById(userId);
 	isFound(user, "User");
-	const role = await Roles.findById(roleId);
+	console.log(roleFilter);
+	const role = await Roles.findOne(roleFilter);
 	isFound(role, "Role");
 	user.roles.push(role);
 	await user.save();
 	return user;
+};
+
+const revokeRole = async (userId, roleFilter = {}) => {
+	const user = await Users.findById(userId);
+	isFound(user, "User");
+	const role = await Roles.findOne(roleFilter);
+	isFound(role, "Role");
+	user.roles.pull(role);
+	await user.save();
+	return user;
+};
+
+const hasRole = async (userId, role) => {
+	const user = await Users.findById(userId).populate("roles");
+	return user.roles.some((r) => {
+		console.log(r.name, role);
+		return r.name === role;
+	});
+};
+
+const exists = async (userId) => {
+	return await Users.exists({ _id: userId });
 };
 
 module.exports = {
@@ -94,4 +135,7 @@ module.exports = {
 	deleteUser,
 	deleteMany,
 	addRole,
+	revokeRole,
+	exists,
+	hasRole,
 };

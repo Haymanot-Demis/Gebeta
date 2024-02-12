@@ -26,6 +26,11 @@ const getAllRoles = async () => {
 	return roles;
 };
 
+const getRoles = async (filter) => {
+	const roles = await Roles.find(filter);
+	return roles;
+};
+
 const updateRole = async (roleId, update) => {
 	const role = await Roles.findById(roleId);
 	const updatedRole = await Roles.findOneAndUpdate(
@@ -55,6 +60,7 @@ module.exports = {
 	getRoleById,
 	getRoleByName,
 	getAllRoles,
+	getRoles,
 	updateRole,
 	deleteRole,
 };

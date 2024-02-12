@@ -8,17 +8,11 @@ const loungeSchema = new Schema({
 		required: true,
 		unique: true,
 	},
-	latitude: {
-		type: String,
-		default: "",
-	},
-	longitude: {
-		type: String,
-		default: "",
-	},
 	loungeAdmin: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: Users,
+		required: true,
+		unique: true,
 	},
 	image: {
 		type: String,

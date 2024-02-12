@@ -4,4 +4,8 @@ module.exports = {
 		LOUNGE_ADMIN: "LoungeAdmin",
 		USER: "User",
 	}),
+
+	DEFAULT_VALUES: Object.freeze({
+		LOUNGE_NAME: "NO NAME",
+	}),
 };

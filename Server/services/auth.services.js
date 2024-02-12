@@ -7,8 +7,7 @@ const { isAccountActive } = require("../utils/auth");
 
 const loginWithEmailAndPassword = async (email, password) => {
 	const user = await Users.findOne({ email }).populate("roles");
-
-	isAccountActive(user);
+	console.log(user);
 
 	const isPasswordMathced = await compare(password, user?.password);
 
@@ -16,12 +15,7 @@ const loginWithEmailAndPassword = async (email, password) => {
 		throw ApiError(httpStatus.UNAUTHORIZED, "Invalid Credetial");
 	}
 
-	if (!user.isactivated) {
-		throw ApiError(
-			httpStatus.UNAUTHORIZED,
-			"This account is not ready for use. Please wait until it is activated"
-		);
-	}
+	isAccountActive(user);
 
 	user.password = undefined;
 	return user;
