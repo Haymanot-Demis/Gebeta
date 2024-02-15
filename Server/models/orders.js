@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Dishes = require("./dishes");
+const Dishes = require("./dish.model");
 const Lounges = require("./lounge.model");
 const Users = require("./user.model");
 const Schema = mongoose.Schema;

@@ -1,8 +1,12 @@
 const express = require("express");
-const Dishes = require("../models/dishes");
+const Dishes = require("../models/dish.model");
 const Lounges = require("../models/lounge.model");
-const { cloudinaryUploader } = require("../middlewares/fileUploader");
+const { cloudinaryUploader, upload } = require("../middlewares/fileUploader");
+const dishServices = require("../services/dish.services");
+const loungeService = require("../services/lounge.services");
 const fs = require("fs");
+const { isFound } = require("../utils/checks");
+const catchAsync = require("../utils/asyncHandler");
 
 const getDish = (req, res, next) => {
 	Dishes.findById(req.params.dishid)
@@ -23,94 +27,65 @@ const getDish = (req, res, next) => {
 		.catch((err) => next(err));
 };
 const getAllDishes = async (req, res, next) => {
-	console.log(req.headers);
-	Dishes.find({})
-		.populate("lounge")
-		.populate("lounge.loungeAdmin")
-		.populate("comment.author")
-		.then((dishes) => {
-			res.statusCode = 200;
-			res.contentType("application/json");
-			res.json(dishes);
-			next();
-		})
-		.catch((err) => next(err));
+	const dishes = await dishServices.getAllDishes();
+	res.statusCode = 200;
+	res.contentType("application/json");
+	res.json(dishes);
+	next();
 };
 
-const getDishesByLounge = async (req, res, next) => {
-	Dishes.find({ lounge: req.params.loungeId })
-		.populate("lounge")
-		.then((dishes) => {
-			res.statusCode = 200;
-			res.contentType("application/json");
-			res.json(dishes);
-			// next();
-		})
-		.catch((err) => next(err));
-};
+const getDishesByLounge = catchAsync(async (req, res, next) => {
+	const dishes = await dishServices.getDishes({ lounge: req.user.userId });
+	res.statusCode = 200;
+	res.contentType("application/json");
+	res.json(dishes);
+});
 
-const createDish = async (req, res, next) => {
+const createDish = catchAsync(async (req, res, next) => {
 	// TODO: Add lounge id to the dish
-	const lounge = await Lounges.findOne({ name: req.body.lounge });
-	req.body.lounge = lounge?._id;
+	const isExist = await loungeService.exists({
+		_id: req.body?.lounge,
+		loungeAdmin: req.user.userId,
+	});
 
-	Dishes.create({
-		image: "C:/Projects/Gebeta/Server/" + req?.file?.path,
-		...req.body,
-	})
-		.then(async (dish) => {
-			if (req?.file) {
-				const upload_data = await Uploader(
-					"C:/Projects/Gebeta/Server/" + req?.file?.path
-				);
-				dish.image = upload_data.secure_url;
-				await dish.save();
-			}
+	isFound(isExist, `Lounge with id ${req.body?.lounge} is not`);
 
-			res.statusCode = 200;
-			res.contentType("application/json");
-			res.json(dish);
-			next();
-		})
-		.catch((err) => next(err));
-};
+	if (req?.file) {
+		console.log("file uploading");
+		const upload_data = await cloudinaryUploader(req.file.path);
+		req.body.image = upload_data.secure_url;
+	}
+	console.log("create controller", req.body);
+	const dish = await dishServices.createDish(req.body);
 
-const updateDish = async (req, res, next) => {
+	res.statusCode = 200;
+	res.contentType("application/json");
+	res.json(dish);
+	next();
+});
+
+const updateDish = catchAsync(async (req, res, next) => {
 	// TODO: lounge id to the dish
-	const lounge = await Lounges.findOne({ name: req.body.lounge });
-	const dish = await Dishes.findOne({ _id: req.params.dishid });
-	req.body.lounge = lounge?._id;
+	const lounge = await loungeService.getLoungeByAdmin(req.user.userId);
+	console.log(lounge);
+	const dish = await dishServices.exists({
+		_id: req.params.dishId,
+		lounge: lounge._id,
+	});
+	console.log(dish);
+	isFound(dish);
+
 	if (req?.file?.path) {
-		req.body.image = "C:/Projects/Gebeta/Server/" + req?.file?.path;
-		fs.unlink(
-			__dirname + "/../uploads/loungeImages/" + dish.image.split("\\").pop(),
-			(err) => {
-				if (err) {
-					return next(err);
-				}
-			}
-		);
-	} else {
-		req.body.image = dish.image;
+		const uploadResult = await cloudinaryUploader(req.file.path);
+		req.body.image = uploadResult.secure_url;
 	}
 
-	Dishes.findOneAndUpdate(
-		{ _id: req.params.dishid },
-		{
-			$set: req.body,
-		},
-		{
-			returnDocument: "after",
-		}
-	)
-		.then((newDishes) => {
-			res.statusCode = 200;
-			res.contentType("application/json");
-			res.json(newDishes);
-		})
-		.catch((err) => next(err));
-};
+	const newDish = dishServices.updateDish(req.params.dishId, req.body);
 
+	res.statusCode = 200;
+	res.contentType("application/json");
+	res.json(newDish);
+});
 // delete dishes belonging to a lounge
 const deleteManyDish = async (req, res, next) => {
 	const lounge = await Lounges.findOne({ loungeAdmin: req.user._id });

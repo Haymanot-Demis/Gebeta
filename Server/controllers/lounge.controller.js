@@ -34,10 +34,12 @@ const createLounge = catchAsync(async (req, res, next) => {
 	if (!user) {
 		throw NotFoundException("Lounge Admin not found");
 	}
+
 	const isLoungeAdmin = await userService.hasRole(
 		user._id,
 		USER_ROLES.LOUNGE_ADMIN
 	);
+
 	if (isLoungeAdmin) {
 		throw ApiError(
 			httpStatus.BAD_REQUEST,
@@ -113,25 +115,14 @@ const deleteLounge = catchAsync(async (req, res, next) => {
 	});
 });
 
-const getLoungesByAdmin = (req, res, next) => {
-	Lounges.findOne({ loungeAdmin: req.user._id }).then((lounge) => {
-		if (!lounge) {
-			res.statusCode = 404;
-			res.contentType = "application/json";
-			res.json({
-				status: "failed",
-				message: "Lounge with admin id " + req.user._id + " does not exist",
-			});
-			return next(
-				new Error("Lounge with admin id " + req.user._id + " does not exist")
-			);
-		}
-		res.statusCode = 200;
-		res.contentType = "application/json";
-		res.json(lounge);
-		next();
-	});
-};
+const getLoungesByAdmin = catchAsync(async (req, res, next) => {
+	console.log(req.user.userId);
+	const lounge = await loungeService.getLoungeByAdmin(req.user.userId);
+	res.statusCode = 200;
+	res.contentType = "application/json";
+	res.json(lounge);
+	next();
+});
 
 module.exports = {
 	getLounge,

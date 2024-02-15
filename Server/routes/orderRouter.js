@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const orderRouter = express.Router();
-const Dishes = require("../models/dishes");
+const Dishes = require("../models/dish.model");
 const bodyParser = require("body-parser");
 const {
 	verifyAdmin,

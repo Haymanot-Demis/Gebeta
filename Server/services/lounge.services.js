@@ -5,9 +5,9 @@ const getLoungeById = async (loungeId) => {
 	return lounge;
 };
 
-const getLoungesByAdmin = async (adminId) => {
-	const lounges = await Lounge.find({ loungeAdmin: adminId });
-	return lounges;
+const getLoungeByAdmin = async (adminId) => {
+	const lounge = await Lounge.findOne({ loungeAdmin: adminId });
+	return lounge;
 };
 
 const getLoungeByName = async (loungeName) => {
@@ -55,7 +55,7 @@ const exists = async (filter) => {
 
 module.exports = {
 	getLoungeById,
-	getLoungesByAdmin,
+	getLoungeByAdmin,
 	getLoungeByName,
 	getAllLounges,
 	getLounges,

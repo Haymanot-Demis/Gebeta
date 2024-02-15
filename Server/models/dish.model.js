@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const Lounges = require("./lounge.model");
 const Users = require("./user.model");
-const { commentSchema } = require("./comments");
+const { commentSchema } = require("./comment.model");
 
 const dishSchema = new Schema({
 	name: {
@@ -22,14 +22,15 @@ const dishSchema = new Schema({
 		default: true,
 	},
 	type: {
-		// select from a datalist
 		type: String,
 		required: true,
 	},
 	category: {
-		// select from a datalist
 		type: String,
 		required: true,
+	},
+	tags: {
+		type: [String],
 	},
 	comment: [commentSchema],
 	description: {
@@ -40,13 +41,17 @@ const dishSchema = new Schema({
 		// select from a datalist
 		type: mongoose.Schema.Types.ObjectId,
 		ref: Lounges,
+		require: true,
 	},
 	orderCount: {
 		type: Number,
 		default: 0,
 	},
+	isAvailable: {
+		type: Boolean,
+		default: true,
+	},
 });
 
 const Dishes = mongoose.model("Dish", dishSchema);
-
 module.exports = Dishes;
