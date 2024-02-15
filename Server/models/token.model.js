@@ -1,7 +1,7 @@
 const { TokenExpiredError } = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const Users = require("./users");
+const Users = require("./user.model");
 
 const tokenSchema = new Schema(
 	{
@@ -22,6 +22,6 @@ const tokenSchema = new Schema(
 
 tokenSchema.index({ createdAt: "1" }, { expireAfterSeconds: 15 * 60 });
 
-const Tokens = mongoose.model("token", tokenSchema);
+const Tokens = mongoose.model("Token", tokenSchema);
 
 module.exports = Tokens;

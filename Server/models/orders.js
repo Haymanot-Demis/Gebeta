@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const Dishes = require("./dishes");
-const Lounges = require("./lounges");
-const Users = require("./users");
+const Dishes = require("./dish.model");
+const Lounges = require("./lounge.model");
+const Users = require("./user.model");
 const Schema = mongoose.Schema;
 
 const orderSchema = new Schema(
@@ -48,6 +48,6 @@ const orderSchema = new Schema(
 	}
 );
 
-const Orders = mongoose.model("order", orderSchema);
+const Orders = mongoose.model("Order", orderSchema);
 
 module.exports = Orders;

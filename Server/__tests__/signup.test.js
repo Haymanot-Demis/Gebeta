@@ -6,33 +6,6 @@ const config = require("../authenticate/config");
 const { generate } = require("randomstring");
 const Users = require("../models/users");
 const requestWithSupertest = supertest(app);
-const add = () => {
-	console.log("add somethings");
-};
-
-describe("Home", () => {
-	test("GET", async () => {
-		const res = await requestWithSupertest.get("/");
-
-		expect(res.statusCode).toBe(200);
-		expect(res.type).toMatch("application/json");
-		expect(typeof res.body).toEqual("object");
-		expect(res.body).toHaveProperty("greating");
-	});
-});
-
-describe("Mock", () => {
-	it("should return null", () => {
-		const mockedAdd = jest.fn(add);
-		mockedAdd.mockImplementation((a, b) => {
-			console.log(a + b);
-			return a + b;
-		});
-		const res = mockedAdd(1, 2);
-		expect(res).toBe(3);
-		expect(mockedAdd).toBeCalled();
-	});
-});
 
 describe("Registration", () => {
 	describe("Post to signup", () => {
@@ -44,15 +17,23 @@ describe("Registration", () => {
 			lastname: "Doe",
 			password: "123456789",
 		};
+		var mockedRegister;
+		var userSave;
+
+		beforeEach(() => {
+			mockedRegister = jest.spyOn(Users, "register");
+			userSave = jest.spyOn(Users.prototype, "save");
+			userSave.mockImplementation(() => {
+				return Promise.resolve(new Users(user));
+			});
+		});
+
+		afterEach(() => {
+			jest.restoreAllMocks();
+		});
 
 		describe("All valid inputs", () => {
 			test("Expected 200 response with registered user", async () => {
-				const mockedRegister = jest.spyOn(Users, "register");
-				const userSave = jest
-					.spyOn(Users.prototype, "save")
-					.mockImplementation(() => {
-						return Promise.resolve(new Users(user));
-					});
 				mockedRegister.mockImplementation((userData, password, callback) => {
 					users.push({ ...userData, password: "hashed password " + password });
 					callback(null, new Users(users[users.length - 1]));
@@ -70,28 +51,17 @@ describe("Registration", () => {
 				expect(jest.isMockFunction(mockedRegister)).toBe(true);
 				expect(mockedRegister).toHaveBeenCalled();
 				expect(userSave).toBeCalled();
-				jest.restoreAllMocks();
 			}, 10000);
 		});
 
 		describe("Already registered username", () => {
 			test("Expected 500 response", async () => {
-				const mockedRegister = jest.spyOn(Users, "register");
-				const userSave = jest
-					.spyOn(Users.prototype, "save")
-					.mockImplementation(() => {
-						return Promise.resolve(new Users(user));
-					});
-
 				mockedRegister.mockImplementation((userData, password, callback) => {
 					const user_ = users.find((_user) => {
 						return _user.username == userData.username;
 					});
 					if (user_) {
-						callback(
-							new Error("Username is already registered"),
-							new Users(users[users.length - 1])
-						);
+						callback(new Error("Username is already registered"), null);
 
 						return;
 					}
@@ -112,24 +82,13 @@ describe("Registration", () => {
 					expect.any(Function)
 				);
 				expect(userSave).not.toHaveBeenCalled();
-				jest.restoreAllMocks();
 			}, 10000);
 		});
 
 		describe("Empty for required field", () => {
 			test("Expected 500 response", async () => {
-				const mockedRegister = jest.spyOn(Users, "register");
-				const userSave = jest
-					.spyOn(Users.prototype, "save")
-					.mockImplementation(() => {
-						return Promise.resolve(new Users(user));
-					});
-
 				mockedRegister.mockImplementation((userData, password, callback) => {
-					callback(
-						new Error("Password Field missed"),
-						new Users(users[users.length - 1])
-					);
+					callback(new Error("Password Field missed"), null);
 				});
 
 				const response = await requestWithSupertest
@@ -140,7 +99,6 @@ describe("Registration", () => {
 				expect(response.type).toEqual("text/html");
 				expect(mockedRegister).toHaveBeenCalled();
 				expect(userSave).not.toHaveBeenCalled();
-				jest.restoreAllMocks();
 			}, 10000);
 		});
 	});

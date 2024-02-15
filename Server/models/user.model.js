@@ -4,15 +4,6 @@ const Schema = mongoose.Schema;
 const passportLocalMongoose = require("passport-local-mongoose");
 
 const User = new Schema({
-	email: {
-		type: String,
-		required: true,
-		validate(value) {
-			if (!validator.isEmail(value)) {
-				throw new Error("Invalid Email format");
-			}
-		},
-	},
 	firstname: {
 		type: String,
 		required: true,
@@ -31,13 +22,31 @@ const User = new Schema({
 			}
 		},
 	},
-	role: {
-		type: [String],
-		default: ["user"],
+	email: {
+		type: String,
+		required: true,
+		validate(value) {
+			if (!validator.isEmail(value)) {
+				throw new Error("Invalid Email format");
+			}
+		},
+	},
+	password: {
+		type: String,
+		required: true,
+	},
+	roles: {
+		type: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Role",
+			},
+		],
+		default: [],
 	},
 	isactivated: {
 		type: Boolean,
-		default: true,
+		default: false,
 	},
 	profileImage: {
 		type: String,
@@ -46,8 +55,8 @@ const User = new Schema({
 });
 
 // User.plugin(passportLocalMongoose, { usernameField: "email" }); with options
-User.plugin(passportLocalMongoose);
+// User.plugin(passportLocalMongoose);
 
-const Users = mongoose.model("user", User);
+const Users = mongoose.model("User", User);
 
 module.exports = Users;

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const Dishes = require("./dishes");
-const Lounges = require("./lounges");
+const Dishes = require("./dish.model");
+const Lounges = require("./lounge.model");
 
 const commonSchema = {
 	image: {
@@ -13,6 +13,7 @@ const commonSchema = {
 		default: 1,
 	},
 };
+
 const dishGallerySchema = new Schema(
 	{
 		object: {
@@ -25,6 +26,7 @@ const dishGallerySchema = new Schema(
 		timestamps: true,
 	}
 );
+
 const loungeGallerySchema = new Schema(
 	{
 		object: {

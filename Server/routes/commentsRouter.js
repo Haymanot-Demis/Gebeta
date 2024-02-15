@@ -1,6 +1,6 @@
 const commentsRouter = require("express").Router();
-const Comments = require("../models/comments");
-const Dishes = require("../models/dishes");
+const Comments = require("../models/comment.model");
+const Dishes = require("../models/dish.model");
 const bodyParser = require("body-parser");
 
 commentsRouter.use(bodyParser.json());
