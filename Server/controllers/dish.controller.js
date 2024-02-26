@@ -1,4 +1,3 @@
-const express = require("express");
 const Dishes = require("../models/dish.model");
 const Lounges = require("../models/lounge.model");
 const { cloudinaryUploader, upload } = require("../middlewares/fileUploader");
@@ -7,38 +6,42 @@ const loungeService = require("../services/lounge.services");
 const fs = require("fs");
 const { isFound } = require("../utils/checks");
 const catchAsync = require("../utils/asyncHandler");
+const configs = require("../config/configs");
+const { paginationParams } = require("../utils/query");
+const paginatedResponse = require("./paginatedResponse");
+const { removeImage } = require("../utils/file");
 
-const getDish = (req, res, next) => {
-	Dishes.findById(req.params.dishid)
-		.populate("lounge")
-		.populate("lounge.loungeAdmin")
-		.populate("comment.author")
-		.then((dish) => {
-			if (!dish) {
-				res.statusCode = 404;
-				res.contentType("text/plain");
-				res.send("Dish with id" + req.params.dishid + " is not found");
-				return next();
-			}
-			res.statusCode = 200;
-			res.contentType("application/json");
-			res.json(dish);
-		})
-		.catch((err) => next(err));
-};
-const getAllDishes = async (req, res, next) => {
-	const dishes = await dishServices.getAllDishes();
+const getDish = catchAsync(async (req, res, next) => {
+	const dish = await dishServices.getDish(req.params.dishId);
+
+	isFound(dish, `Dish with id ${req.params.dishid} is `);
+
 	res.statusCode = 200;
 	res.contentType("application/json");
-	res.json(dishes);
+	res.json(dish);
+});
+const getAllDishes = catchAsync(async (req, res, next) => {
+	const [page, offset, limit] = paginationParams(req);
+	const dishes = await dishServices.getAllDishes(offset, limit);
+	const total = await dishServices.count({});
+	res.statusCode = 200;
+	res.contentType("application/json");
+	res.json(new paginatedResponse(dishes, page, limit, total));
 	next();
-};
+});
 
 const getDishesByLounge = catchAsync(async (req, res, next) => {
-	const dishes = await dishServices.getDishes({ lounge: req.user.userId });
+	const [page, offset, limit] = paginationParams(req);
+	const dishes = await dishServices.getDishes(
+		{ lounge: req.params.loungeId },
+		offset,
+		limit
+	);
+	const total = await dishServices.count({ lounge: req.params.loungeId });
+
 	res.statusCode = 200;
 	res.contentType("application/json");
-	res.json(dishes);
+	res.json(new paginatedResponse(dishes, page, limit, total));
 });
 
 const createDish = catchAsync(async (req, res, next) => {
@@ -55,6 +58,7 @@ const createDish = catchAsync(async (req, res, next) => {
 		const upload_data = await cloudinaryUploader(req.file.path);
 		req.body.image = upload_data.secure_url;
 	}
+
 	console.log("create controller", req.body);
 	const dish = await dishServices.createDish(req.body);
 
@@ -73,62 +77,52 @@ const updateDish = catchAsync(async (req, res, next) => {
 		lounge: lounge._id,
 	});
 	console.log(dish);
-	isFound(dish);
+	isFound(dish, `Dish with id ${req.params.dishId} is `);
 
 	if (req?.file?.path) {
 		const uploadResult = await cloudinaryUploader(req.file.path);
 		req.body.image = uploadResult.secure_url;
 	}
 
-	const newDish = dishServices.updateDish(req.params.dishId, req.body);
+	const newDish = await dishServices.updateDish(req.params.dishId, req.body);
 
 	res.statusCode = 200;
 	res.contentType("application/json");
 	res.json(newDish);
 });
-// delete dishes belonging to a lounge
-const deleteManyDish = async (req, res, next) => {
-	const lounge = await Lounges.findOne({ loungeAdmin: req.user._id });
-	Dishes.deleteMany({ lounge: lounge._id })
-		.then((result) => {
-			res.statusCode = 200;
-			res.contentType("application/json");
-			res.json(result);
-			next();
-		})
-		.catch((err) => next(err));
-};
+// delete all dishes belonging to a lounge
+const deleteManyDish = catchAsync(async (req, res, next) => {
+	const lounge = await loungeService.getLoungeByAdmin(req.user.userId);
 
-const deleteDish = async (req, res, next) => {
-	const dish = await Dishes.findOne({ _id: req.params.dishid });
-	fs.access(
-		__dirname + "/../uploads/loungeImages/" + dish.image.split("\\").pop(),
-		(error) => {
-			if (!error) {
-				fs.unlink(
-					__dirname +
-						"/../uploads/loungeImages/" +
-						dish.image.split("\\").pop(),
-					(err) => {
-						if (err) {
-							next(err);
-						}
-						console.log("deleted");
-					}
-				);
-			}
-		}
-	);
+	isFound(lounge, `Lounge is `);
 
-	Dishes.deleteOne({ _id: req.params.dishid })
-		.then((dishes) => {
-			res.statusCode = 200;
-			res.contentType("application/json");
-			res.json(dishes);
-		})
-		.catch((err) => next(err));
-};
+	const result = dishServices.deleteManyDish({
+		lounge: lounge._id,
+		...req.query,
+	});
 
+	res.statusCode = 200;
+	res.contentType("application/json");
+	res.json(result);
+	next();
+});
+
+const deleteDish = catchAsync(async (req, res, next) => {
+	const dish = await dishServices.getDish(req.params.dishId);
+
+	isFound(dish, `Dish with id ${req.params.dishId} is `);
+
+	if (dish.image) {
+		await removeImage(dish.image);
+	}
+
+	const result = await dishServices.deleteDish(dish._id);
+	res.statusCode = 200;
+	res.contentType("application/json");
+	res.json(result);
+});
+
+// TODO: Comment part isn't done totally
 // TODO: select only the comment attribute of the dish
 const getDishComments = (req, res, next) => {
 	Dishes.findById(req.params.dishId)

@@ -1,7 +1,7 @@
 const Dishes = require("../models/dish.model");
 
-const getAllDishes = async () => {
-	const dishes = await Dishes.find({});
+const getAllDishes = async (offset, limit) => {
+	const dishes = await Dishes.find({}).skip(offset).limit(limit);
 	return dishes;
 };
 
@@ -9,10 +9,9 @@ const getDish = async (dishId) => {
 	const dish = await Dishes.findById(dishId);
 	return dish;
 };
-
 // TODO: filter need some work
-const getDishes = async (filter) => {
-	const dishes = await Dishes.find(filter);
+const getDishes = async (filter, offset, limit) => {
+	const dishes = await Dishes.find(filter).skip(offset).limit(limit);
 	return dishes;
 };
 
@@ -46,6 +45,10 @@ const exists = async (condition) => {
 	return await Dishes.exists(condition);
 };
 
+const count = async (query) => {
+	return await Dishes.countDocuments(query);
+};
+
 module.exports = {
 	getAllDishes,
 	getDish,
@@ -55,4 +58,5 @@ module.exports = {
 	deleteDish,
 	deleteManyDish,
 	exists,
+	count,
 };

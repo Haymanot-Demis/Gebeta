@@ -1,17 +1,17 @@
-const config = require("../config/config");
+const configs = require("../config/configs");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { ApiError } = require("./apiError");
 const crypto = require("crypto");
 
-const generateJWTToken = (user, expiresIn = config.expiresIn) => {
+const generateJWTToken = (user, expiresIn = configs.expiresIn) => {
 	const token = jwt.sign(
 		{
 			userId: user._id.valueOf(),
 			roles: user.roles.map((role) => role.name),
 			isactivated: user.isactivated,
 		},
-		config.secretOrPrivateKey,
+		configs.secretOrPrivateKey,
 		{
 			expiresIn: expiresIn,
 		}
@@ -22,7 +22,7 @@ const generateJWTToken = (user, expiresIn = config.expiresIn) => {
 
 const verifyJWTToken = (token) => {
 	try {
-		const payload = jwt.verify(token, config.secrecOrKey);
+		const payload = jwt.verify(token, configs.secrecOrKey);
 		return payload;
 	} catch (error) {
 		throw new Error(`Invalid token: ${error.message}`);

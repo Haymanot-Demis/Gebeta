@@ -4,7 +4,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const path = require("path");
-const config = require("./config/config");
+const config = require("./config/configs");
 const expressSession = require("express-session");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -19,6 +19,7 @@ const orderRouter = require("./routes/orderRouter");
 const commentsRouter = require("./routes/commentsRouter");
 const galleryRouter = require("./routes/galleryRouter");
 
+mongoose.set("debug", true);
 mongoose.set("strictQuery", true);
 mongoose
 	.connect(config.mongodbURL, {

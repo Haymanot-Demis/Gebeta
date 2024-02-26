@@ -1,7 +1,7 @@
 const Tokens = require("../models/token.model");
 const { ObjectID } = require("bson");
 
-const config = require("../config/config");
+const configs = require("../config/configs");
 const userService = require("../services/user.services");
 const authService = require("../services/auth.services");
 const loungeService = require("../services/lounge.services");
@@ -38,7 +38,7 @@ const signupController = catchAsync(async (req, res, next) => {
 	}
 
 	// send email to verify email
-	const link = `http://localhost:${config.port}/auth/activateUserAccount/${user._id}`;
+	const link = `http://localhost:${configs.port}/auth/activateUserAccount/${user._id}`;
 	const info = await sendEmail(
 		user.email,
 		"Account Activation",

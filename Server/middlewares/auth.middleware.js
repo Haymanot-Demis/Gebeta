@@ -7,6 +7,7 @@ const httpStatus = require("http-status");
 const { USER_ROLES } = require("../utils/constants");
 const catchAsync = require("../utils/asyncHandler");
 const { checkOwnership } = require("../utils/auth");
+const configs = require("../config/configs");
 
 const getTokenFromHeader = (req) => {
 	const bearerHeader = req.headers["authorization"];
@@ -34,8 +35,8 @@ const getTokenFromHeader = (req) => {
 const verifyToken = async (req, res, next) => {
 	try {
 		const token = getTokenFromHeader(req);
-		console.log(token, process.env.SECRETE);
-		const decoded = jwt.verify(token, process.env.SECRETE);
+		console.log(token, configs.secretOrPrivateKey);
+		const decoded = jwt.verify(token, configs.secretOrPrivateKey);
 		req.user = decoded;
 		console.log("decoded", decoded);
 		next();

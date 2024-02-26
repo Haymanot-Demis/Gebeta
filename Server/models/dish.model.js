@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const Lounges = require("./lounge.model");
-const Users = require("./user.model");
 const { commentSchema } = require("./comment.model");
 
 const dishSchema = new Schema({
@@ -38,7 +37,6 @@ const dishSchema = new Schema({
 		required: true,
 	},
 	lounge: {
-		// select from a datalist
 		type: mongoose.Schema.Types.ObjectId,
 		ref: Lounges,
 		require: true,
