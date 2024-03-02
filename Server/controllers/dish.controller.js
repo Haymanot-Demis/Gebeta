@@ -7,8 +7,7 @@ const fs = require("fs");
 const { isFound } = require("../utils/checks");
 const catchAsync = require("../utils/asyncHandler");
 const configs = require("../config/configs");
-const { paginationParams } = require("../utils/query");
-const paginatedResponse = require("./paginatedResponse");
+const { paginationParams, paginatedResponse } = require("../utils/pagination");
 const { removeImage } = require("../utils/file");
 
 const getDish = catchAsync(async (req, res, next) => {
@@ -183,7 +182,7 @@ const updateDishComment = (req, res, next) => {
 // return all comments of all dishes of a lounge
 const getAllComments = async (req, res, next) => {
 	let lounge = await Lounges.findOne({
-		loungeAdmin: req.user._id,
+		loungeAdmin: req.user.userId,
 	});
 	Dishes.find({ lounge: lounge._id }, { comments: "1" })
 		.sort({ createdAt: 1 })

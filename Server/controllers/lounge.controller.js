@@ -4,7 +4,7 @@ const { cloudinaryUploader } = require("../middlewares/fileUploader");
 const catchAsync = require("../utils/asyncHandler");
 const { NotFoundException, ApiError } = require("../utils/apiError");
 const httpStatus = require("http-status");
-const { USER_ROLES } = require("../utils/constants");
+const { USER_ROLES } = require("../constants/constants");
 const { isFound } = require("../utils/checks");
 const { checkOwnership } = require("../utils/auth");
 

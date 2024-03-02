@@ -5,17 +5,16 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const path = require("path");
 const config = require("./config/configs");
-const expressSession = require("express-session");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
 // Importing Routes
 const authRouter = require("./routes/auth.route");
-const userRouter = require("./routes/userRouter");
+const userRouter = require("./routes/user.route");
 const roleRouter = require("./routes/role.route");
 const dishRouter = require("./routes/dish.route");
 const loungeRouter = require("./routes/lounge.route");
-const orderRouter = require("./routes/orderRouter");
+const orderRouter = require("./routes/order.route");
 const commentsRouter = require("./routes/commentsRouter");
 const galleryRouter = require("./routes/galleryRouter");
 

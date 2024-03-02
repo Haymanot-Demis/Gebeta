@@ -8,4 +8,6 @@ module.exports = {
 	cloundinaryUrl: process.env.CLOUDINARY_URL,
 	defaultPage: 1,
 	defaultLimit: 10,
+	orderUpdateTimeLimit: 3600,
+	orderCancelTimeLimit: 3600,
 };

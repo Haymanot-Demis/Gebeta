@@ -46,7 +46,7 @@ const compare = async (data, encryptedData) => {
 // Compare the loggedin user id with the user id on which the operation is being performed
 const checkOwnership = (loggedinUserId, userId) => {
 	console.log("checkOwnership", loggedinUserId, userId);
-	return loggedinUserId === userId;
+	return loggedinUserId == userId;
 };
 
 const isAccountActive = (user) => {

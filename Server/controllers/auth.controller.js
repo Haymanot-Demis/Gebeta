@@ -17,7 +17,7 @@ const {
 const { isFound } = require("../utils/checks");
 const { ApiError, InvalidTokenException } = require("../utils/apiError");
 const httpStatus = require("http-status");
-const { DEFAULT_VALUES } = require("../utils/constants");
+const { DEFAULT_VALUES } = require("../constants/constants");
 
 const activateUserAccount = catchAsync(async (req, res, next) => {
 	const update = { $set: { isactivated: true } };

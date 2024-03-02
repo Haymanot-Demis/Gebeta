@@ -6,7 +6,7 @@ const httpStatus = require("http-status");
 const { isFound } = require("../utils/checks");
 const { encrypt } = require("../utils/auth");
 const roleServices = require("./role.services");
-const { USER_ROLES } = require("../utils/constants");
+const { USER_ROLES } = require("../constants/constants");
 
 const getRoles = async (role_id = undefined) => {
 	// Fetch the default user role
